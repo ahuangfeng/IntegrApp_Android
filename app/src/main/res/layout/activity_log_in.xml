@@ -17,15 +17,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="218dp"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="30dp"
-            android:src="@drawable/logo_app" />
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/logo_app"/>
 
         <EditText
+            android:id="@+id/userEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -36,7 +37,8 @@
             android:hint="Username"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColorHint="#fff" />
+            android:textColorHint="#fff"
+            android:textColor="#fff"/>
 
         <View
             android:layout_width="match_parent"
@@ -44,6 +46,7 @@
             android:background="#fff" />
 
         <EditText
+            android:id="@+id/passEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -55,7 +58,8 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColorHint="#fff" />
+            android:textColorHint="#fff"
+            android:textColor="#fff"/>
 
         <View
             android:layout_width="match_parent"
@@ -72,7 +76,7 @@
             android:textColor="#fff" />
 
         <Button
-            android:id="@+id/LoginButton"
+            android:id="@+id/logInButton"
             style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,11 +86,11 @@
             android:padding="16dp"
             android:text="Log in"
             android:textAllCaps="false"
-            android:textColor="#736ff1"
+            android:textColor="#000"
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/SignupButton"
+            android:id="@+id/signUpButton"
             style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
