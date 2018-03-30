@@ -3,9 +3,29 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
-    
+
+    <!-- Strings of SplashIntegrApp activity-->
+    <string name="splash_title">IntegrApp</string>
+    <string name="splash_slogan">Welcome to your new home!</string>
+
+    <!-- Strings of LogIn activity-->
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="checkbox_text">Remember me</string>
+    <string name="button_login_text">Log in</string>
+    <string name="signup_text">DON\'T HAVE AN ACCOUNT? SIGN UP</string>
+
+    <!-- Strings of SignUp activity-->
+    <string name="signup_title">Sign up</string>
+    <string name="full_name">Full name (*)</string>
+    <string name="username">Username (*)</string>
+    <string name="password">Password (*)</string>
+    <string name="type">Type (*)</string>
+    <string name="cif">CIF (*)</string>
+    <string name="button_create">Create</string>
+
+    <!-- Array for the spinner of user types-->
     <string-array name="user_types">
         <item>Voluntary</item>
         <item>NewComer</item>

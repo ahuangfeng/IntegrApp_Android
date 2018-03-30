@@ -20,20 +20,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign up"
+            android:text="@string/signup_title"
             android:textColor="#fff"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="65dp"
-            android:textSize="35dp"
+            android:textSize="35sp"
             android:background="@android:color/transparent"
             android:gravity="center"/>
 
         <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Full name (*)"
+        android:text="@string/full_name"
         android:textColor="#fff"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:background="@android:color/transparent"/>
 
         <EditText
@@ -54,9 +54,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Username (*)"
+            android:text="@string/username"
             android:textColor="#fff"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_marginTop="8dp"
             android:background="@android:color/transparent"/>
 
@@ -78,9 +78,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Password (*)"
+            android:text="@string/password"
             android:textColor="#fff"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_marginTop="8dp"
             android:background="@android:color/transparent"/>
 
@@ -107,9 +107,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type (*)"
+                android:text="@string/type"
                 android:textColor="#fff"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"/>
 
@@ -133,9 +133,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CIF (*)"
+                android:text="@string/cif"
                 android:textColor="#fff"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:background="@android:color/transparent"/>
 
             <EditText
@@ -164,7 +164,7 @@
             android:background="@drawable/background_signup_button"
             android:clickable="true"
             android:padding="16dp"
-            android:text="Create"
+            android:text="@string/button_create"
             android:textAllCaps="false"
             android:textColor="#fff"
             android:textSize="18sp" />

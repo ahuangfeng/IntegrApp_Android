@@ -20,15 +20,15 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="IntegrApp"
+            android:text="@string/splash_title"
             android:textColor="#fff"
-            android:textSize="40dp" />
+            android:textSize="40sp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="Welcome to your new home!"
+            android:text="@string/splash_slogan"
             android:textColor="#fff"/>
     </LinearLayout>
 
