@@ -89,19 +89,16 @@
             android:textColor="#000"
             android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/signUpButton"
-            style="@style/Base.TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/signUpTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:background="@drawable/background_signup_button"
             android:clickable="true"
             android:padding="16dp"
-            android:text="Sign up"
-            android:textAllCaps="false"
-            android:textColor="#fff"
-            android:textSize="18sp" />
+            android:text="DON'T HAVE AN ACCOUNT? SIGN UP"
+            android:textColor="#000"/>
 
     </LinearLayout>
 
