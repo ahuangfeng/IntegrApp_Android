@@ -97,7 +97,7 @@
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:padding="16dp"
-            android:text="@string/signup_text"
+            android:text="@string/signUp_text"
             android:textColor="#000"/>
 
     </LinearLayout>

@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUp extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class SignUp extends AppCompatActivity {
     LinearLayout layoutCIF;
     View viewCIF;
     Button signUpButton;
+    EditText nameEditText;
     EditText usernameEditText;
     EditText passwordEditText;
     EditText cifEditText;
@@ -38,10 +41,15 @@ public class SignUp extends AppCompatActivity {
 
     private String serverResponse = "";
 
+    private static final String USERNAME_PATTERN = "^[A-z0-9_-]{3,20}$";
+    private Pattern pattern;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        pattern = Pattern.compile(USERNAME_PATTERN);
 
         spinner = (Spinner) findViewById(R.id.spinnner);
         adapter = ArrayAdapter.createFromResource(this, R.array.user_types, android.R.layout.simple_spinner_item);
@@ -86,11 +94,7 @@ public class SignUp extends AppCompatActivity {
                 String pass = passwordEditText.getText().toString();
                 String cif = cifEditText.getText().toString();
 
-                if (((user.isEmpty() || pass.isEmpty()) && !itemSelectedSpinner.equals("association"))
-                        || ((user.isEmpty() || pass.isEmpty() || cif.isEmpty()) && itemSelectedSpinner.equals("association"))) {
-                    Toast.makeText(getApplicationContext(), "Fill in all the fields, please.", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                if (fieldsOK(user, pass, cif)) {
                     sendDataToServer(user, pass, cif);
                     if (!serverResponse.equals("ERROR IN SIGNUP")) {
                         Toast.makeText(getApplicationContext(), "Create successful", Toast.LENGTH_SHORT).show();
@@ -103,15 +107,24 @@ public class SignUp extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
                     }
                 }
+
             }
         });
     }
 
     private void passFromSpinner(String element) {
-        if (element.equals("Association")) itemSelectedSpinner = "association";
-        else if (element.equals("Voluntary")) itemSelectedSpinner = "voluntary";
-        else if (element.equals("NewComer")) itemSelectedSpinner = "newComer";
-        else itemSelectedSpinner = "admin";
+        switch (element) {
+            case "Association":
+                itemSelectedSpinner = "association";
+                break;
+            case "Voluntary":
+                itemSelectedSpinner = "voluntary";
+                break;
+            case "NewComer":
+                itemSelectedSpinner = "newComer";
+                break;
+            default:
+        }
     }
 
     private String generateRequestRegister(String username, String password, String cif) throws JSONException {
@@ -165,5 +178,52 @@ public class SignUp extends AppCompatActivity {
             e.printStackTrace();
         }
         return "ERROR IN SIGNUP";
+    }
+
+    public boolean fieldsOK(String user, String pass, String cif) {
+
+        nameEditText = (EditText) findViewById(R.id.nameEditText);
+        boolean valid = true;
+
+        if (nameEditText.getText().toString().isEmpty()) {
+            nameEditText.setError(getString(R.string.error_fullName_empty));
+            valid = false;
+        }
+
+        if (checkInputText(user, 3, 20)) {
+            usernameEditText.setError(getString(R.string.error_username_length));
+            valid = false;
+        } else {
+            if (!validateUsername(user)) {
+                usernameEditText.setError(getString(R.string.error_username_chars));
+                valid = false;
+            }
+        }
+
+        if (checkInputText(pass, 6, 128)) {
+            passwordEditText.setError(getString(R.string.error_password_length));
+            valid = false;
+        }
+
+        if (itemSelectedSpinner.equals("association") && cif.isEmpty()) {
+            cifEditText.setError(getString(R.string.error_cif_empty));
+            valid = false;
+        }
+
+        /*if (((user.isEmpty() || pass.isEmpty()) && !itemSelectedSpinner.equals("association"))
+                || ((user.isEmpty() || pass.isEmpty() || cif.isEmpty()) && itemSelectedSpinner.equals("association"))) {
+            Toast.makeText(getApplicationContext(), "Fill in all the fields, please.", Toast.LENGTH_SHORT).show();
+        }*/
+
+        return valid;
+    }
+
+    public boolean checkInputText(String text, int min, int max) {
+        return text.isEmpty() || text.length() < min || text.length() > max;
+    }
+
+    public boolean validateUsername(String user) {
+        Matcher matcher = pattern.matcher(user);
+        return matcher.matches();
     }
 }

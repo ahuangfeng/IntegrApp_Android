@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/signup_title"
+            android:text="@string/signUp_title"
             android:textColor="#fff"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="65dp"

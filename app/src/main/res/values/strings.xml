@@ -14,10 +14,10 @@
     <string name="hint_password">Password</string>
     <string name="checkbox_text">Remember me</string>
     <string name="button_login_text">Log in</string>
-    <string name="signup_text">DON\'T HAVE AN ACCOUNT? SIGN UP</string>
+    <string name="signUp_text">DON\'T HAVE AN ACCOUNT? SIGN UP</string>
 
     <!-- Strings of SignUp activity-->
-    <string name="signup_title">Sign up</string>
+    <string name="signUp_title">Sign up</string>
     <string name="full_name">Full name (*)</string>
     <string name="username">Username (*)</string>
     <string name="password">Password (*)</string>
@@ -34,12 +34,18 @@
     <string name="menu_aboutUs">About us</string>
     <string name="menu_logOut">Log out</string>
 
+    <!-- Error messages-->
+    <string name="error_fullName_empty">Full name must be filled.</string>
+    <string name="error_username_length">Username must contain between 3 and 20 characters.</string>
+    <string name="error_username_chars">Valid characters: alphanumeric, _ and -</string>
+    <string name="error_password_length">Password must contain between 6 and 128 characters.</string>
+    <string name="error_cif_empty">CIF must be filled.</string>
+
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
         <item>Voluntary</item>
         <item>NewComer</item>
         <item>Association</item>
-        <item>Admin</item>
     </string-array>
 
 </resources>
