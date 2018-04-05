@@ -3,22 +3,16 @@ package com.integrapp.integrapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class LogIn extends AppCompatActivity {
 
@@ -26,7 +20,7 @@ public class LogIn extends AppCompatActivity {
     EditText userEditText;
     EditText passEditText;
     TextView signUpTextView;
-    public static LogIn logInActivity;
+    public LogIn logInActivity;
     private Server server;
 
     @Override
@@ -35,15 +29,15 @@ public class LogIn extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
         logInActivity = this;
         server = Server.getInstance();
-        logInButton = (Button) findViewById(R.id.logInButton);
-        signUpTextView = (TextView) findViewById(R.id.signUpTextView);
+        logInButton = findViewById(R.id.logInButton);
+        signUpTextView = findViewById(R.id.signUpTextView);
 
         logInButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                userEditText = (EditText) findViewById(R.id.userEditText);
-                passEditText = (EditText) findViewById(R.id.passEditText);
+                userEditText = findViewById(R.id.userEditText);
+                passEditText = findViewById(R.id.passEditText);
 
                 String user = userEditText.getText().toString();
                 String pass = passEditText.getText().toString();
