@@ -37,13 +37,13 @@
             android:hint="@string/hint_username"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColorHint="#fff"
-            android:textColor="#fff"/>
+            android:textColorHint="@color/whiteLetter"
+            android:textColor="@color/whiteLetter"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#fff" />
+            android:background="@color/whiteLetter" />
 
         <EditText
             android:id="@+id/passEditText"
@@ -58,13 +58,13 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColorHint="#fff"
-            android:textColor="#fff"/>
+            android:textColorHint="@color/whiteLetter"
+            android:textColor="@color/whiteLetter"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#fff" />
+            android:background="@color/whiteLetter" />
 
         <CheckBox
             android:id="@+id/checkRememberMe"
@@ -73,7 +73,7 @@
             android:layout_marginTop="8dp"
             android:padding="8dp"
             android:text="@string/checkbox_text"
-            android:textColor="#fff" />
+            android:textColor="@color/whiteLetter" />
 
         <Button
             android:id="@+id/logInButton"
@@ -86,8 +86,9 @@
             android:padding="16dp"
             android:text="@string/button_login_text"
             android:textAllCaps="false"
-            android:textColor="#000"
-            android:textSize="18sp" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:focusable="true" />
 
         <TextView
             android:id="@+id/signUpTextView"
@@ -98,7 +99,8 @@
             android:clickable="true"
             android:padding="16dp"
             android:text="@string/signUp_text"
-            android:textColor="#000"/>
+            android:textColor="@color/colorPrimaryDark"
+            android:focusable="true" />
 
     </LinearLayout>
 

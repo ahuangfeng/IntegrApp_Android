@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,8 +26,7 @@ public class SignUp extends AppCompatActivity {
 
 //    private Spinner spinner;
 //    private ArrayAdapter<CharSequence> adapter;
-    private LinearLayout layoutCIF;
-    private View viewCIF;
+    private TextInputLayout layoutCIF;
 //    private Button signUpButton;
 //    private EditText nameEditText;
     private EditText usernameEditText;
@@ -54,16 +54,13 @@ public class SignUp extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String elem = parent.getItemAtPosition(position).toString();
                 passFromSpinner(elem);
-                layoutCIF = findViewById(R.id.layoutCIF);
-                viewCIF = findViewById(R.id.viewCIF);
+                layoutCIF = findViewById(R.id.cifLayout);
 
                 if(Objects.equals(elem, "Association")) {
                     layoutCIF.setVisibility(View.VISIBLE);
-                    viewCIF.setVisibility(View.VISIBLE);
                 }
                 else {
                     layoutCIF.setVisibility(View.INVISIBLE);
-                    viewCIF.setVisibility(View.INVISIBLE);
                 }
             }
 

@@ -27,7 +27,6 @@ public class LogIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-//        logInActivity = this;
         server = Server.getInstance();
         Button logInButton = findViewById(R.id.logInButton);
         TextView signUpTextView = findViewById(R.id.signUpTextView);
@@ -52,6 +51,7 @@ public class LogIn extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(LogIn.this, SignUp.class);
                 startActivity(i);
+                finish();
             }
         });
     }
