@@ -1,5 +1,7 @@
 package com.integrapp.integrapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -93,7 +95,11 @@ public class Advert extends AppCompatActivity
         } else if (id == R.id.nav_aboutUs) {
 
         } else if (id == R.id.nav_logOut) {
-
+            SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

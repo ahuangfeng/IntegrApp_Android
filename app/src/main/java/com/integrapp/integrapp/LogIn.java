@@ -1,7 +1,9 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -78,6 +80,14 @@ public class LogIn extends AppCompatActivity {
     private void checkLogIn(String s) {
         if(!s.equals("ERROR IN LOGIN")) {
             Toast.makeText(getApplicationContext(), "Log in successful", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isLogged", true);
+            editor.putString("username", userEditText.getText().toString());
+            //editor.putString("user_token", token) --> Here we will save the token
+            editor.apply();
+
             Intent i = new Intent(LogIn.this, Advert.class);
             startActivity(i);
             finish();

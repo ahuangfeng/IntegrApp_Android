@@ -1,6 +1,8 @@
 package com.integrapp.integrapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +17,12 @@ public class SplashIntegrApp extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashIntegrApp.this, LogIn.class);
+                Intent i;
+                SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                boolean isLogged = preferences.getBoolean("isLogged", false);
+
+                if (isLogged) i = new Intent(SplashIntegrApp.this, Advert.class);
+                else i = new Intent(SplashIntegrApp.this, LogIn.class);
                 startActivity(i);
                 finish();
             }
