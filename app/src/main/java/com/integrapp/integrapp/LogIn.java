@@ -36,7 +36,8 @@ public class LogIn extends AppCompatActivity {
 
         logInButton = (Button) findViewById(R.id.logInButton);
         signUpTextView = (TextView) findViewById(R.id.signUpTextView);
-        
+
+        //test
         logInButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -121,6 +122,10 @@ public class LogIn extends AppCompatActivity {
     }
 
     private String checkFields(String user, String pass) {
+
+        if (user.isEmpty()) {
+            //caca
+        }
 
         if (user.isEmpty() && pass.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Username and password are needed", Toast.LENGTH_SHORT).show();
