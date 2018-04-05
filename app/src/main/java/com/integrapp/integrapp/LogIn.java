@@ -38,6 +38,7 @@ public class LogIn extends AppCompatActivity {
         signUpTextView = (TextView) findViewById(R.id.signUpTextView);
 
         //HOLA
+        //HGSDJJK
         logInButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
