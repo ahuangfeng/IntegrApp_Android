@@ -36,7 +36,8 @@ public class LogIn extends AppCompatActivity {
 
         logInButton = (Button) findViewById(R.id.logInButton);
         signUpTextView = (TextView) findViewById(R.id.signUpTextView);
-        
+
+        //HOLA
         logInButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
