@@ -14,14 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,6 +33,7 @@ public class SignUp extends AppCompatActivity {
     EditText passwordEditText;
     EditText cifEditText;
     private String itemSelectedSpinner;
+    private Server server;
 
     private static final String USERNAME_PATTERN = "^[A-z0-9_-]{3,20}$";
     private Pattern pattern;
@@ -46,14 +42,13 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        this.server = Server.getInstance();
         pattern = Pattern.compile(USERNAME_PATTERN);
 
         spinner = (Spinner) findViewById(R.id.spinnner);
         adapter = ArrayAdapter.createFromResource(this, R.array.user_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -136,7 +131,7 @@ public class SignUp extends AppCompatActivity {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    return getServerResponse(json);
+                    return server.register(json);
                 }
 
                 @Override
@@ -163,22 +158,22 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    private String getServerResponse(String json) {
-        HttpPost post = new HttpPost("https://integrappbackend.herokuapp.com/api/register");
-        try {
-            StringEntity entity = new StringEntity(json);
-            post.setEntity(entity);
-            post.setHeader("Content-type", "application/json");
-
-            DefaultHttpClient client = new DefaultHttpClient();
-            BasicResponseHandler handler = new BasicResponseHandler();
-            return client.execute(post, handler);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "ERROR IN SIGNUP";
-    }
+//    private String register(String json) {
+//        HttpPost post = new HttpPost("https://integrappbackend.herokuapp.com/api/register");
+//        try {
+//            StringEntity entity = new StringEntity(json);
+//            post.setEntity(entity);
+//            post.setHeader("Content-type", "application/json");
+//
+//            DefaultHttpClient client = new DefaultHttpClient();
+//            BasicResponseHandler handler = new BasicResponseHandler();
+//            return client.execute(post, handler);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return "ERROR IN SIGNUP";
+//    }
 
     public boolean fieldsOK(String user, String pass, String cif) {
 
