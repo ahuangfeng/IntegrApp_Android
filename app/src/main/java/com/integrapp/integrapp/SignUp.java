@@ -39,8 +39,6 @@ public class SignUp extends AppCompatActivity {
     EditText cifEditText;
     private String itemSelectedSpinner;
 
-    private String serverResponse = "";
-
     private static final String USERNAME_PATTERN = "^[A-z0-9_-]{3,20}$";
     private Pattern pattern;
 
@@ -60,7 +58,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String elem = parent.getItemAtPosition(position).toString();
-                passFromSpinner(elem); //pass from spinner to server format
+                passFromSpinner(elem);
                 layoutCIF = (LinearLayout) findViewById(R.id.layoutCIF);
                 viewCIF = (View) findViewById(R.id.viewCIF);
 
@@ -96,18 +94,7 @@ public class SignUp extends AppCompatActivity {
 
                 if (fieldsOK(user, pass, cif)) {
                     sendDataToServer(user, pass, cif);
-                    if (!serverResponse.equals("ERROR IN SIGNUP")) {
-                        Toast.makeText(getApplicationContext(), "Create successful", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(SignUp.this, Advert.class);
-                        startActivity(i);
-                        finish();
-                        LogIn.logInActivity.finish();
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
-                    }
                 }
-
             }
         });
     }
@@ -155,11 +142,25 @@ public class SignUp extends AppCompatActivity {
                 @Override
                 protected void onPostExecute(String s) {
                     System.out.println("SERVER RESPONSE: " + s);
+                    checkSignUp(s);
                 }
             }.execute();
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkSignUp(String s) {
+        if (!s.equals("ERROR IN SIGNUP")) {
+            Toast.makeText(getApplicationContext(), "Create successful", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(SignUp.this, Advert.class);
+            startActivity(i);
+            finish();
+            LogIn.logInActivity.finish();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
         }
     }
 
