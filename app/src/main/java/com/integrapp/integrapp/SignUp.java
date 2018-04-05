@@ -24,11 +24,7 @@ import java.util.regex.Pattern;
 
 public class SignUp extends AppCompatActivity {
 
-//    private Spinner spinner;
-//    private ArrayAdapter<CharSequence> adapter;
     private TextInputLayout layoutCIF;
-//    private Button signUpButton;
-//    private EditText nameEditText;
     private EditText usernameEditText;
     private EditText passwordEditText;
     private EditText cifEditText;
@@ -184,11 +180,6 @@ public class SignUp extends AppCompatActivity {
             cifEditText.setError(getString(R.string.error_cif_empty));
             valid = false;
         }
-
-        /*if (((user.isEmpty() || pass.isEmpty()) && !itemSelectedSpinner.equals("association"))
-                || ((user.isEmpty() || pass.isEmpty() || cif.isEmpty()) && itemSelectedSpinner.equals("association"))) {
-            Toast.makeText(getApplicationContext(), "Fill in all the fields, please.", Toast.LENGTH_SHORT).show();
-        }*/
 
         return valid;
     }

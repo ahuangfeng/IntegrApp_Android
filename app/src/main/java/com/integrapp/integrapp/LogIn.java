@@ -15,12 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LogIn extends AppCompatActivity {
-
-//    private Button logInButton;
+    
     private EditText userEditText;
     private EditText passEditText;
-//    private TextView signUpTextView;
-//    private LogIn logInActivity;
     private Server server;
 
     @Override
