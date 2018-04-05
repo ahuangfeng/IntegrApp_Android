@@ -39,5 +39,22 @@ class Server {
         return "ERROR IN SIGNUP";
     }
 
+    public String login(String json) {
+        HttpPost post = new HttpPost(API_URI+"/login");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN LOGIN";
+    }
+
 
 }

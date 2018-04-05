@@ -27,13 +27,14 @@ public class LogIn extends AppCompatActivity {
     EditText passEditText;
     TextView signUpTextView;
     public static LogIn logInActivity;
+    private Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         logInActivity = this;
-
+        server = Server.getInstance();
         logInButton = (Button) findViewById(R.id.logInButton);
         signUpTextView = (TextView) findViewById(R.id.signUpTextView);
 
@@ -68,7 +69,7 @@ public class LogIn extends AppCompatActivity {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    return getServerResponse(json);
+                    return server.login(json);
                 }
 
                 @Override
@@ -93,23 +94,6 @@ public class LogIn extends AppCompatActivity {
         else {
             Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private String getServerResponse(String json) {
-        HttpPost post = new HttpPost("https://integrappbackend.herokuapp.com/api/login");
-        try {
-            StringEntity entity = new StringEntity(json);
-            post.setEntity(entity);
-            post.setHeader("Content-type", "application/json");
-
-            DefaultHttpClient client = new DefaultHttpClient();
-            BasicResponseHandler handler = new BasicResponseHandler();
-            return client.execute(post, handler);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "ERROR IN LOGIN";
     }
 
     private String generateRequestRegister(String username, String password) throws JSONException {

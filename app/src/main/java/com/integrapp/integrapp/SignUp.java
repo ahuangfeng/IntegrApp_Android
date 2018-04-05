@@ -158,23 +158,6 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-//    private String register(String json) {
-//        HttpPost post = new HttpPost("https://integrappbackend.herokuapp.com/api/register");
-//        try {
-//            StringEntity entity = new StringEntity(json);
-//            post.setEntity(entity);
-//            post.setHeader("Content-type", "application/json");
-//
-//            DefaultHttpClient client = new DefaultHttpClient();
-//            BasicResponseHandler handler = new BasicResponseHandler();
-//            return client.execute(post, handler);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return "ERROR IN SIGNUP";
-//    }
-
     public boolean fieldsOK(String user, String pass, String cif) {
 
         nameEditText = (EditText) findViewById(R.id.nameEditText);
