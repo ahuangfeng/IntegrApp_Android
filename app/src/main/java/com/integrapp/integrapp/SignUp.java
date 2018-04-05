@@ -154,10 +154,9 @@ public class SignUp extends AppCompatActivity {
     private void checkSignUp(String s) {
         if (!s.equals("ERROR IN SIGNUP")) {
             Toast.makeText(getApplicationContext(), "Create successful", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(SignUp.this, Advert.class);
+            Intent i = new Intent(SignUp.this, LogIn.class);
             startActivity(i);
             finish();
-            LogIn.logInActivity.finish();
         }
         else {
             Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
@@ -206,7 +205,7 @@ public class SignUp extends AppCompatActivity {
             valid = false;
         }
 
-        if (itemSelectedSpinner.equals("association") && cif.isEmpty()) {
+        if (itemSelectedSpinner.equals("association") && checkInputText(cif, 9, 9)) {
             cifEditText.setError(getString(R.string.error_cif_empty));
             valid = false;
         }

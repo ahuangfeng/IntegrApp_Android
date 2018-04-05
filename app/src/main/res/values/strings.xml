@@ -39,7 +39,7 @@
     <string name="error_username_length">Username must contain between 3 and 20 characters.</string>
     <string name="error_username_chars">Valid characters: alphanumeric, _ and -</string>
     <string name="error_password_length">Password must contain between 6 and 128 characters.</string>
-    <string name="error_cif_empty">CIF must be filled.</string>
+    <string name="error_cif_empty">CIF must contain 9 characters.</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
