@@ -16,21 +16,21 @@ import org.json.JSONObject;
 
 public class LogIn extends AppCompatActivity {
 
-    Button logInButton;
-    EditText userEditText;
-    EditText passEditText;
-    TextView signUpTextView;
-    public LogIn logInActivity;
+//    private Button logInButton;
+    private EditText userEditText;
+    private EditText passEditText;
+//    private TextView signUpTextView;
+//    private LogIn logInActivity;
     private Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        logInActivity = this;
+//        logInActivity = this;
         server = Server.getInstance();
-        logInButton = findViewById(R.id.logInButton);
-        signUpTextView = findViewById(R.id.signUpTextView);
+        Button logInButton = findViewById(R.id.logInButton);
+        TextView signUpTextView = findViewById(R.id.signUpTextView);
 
         logInButton.setOnClickListener(new View.OnClickListener() {
 

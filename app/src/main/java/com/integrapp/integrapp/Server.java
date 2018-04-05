@@ -7,10 +7,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 
-/**
- * Created by alexhuang05 on 5/04/18.
- */
-
 class Server {
     private static final Server serverInstance = new Server();
     private static final String API_URI = "https://integrappbackend.herokuapp.com/api";
@@ -36,7 +32,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR IN SIGNUP";
+        return "ERROR IN SIGN UP";
     }
 
     public String login(String json) {

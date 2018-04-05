@@ -23,15 +23,15 @@ import java.util.regex.Pattern;
 
 public class SignUp extends AppCompatActivity {
 
-    Spinner spinner;
-    ArrayAdapter<CharSequence> adapter;
-    LinearLayout layoutCIF;
-    View viewCIF;
-    Button signUpButton;
-    EditText nameEditText;
-    EditText usernameEditText;
-    EditText passwordEditText;
-    EditText cifEditText;
+//    private Spinner spinner;
+//    private ArrayAdapter<CharSequence> adapter;
+    private LinearLayout layoutCIF;
+    private View viewCIF;
+//    private Button signUpButton;
+//    private EditText nameEditText;
+    private EditText usernameEditText;
+    private EditText passwordEditText;
+    private EditText cifEditText;
     private String itemSelectedSpinner;
     private Server server;
 
@@ -45,8 +45,8 @@ public class SignUp extends AppCompatActivity {
         this.server = Server.getInstance();
         pattern = Pattern.compile(USERNAME_PATTERN);
 
-        spinner = (Spinner) findViewById(R.id.spinnner);
-        adapter = ArrayAdapter.createFromResource(this, R.array.user_types, android.R.layout.simple_spinner_item);
+        Spinner spinner = findViewById(R.id.spinnner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.user_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -54,8 +54,8 @@ public class SignUp extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String elem = parent.getItemAtPosition(position).toString();
                 passFromSpinner(elem);
-                layoutCIF = (LinearLayout) findViewById(R.id.layoutCIF);
-                viewCIF = (View) findViewById(R.id.viewCIF);
+                layoutCIF = findViewById(R.id.layoutCIF);
+                viewCIF = findViewById(R.id.viewCIF);
 
                 if(Objects.equals(elem, "Association")) {
                     layoutCIF.setVisibility(View.VISIBLE);
@@ -73,15 +73,15 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-        signUpButton = (Button) findViewById(R.id.signUpButton);
+        Button signUpButton = findViewById(R.id.signUpButton);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                usernameEditText = (EditText) findViewById(R.id.usernameEditText);
-                passwordEditText = (EditText) findViewById(R.id.passwordEditText);
-                cifEditText = (EditText) findViewById(R.id.cifEditText);
+                usernameEditText = findViewById(R.id.usernameEditText);
+                passwordEditText = findViewById(R.id.passwordEditText);
+                cifEditText = findViewById(R.id.cifEditText);
 
                 String user = usernameEditText.getText().toString();
                 String pass = passwordEditText.getText().toString();
@@ -147,7 +147,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void checkSignUp(String s) {
-        if (!s.equals("ERROR IN SIGNUP")) {
+        if (!s.equals("ERROR IN SIGN UP")) {
             Toast.makeText(getApplicationContext(), "Create successful", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(SignUp.this, LogIn.class);
             startActivity(i);
@@ -158,9 +158,9 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    public boolean fieldsOK(String user, String pass, String cif) {
+    private boolean fieldsOK(String user, String pass, String cif) {
 
-        nameEditText = (EditText) findViewById(R.id.nameEditText);
+        EditText nameEditText = findViewById(R.id.nameEditText);
         boolean valid = true;
 
         if (nameEditText.getText().toString().isEmpty()) {
@@ -196,11 +196,11 @@ public class SignUp extends AppCompatActivity {
         return valid;
     }
 
-    public boolean checkInputText(String text, int min, int max) {
+    private boolean checkInputText(String text, int min, int max) {
         return text.isEmpty() || text.length() < min || text.length() > max;
     }
 
-    public boolean validateUsername(String user) {
+    private boolean validateUsername(String user) {
         Matcher matcher = pattern.matcher(user);
         return matcher.matches();
     }
