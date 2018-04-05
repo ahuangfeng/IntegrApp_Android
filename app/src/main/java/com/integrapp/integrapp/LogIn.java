@@ -37,8 +37,6 @@ public class LogIn extends AppCompatActivity {
         logInButton = (Button) findViewById(R.id.logInButton);
         signUpTextView = (TextView) findViewById(R.id.signUpTextView);
 
-        //HOLA
-        //HGSDJJK
         logInButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -48,7 +46,7 @@ public class LogIn extends AppCompatActivity {
 
                 String user = userEditText.getText().toString();
                 String pass = passEditText.getText().toString();
-                if(checkFields(user, pass) == "Access") {
+                if(fieldsOk(user, pass)) {
                     sendDataToServer(user, pass);
                 }
             }
@@ -122,23 +120,19 @@ public class LogIn extends AppCompatActivity {
         return oJSON.toString(1);
     }
 
-    private String checkFields(String user, String pass) {
+    private boolean fieldsOk(String user, String pass) {
 
-        if (user.isEmpty() && pass.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Username and password are needed", Toast.LENGTH_SHORT).show();
-            return "Not access";
+        boolean valid = true;
+        if (user.isEmpty()) {
+            userEditText.setError(getString(R.string.error_username_empty));
+            valid = false;
         }
-        else if (!user.isEmpty() && pass.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Password is needed", Toast.LENGTH_SHORT).show();
-            return "Not access";
+
+        if (pass.isEmpty()) {
+            passEditText.setError(getString(R.string.error_password_empty));
+            valid = false;
         }
-        else if (user.isEmpty() && !pass.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Username is needed", Toast.LENGTH_SHORT).show();
-            return "Not access";
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Access successful", Toast.LENGTH_SHORT).show();
-            return "Access";
-        }
+
+        return valid;
     }
 }
