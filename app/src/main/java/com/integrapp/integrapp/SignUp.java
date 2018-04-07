@@ -84,6 +84,7 @@ public class SignUp extends AppCompatActivity {
                 String cif = cifEditText.getText().toString();
 
                 if (fieldsOK(user, pass, cif)) {
+                    Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                     sendDataToServer(user, pass, cif);
                 }
             }
@@ -155,7 +156,6 @@ public class SignUp extends AppCompatActivity {
     }
 
     private boolean fieldsOK(String user, String pass, String cif) {
-
         EditText nameEditText = findViewById(R.id.nameEditText);
         boolean valid = true;
 

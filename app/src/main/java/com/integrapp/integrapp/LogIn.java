@@ -40,6 +40,7 @@ public class LogIn extends AppCompatActivity {
                 String user = userEditText.getText().toString();
                 String pass = passEditText.getText().toString();
                 if(fieldsOk(user, pass)) {
+                    Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                     sendDataToServer(user, pass);
                 }
             }
@@ -106,7 +107,6 @@ public class LogIn extends AppCompatActivity {
     }
 
     private boolean fieldsOk(String user, String pass) {
-        Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
         boolean valid = true;
         if (user.isEmpty()) {
             userEditText.setError(getString(R.string.error_username_empty));

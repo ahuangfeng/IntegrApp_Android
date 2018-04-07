@@ -86,7 +86,7 @@
             android:padding="16dp"
             android:text="@string/button_login_text"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/whiteLetter"
             android:textSize="18sp" />
 
         <TextView
