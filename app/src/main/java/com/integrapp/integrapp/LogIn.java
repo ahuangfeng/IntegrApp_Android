@@ -91,7 +91,7 @@ public class LogIn extends AppCompatActivity {
             String token = getTokenResponse(s);
             server.token = token;
             //System.out.println("TOKEN: " + token); //Per probar. Correcto!
-            editor.putString("user_token", token); //--> Here we will save the token "DONE"
+            editor.putString("user_token", token);//--> Here we will save the token "DONE"
             editor.apply();
 
             Intent i = new Intent(LogIn.this, Advert.class);

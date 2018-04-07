@@ -14,11 +14,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 public class Advert extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,12 +74,20 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
             protected void onPostExecute(String s) {
                 System.out.println("ADVERTS : " +s);
                 if (!s.equals("ERROR IN GET ALL ADVERTS")) {
-                    //Mostramos los anuncions en el formato que nos envia el servidor.
-                    //TODO: Mostrarlos para el usuario (diseño)
+                    //Anuncios en formato Json en el primer textView (advertTextView)
                     TextView advertTextView = findViewById(R.id.advertTextView);
                     advertTextView.setText(s);
+                    //TODO: Mostrarlos para el usuario (diseño)
+                    /*Cada posición de 'atributes' contiene un array de 5 posiciones por cada
+                    uno de los atributos añadidos en la funcion getAttributesAdvert, si se
+                    necesitan más atributos solo hay que agregarlos en dicha funcion de la misma
+                    manera que estos 5.*/
+                    ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s);
+                    //Anuncios en el formato que queremos listo para ponerlos en el diseño
+                    putAttributesInTextView(attributes);
                 }
                 else {
+                    //TODO: Hacer que el token se mantenga. Solo funciona con el remember pero no si matamos la aplicacion.
                     Toast.makeText(getApplicationContext(), "Your token has expired, please login", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Advert.this, LogIn.class);
                     startActivity(i);
@@ -81,6 +96,54 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
             }
         }.execute();
     }
+
+    /*En esta funcion se tienen que ir poniendo en la interfaz todos los anuncios
+    * con sus respectivos atributos de la forma que se decida.*/
+    private void putAttributesInTextView(ArrayList<ArrayList<String>> attributes) {
+        TextView advertTextView2 = findViewById(R.id.advertTextView2);
+        advertTextView2.setText("Atributos de los anuncios" + Html.fromHtml("<br />"));
+        for(int i  = 0;i < attributes.size(); ++i) {
+            advertTextView2.setText(advertTextView2.getText() + "Advert " + i + Html.fromHtml("<br />"));
+            for (int j = 0; j < attributes.get(i).size(); ++j) {
+                advertTextView2.setText(advertTextView2.getText() + attributes.get(i).get(j) + " / ");
+            }
+            advertTextView2.setText(advertTextView2.getText() + " " +Html.fromHtml("<br />"));
+        }
+    }
+
+    private ArrayList<ArrayList<String>> getAttributesAllAdverts(String stringJson) {
+        ArrayList<ArrayList<String>> attributes = new ArrayList<>();
+        try {
+            JSONArray myJsonjArray = new JSONArray(stringJson);
+            for (int i = 0; i < myJsonjArray.length(); ++i) {
+                System.out.println("json: " + i + " "+ myJsonjArray.getString(i));
+                ArrayList<String> attributesAdd = getAttributesAdvert(myJsonjArray, i); //atributos de un anuncio
+                attributes.add(attributesAdd);
+            }
+            return attributes;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private ArrayList<String> getAttributesAdvert(JSONArray myJsonjArray, int index) throws JSONException {
+        ArrayList<String> attributesAdd = new ArrayList<>();
+        String advertString = myJsonjArray.getString(index);
+        JSONObject myJsonjObject = new JSONObject(advertString);
+
+        /*Aqui puedes añadir otro atributo de la respuesta Json del servidor
+        si es necesario para mostrarlo en el diseño. De momento solo estan estos
+        5 atributos, (date, tittle, description, places, typeAdvert*/
+        attributesAdd.add(myJsonjObject.getString("date"));
+        attributesAdd.add(myJsonjObject.getString("title"));
+        attributesAdd.add(myJsonjObject.getString("description"));
+        attributesAdd.add(myJsonjObject.getString("places"));
+        attributesAdd.add(myJsonjObject.getString("typeAdvert"));
+
+        return attributesAdd;
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -145,4 +208,5 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
         return true;
     }
 }
+
 
