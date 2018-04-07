@@ -16,6 +16,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
+
 public class LogIn extends AppCompatActivity {
     
     private EditText userEditText;
@@ -86,7 +88,9 @@ public class LogIn extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isLogged", true);
             editor.putString("username", userEditText.getText().toString());
-            //editor.putString("user_token", token) --> Here we will save the token
+            String token = getTokenResponse(s);
+            //System.out.println("TOKEN: " + token); //Per probar
+            //editor.putString("user_token", token) --> Here we will save the token "DONE"
             editor.apply();
 
             Intent i = new Intent(LogIn.this, Advert.class);
@@ -96,6 +100,18 @@ public class LogIn extends AppCompatActivity {
         else {
             Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String getTokenResponse(String s) {
+        String myJsonString = s;
+        try {
+            JSONObject myJsonjObject = new JSONObject(myJsonString);
+            myJsonString = myJsonjObject.getString("token");
+            return myJsonString;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "ERROR TO GET TOKEN";
     }
 
     private String generateRequestRegister(String username, String password) throws JSONException {
