@@ -21,7 +21,7 @@ public class SplashIntegrApp extends AppCompatActivity {
                 SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 boolean isLogged = preferences.getBoolean("isLogged", false);
 
-                if (isLogged) i = new Intent(SplashIntegrApp.this, Advert.class);
+                if (isLogged) i = new Intent(SplashIntegrApp.this, MainActivity.class);
                 else i = new Intent(SplashIntegrApp.this, LogIn.class);
                 startActivity(i);
                 finish();

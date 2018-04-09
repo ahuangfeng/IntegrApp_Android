@@ -94,7 +94,7 @@ public class LogIn extends AppCompatActivity {
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
             editor.apply();
 
-            Intent i = new Intent(LogIn.this, Advert.class);
+            Intent i = new Intent(LogIn.this, MainActivity.class);
             startActivity(i);
             finish();
         }
