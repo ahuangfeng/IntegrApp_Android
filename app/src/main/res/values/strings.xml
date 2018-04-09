@@ -25,6 +25,13 @@
     <string name="cif">CIF</string>
     <string name="button_create">Register</string>
 
+    <!-- Strings of Profile activity-->
+    <string name="adds_profile">Ads</string>
+    <string name="likes_profile">Likes</string>
+    <string name="dislikes_profile">Dislikes</string>
+    <string name="typeUser_profile">Type_user</string>
+    <string name="email_profile">email</string>
+
     <!-- Strings of Menu-->
     <string name="menu_profile">Profile</string>
     <string name="menu_adverts">Adverts</string>
