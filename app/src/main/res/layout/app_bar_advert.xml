@@ -20,7 +20,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_advert" />
+    <include
+        android:id="@+id/includeContentAdvert"
+        layout="@layout/content_advert" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

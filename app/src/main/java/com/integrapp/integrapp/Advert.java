@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,11 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +47,7 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
         setSupportActionBar(toolbar);
 
         getAllAdverts(); //Show adverts
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,10 +84,10 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
             @Override
             protected void onPostExecute(String s) {
                 System.out.println("ADVERTS : " +s);
-                if (!s.equals("ERROR IN GET ALL ADVERTS")) {
+                if (!s.equals("ERROR IN GETTING ALL ADVERTS")) {
                     //Anuncios en formato Json en el primer textView (advertTextView)
-                    TextView advertTextView = findViewById(R.id.advertTextView);
-                    advertTextView.setText(s);
+                    //TextView advertTextView = findViewById(R.id.advertTextView);
+                    //advertTextView.setText(s);
                     //TODO: Mostrarlos para el usuario (diseño)
                     /*Cada posición de 'atributes' contiene un array de 5 posiciones por cada
                     uno de los atributos añadidos en la funcion getAttributesAdvert, si se
@@ -89,6 +96,34 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
                     ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s);
                     //Anuncios en el formato que queremos listo para ponerlos en el diseño
                     putAttributesInTextView(attributes);
+
+                    //Preparación del diseño
+
+                    LinearLayout contentAdvert = findViewById(R.id.includeContentAdvert);
+                    ListView list;
+                    list = contentAdvert.findViewById(R.id.sampleListView);
+                    ArrayAdapter<String> adapter;
+                    ArrayList<String> adverts = new ArrayList<String>();
+
+                    ////////////////////////////////////////////////////////////////
+                    String advert;
+                    for (int i=0; i< attributes.size(); ++i) {
+                        advert = "";
+
+                        advert += adverts.add(attributes.get(i).get(0));
+                        advert += adverts.add(attributes.get(i).get(1));
+                        advert += adverts.add(attributes.get(i).get(2));
+                        advert += adverts.add(attributes.get(i).get(3));
+                        advert += adverts.add(attributes.get(i).get(4));
+                        adverts.add(advert);
+                        advert = "";
+                    }
+
+                    adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, adverts);
+                    list.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    ////////////////////////////////////////////////////////////////
+
                 }
                 else {
                     //TODO: Hacer que el token se mantenga. Solo funciona con el remember pero no si matamos la aplicacion.
@@ -104,7 +139,7 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
     /*En esta funcion se tienen que ir poniendo en la interfaz todos los anuncios
     * con sus respectivos atributos de la forma que se decida.*/
     private void putAttributesInTextView(ArrayList<ArrayList<String>> attributes) {
-        TextView advertTextView2 = findViewById(R.id.advertTextView2);
+        /*TextView advertTextView2 = findViewById(R.id.advertTextView2);
         advertTextView2.setText("Atributos de los anuncios" + Html.fromHtml("<br />"));
         for(int i  = 0;i < attributes.size(); ++i) {
             advertTextView2.setText(advertTextView2.getText() + "Advert " + i + Html.fromHtml("<br />"));
@@ -112,7 +147,7 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
                 advertTextView2.setText(advertTextView2.getText() + attributes.get(i).get(j) + " / ");
             }
             advertTextView2.setText(advertTextView2.getText() + " " +Html.fromHtml("<br />"));
-        }
+        }*/
     }
 
     private ArrayList<ArrayList<String>> getAttributesAllAdverts(String stringJson) {
