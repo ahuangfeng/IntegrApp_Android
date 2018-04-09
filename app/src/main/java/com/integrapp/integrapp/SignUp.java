@@ -1,7 +1,9 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -32,6 +34,7 @@ public class SignUp extends AppCompatActivity {
 
     private static final String USERNAME_PATTERN = "^[A-z0-9_-]{3,20}$";
     private Pattern pattern;
+    private String element_spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class SignUp extends AppCompatActivity {
 
         Spinner spinner = findViewById(R.id.spinnner);
 
+
+
        // ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.planets_array, R.layout.spinner_item);
        // spinner.setAdapter(adapter);
 
@@ -51,11 +56,11 @@ public class SignUp extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String elem = parent.getItemAtPosition(position).toString();
-                passFromSpinner(elem);
+                element_spinner = parent.getItemAtPosition(position).toString();
+                passFromSpinner(element_spinner);
                 layoutCIF = findViewById(R.id.cifLayout);
 
-                if(Objects.equals(elem, "Association")) {
+                if(Objects.equals(element_spinner, "Association")) {
                     layoutCIF.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -84,11 +89,25 @@ public class SignUp extends AppCompatActivity {
                 String cif = cifEditText.getText().toString();
 
                 if (fieldsOK(user, pass, cif)) {
+                    saveFieldsToProfile(user);
                     Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                     sendDataToServer(user, pass, cif);
                 }
             }
         });
+    }
+
+    private void saveFieldsToProfile(String user) {
+        EditText fullNameEditText = findViewById(R.id.nameEditText);
+        String fullName = fullNameEditText.getText().toString();
+
+        SharedPreferences preferences = getSharedPreferences("fields_profile", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isRegistered", true);
+        editor.putString("username", user);
+        editor.putString("full_name", fullName);
+        editor.putString("type_user", element_spinner);
+        editor.apply();
     }
 
     private void passFromSpinner(String element) {

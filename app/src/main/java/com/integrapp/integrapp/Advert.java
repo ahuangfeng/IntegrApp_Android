@@ -223,6 +223,8 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
+            Intent i = new Intent(Advert.this, Profile.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_adverts) {
 
