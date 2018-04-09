@@ -93,6 +93,8 @@ public class LogIn extends AppCompatActivity {
             //System.out.println("TOKEN: " + token); //Per probar. Correcto!
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
             editor.apply();
+            
+            setPreferencesForProfile();
 
             Intent i = new Intent(LogIn.this, MainActivity.class);
             startActivity(i);
@@ -101,6 +103,12 @@ public class LogIn extends AppCompatActivity {
         else {
             Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /*TODO:
+    * hacer la peticion s servidor y guardar los atributos del usuario
+    * en las preferences para poder mostrarlas en el Perfil*/
+    private void setPreferencesForProfile() {
     }
 
     private String getTokenResponse(String s) {
