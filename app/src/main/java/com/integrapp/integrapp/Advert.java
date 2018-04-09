@@ -67,6 +67,10 @@ public class Advert extends AppCompatActivity implements NavigationView.OnNaviga
             @Override
             protected String doInBackground(Void... voids) {
                 System.out.println("TOKEN :" + server.token); //correcto
+                SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                String token = preferences.getString("user_token", "user_token");
+                server.token = token;
+                System.out.println("TOKEN PREFERENCES: " + token);
                 return server.getAllAdverts();
             }
 
