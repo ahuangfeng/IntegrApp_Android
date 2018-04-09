@@ -33,6 +33,8 @@ public class ProfileFragment extends Fragment {
          * en registrarse, por lo que el Perfil del usuario no seria el suyo.
          * TODO: Una vez hecho el login y obtenidos los datos del servidor entonces podemos hacer preferences*/
 
+        /*Es necesario que en back se guarde el nombre -full_name- (email i mobil no creo que sea necesario)*/
+
         TextView nameTextView = view.findViewById(R.id.nameTextView);
         nameTextView.setText(name);
 

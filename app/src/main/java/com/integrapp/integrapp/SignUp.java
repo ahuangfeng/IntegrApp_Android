@@ -45,8 +45,6 @@ public class SignUp extends AppCompatActivity {
 
         Spinner spinner = findViewById(R.id.spinnner);
 
-
-
        // ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.planets_array, R.layout.spinner_item);
        // spinner.setAdapter(adapter);
 
@@ -97,6 +95,9 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+    //TODO:
+    /*El contenido de esta funcion se tiene que hacer en el LogIn, una vez obtenidos
+    * los datos del usuario mediante las peticiones al servidor*/
     private void saveFieldsToProfile(String user) {
         EditText fullNameEditText = findViewById(R.id.nameEditText);
         String fullName = fullNameEditText.getText().toString();

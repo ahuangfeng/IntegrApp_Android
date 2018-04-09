@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -85,13 +87,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_adverts) {
             fragment = new AdvertsFragment();
         } else if (id == R.id.nav_forum) {
-
+            Toast.makeText(getApplicationContext(), "Function Forum not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_chats) {
-
+            Toast.makeText(getApplicationContext(), "Function Chats not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_settings) {
-
+            Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_aboutUs) {
-
+            Toast.makeText(getApplicationContext(), "Function About us not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_logOut) {
             SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
