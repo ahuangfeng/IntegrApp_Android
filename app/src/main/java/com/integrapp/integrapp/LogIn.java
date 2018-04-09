@@ -16,8 +16,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLOutput;
-
 public class LogIn extends AppCompatActivity {
     
     private EditText userEditText;
