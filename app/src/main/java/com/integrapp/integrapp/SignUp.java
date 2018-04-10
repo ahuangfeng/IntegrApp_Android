@@ -95,9 +95,7 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-    //TODO: DEPRECATED
-    /*El contenido de esta funcion se tiene que hacer en el LogIn, una vez obtenidos
-    * los datos del usuario mediante las peticiones al servidor*/
+    //TODO: DEPRECATED --->Borrar en su momento
     private void saveFieldsToProfile(String user) {
         EditText fullNameEditText = findViewById(R.id.nameEditText);
         String fullName = fullNameEditText.getText().toString();

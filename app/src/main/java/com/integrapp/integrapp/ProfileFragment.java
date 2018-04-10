@@ -19,8 +19,10 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_profile, container, false);
 
         /*TODO DEPRECATED:
-        Borrar esto luego, los datos para el perfil los obtenemos en el momento del login
-        * con la nueva petición getUserInfo del servidor.*/
+        BORRAR ESTO LUEGO, los datos para el perfil los obtenemos AQUI a partir del 'username'
+        * que está guardado en las preferences('login_data') con la nueva petición
+         * getUserInfo del servidor (cuando esté hecha).*/
+        /*Preferences('fields_profile' desaparecería tanto aquí, como en el signup (funcion saveFieldsToProfile))*/
         SharedPreferences preferences = getActivity().getSharedPreferences("fields_profile", Context.MODE_PRIVATE);
         String user = preferences.getString("username", "username");
         String name = preferences.getString("full_name", "full_name");
@@ -29,14 +31,6 @@ public class ProfileFragment extends Fragment {
         System.out.println("name " + name);
         System.out.println("name " + user);
         System.out.println("name " + type_user);
-
-        /*Es mejor si hacemos una petición al servidor para obtener los datos del usuario
-         * en lugar de pillarlos en el momento de hacer signup, ya que si hacemos log in con otro
-         * usuario, las preferences son incorrectas porque tienen los datos del ultimo usuario
-         * en registrarse, por lo que el Perfil del usuario no seria el suyo.
-         * TODO: Una vez hecho el login y obtenidos los datos del servidor entonces podemos hacer preferences*/
-
-        /*Es necesario que en back se guarde el nombre -full_name- (email i mobil no creo que sea necesario)*/
 
         TextView nameTextView = view.findViewById(R.id.nameTextView);
         nameTextView.setText(name);

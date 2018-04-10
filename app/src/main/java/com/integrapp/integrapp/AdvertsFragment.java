@@ -112,7 +112,7 @@ public class AdvertsFragment extends Fragment {
 
                 }
                 else {
-                    //TODO: Hacer que el token se mantenga. Solo funciona con el remember pero no si matamos la aplicacion.
+                    //TODO: Back quitará el time-out del token, por lo que esto se eliminaria en un futuro
                     Toast.makeText(getActivity(), "Your token has expired, please login", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getActivity(), LogIn.class);
                     startActivity(i);
