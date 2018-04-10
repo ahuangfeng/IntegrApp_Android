@@ -29,6 +29,7 @@ public class SignUp extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private EditText cifEditText;
+    private EditText nameEditText;
     private String itemSelectedSpinner;
     private Server server;
 
@@ -78,15 +79,17 @@ public class SignUp extends AppCompatActivity {
                 usernameEditText = findViewById(R.id.usernameEditText);
                 passwordEditText = findViewById(R.id.passwordEditText);
                 cifEditText = findViewById(R.id.cifEditText);
+                nameEditText = findViewById(R.id.nameEditText);
 
                 String user = usernameEditText.getText().toString();
                 String pass = passwordEditText.getText().toString();
                 String cif = cifEditText.getText().toString();
+                String name = nameEditText.getText().toString();
 
-                if (fieldsOK(user, pass, cif)) {
+                if (fieldsOK(user, pass, cif, name)) {
                     saveFieldsToProfile(user);
                     Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
-                    sendDataToServer(user, pass, cif);
+                    sendDataToServer(user, pass, cif, name);
                 }
             }
         });
@@ -123,25 +126,37 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    private String generateRequestRegister(String username, String password, String cif) throws JSONException {
+    private String generateRequestRegister(String username, String password, String cif, String name) throws JSONException {
 
         JSONObject oJSON = new JSONObject();
 
         oJSON.put("username", username);
         oJSON.put("password", password);
+        oJSON.put("name", name);
         oJSON.put("type", itemSelectedSpinner);
 
         if (itemSelectedSpinner.equals("association")) {
             oJSON.put("CIF", cif);
         }
+
+        EditText emailEditText = findViewById(R.id.emailEditText);
+        EditText phoneEditText = findViewById(R.id.phoneEditText);
+
+        if (!emailEditText.getText().toString().isEmpty()) {
+            oJSON.put("email", emailEditText.getText().toString());
+        }
+
+        if (!phoneEditText.getText().toString().isEmpty()) {
+            oJSON.put("phone", phoneEditText.getText().toString());
+        }
         return oJSON.toString(1);
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void sendDataToServer(String username, String password, String cif) {
+    private void sendDataToServer(String username, String password, String cif, String name) {
 
         try {
-            final String json = generateRequestRegister(username, password, cif);
+            final String json = generateRequestRegister(username, password, cif, name);
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
@@ -172,11 +187,10 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    private boolean fieldsOK(String user, String pass, String cif) {
-        EditText nameEditText = findViewById(R.id.nameEditText);
+    private boolean fieldsOK(String user, String pass, String cif, String name) {
         boolean valid = true;
 
-        if (nameEditText.getText().toString().isEmpty()) {
+        if (name.isEmpty()) {
             nameEditText.setError(getString(R.string.error_fullName_empty));
             valid = false;
         }
