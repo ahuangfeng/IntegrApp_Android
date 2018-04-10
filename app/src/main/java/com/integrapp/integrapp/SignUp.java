@@ -45,9 +45,6 @@ public class SignUp extends AppCompatActivity {
 
         Spinner spinner = findViewById(R.id.spinnner);
 
-       // ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.planets_array, R.layout.spinner_item);
-       // spinner.setAdapter(adapter);
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.user_types, R.layout.my_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -95,7 +92,7 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-    //TODO:
+    //TODO: DEPRECATED
     /*El contenido de esta funcion se tiene que hacer en el LogIn, una vez obtenidos
     * los datos del usuario mediante las peticiones al servidor*/
     private void saveFieldsToProfile(String user) {

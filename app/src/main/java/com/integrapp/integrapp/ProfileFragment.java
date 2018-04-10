@@ -18,6 +18,9 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_profile, container, false);
 
+        /*TODO DEPRECATED:
+        Borrar esto luego, los datos para el perfil los obtenemos en el momento del login
+        * con la nueva petición getUserInfo del servidor.*/
         SharedPreferences preferences = getActivity().getSharedPreferences("fields_profile", Context.MODE_PRIVATE);
         String user = preferences.getString("username", "username");
         String name = preferences.getString("full_name", "full_name");

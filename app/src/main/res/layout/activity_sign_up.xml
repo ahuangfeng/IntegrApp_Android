@@ -19,8 +19,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="65dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="0dp"
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/signUp_title"
@@ -37,7 +37,7 @@
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:inputType="text"
                 android:textColor="@color/whiteLetter" />
 
@@ -53,7 +53,7 @@
                 android:id="@+id/usernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:inputType="text"
                 android:textColor="@color/whiteLetter" />
 
@@ -62,7 +62,6 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:hint="@string/password"
             android:textColorHint="@color/whiteLetter"
             app:passwordToggleEnabled="true"
@@ -73,6 +72,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/whiteLetter" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/e_mail"
+            android:textColorHint="@color/whiteLetter">
+
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/whiteLetter" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone"
+            android:textColorHint="@color/whiteLetter">
+
+            <EditText
+                android:id="@+id/phoneEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:inputType="phone"
                 android:textColor="@color/whiteLetter" />
 
         </android.support.design.widget.TextInputLayout>
@@ -80,7 +112,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             android:paddingStart="4dp">
 
@@ -138,7 +170,7 @@
             style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/background_signup_button"
             android:clickable="true"
             android:focusable="true"
