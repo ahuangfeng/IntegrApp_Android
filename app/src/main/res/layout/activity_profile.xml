@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteLetter"
                 android:textStyle="bold"
+                android:textAlignment="center"
                 android:hint="@string/full_name"
                 android:textColorHint="@color/whiteLetter"
                 android:textSize="21sp"/>
@@ -39,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteLetter"
                 android:textStyle="bold"
+                android:textAlignment="center"
                 android:hint="@string/username"
                 android:textColorHint="@color/whiteLetter"
                 android:textSize="15sp"/>
@@ -164,13 +166,13 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_phone_android_black_24dp"/>
             <TextView
+                android:id="@+id/phoneTextView"
                 android:textStyle="bold"
-
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
-                android:text="+34 698 259 659"/>
+                android:text="@string/phone_profile"/>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"

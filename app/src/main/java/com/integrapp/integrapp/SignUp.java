@@ -87,26 +87,11 @@ public class SignUp extends AppCompatActivity {
                 String name = nameEditText.getText().toString();
 
                 if (fieldsOK(user, pass, cif, name)) {
-                    saveFieldsToProfile(user);
                     Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
                     sendDataToServer(user, pass, cif, name);
                 }
             }
         });
-    }
-
-    //TODO: DEPRECATED --->Borrar en su momento
-    private void saveFieldsToProfile(String user) {
-        EditText fullNameEditText = findViewById(R.id.nameEditText);
-        String fullName = fullNameEditText.getText().toString();
-
-        SharedPreferences preferences = getSharedPreferences("fields_profile", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("isRegistered", true);
-        editor.putString("username", user);
-        editor.putString("full_name", fullName);
-        editor.putString("type_user", element_spinner);
-        editor.apply();
     }
 
     private void passFromSpinner(String element) {
