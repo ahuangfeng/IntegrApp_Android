@@ -1,6 +1,7 @@
 package com.integrapp.integrapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
+            Intent i = new Intent(MainActivity.this, LogIn.class);
+            startActivity(i);
             finish();
         }
 
