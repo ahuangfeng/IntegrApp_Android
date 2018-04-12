@@ -67,6 +67,20 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR IN GET ALL ADVERTS";
+        return "ERROR IN GETTING ALL ADVERTS";
+    }
+
+    public String getUserInfoByUsername(String username) {
+        HttpGet get = new HttpGet(API_URI+"/user?username="+username);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GET INFO USER";
     }
 }

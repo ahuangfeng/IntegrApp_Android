@@ -42,6 +42,8 @@
     <string name="dislikes_profile">Dislikes</string>
     <string name="typeUser_profile">Type_user</string>
     <string name="email_profile">email</string>
+    <string name="phone_profile">phone_profile</string>
+
 
     <!-- Strings of Menu-->
     <string name="menu_profile">Profile</string>
