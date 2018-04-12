@@ -67,7 +67,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR IN GET ALL ADVERTS";
+        return "ERROR IN GETTING ALL ADVERTS";
     }
 
     public String getUserInfoByUsername(String username) {
