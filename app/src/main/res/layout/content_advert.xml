@@ -6,14 +6,15 @@
 
     <ListView
         android:id="@+id/sampleListView"
+        style="@style/Widget.AppCompat.Light.ListView.DropDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@android:color/background_light"
         android:cacheColorHint="@android:color/transparent"
         android:divider="#CCCCCC"
-        android:dividerHeight="1dp"
+        android:dividerHeight="4dp"
         android:paddingLeft="2dp"
-        android:paddingRight="2dp">
-    </ListView>
+        android:paddingRight="2dp"
+        android:scrollbars="vertical"></ListView>
 
 </LinearLayout>

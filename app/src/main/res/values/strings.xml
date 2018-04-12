@@ -16,6 +16,15 @@
     <string name="button_login_text">Log in</string>
     <string name="signUp_text">DON\'T HAVE AN ACCOUNT? SIGN UP</string>
 
+    <!-- Strings of Advert activity-->
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="places">Places</string>
+    <string name="type_advert">Type Advert</string>
+    <string name="state">State</string>
+    <string name="image_desc">Image of advert</string>
+
     <!-- Strings of SignUp activity-->
     <string name="signUp_title">Sign up</string>
     <string name="full_name">Full name</string>

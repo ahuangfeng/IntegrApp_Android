@@ -10,12 +10,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -68,6 +70,7 @@ public class AdvertsFragment extends Fragment {
                 return server.getAllAdverts();
             }
 
+            //funció a modificar --funcion asíncrona
             @Override
             protected void onPostExecute(String s) {
                 System.out.println("ADVERTS : " +s);
@@ -82,33 +85,29 @@ public class AdvertsFragment extends Fragment {
                     manera que estos 5.*/
                     ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s);
                     //Anuncios en el formato que queremos listo para ponerlos en el diseño
-                    putAttributesInTextView(attributes);
+                    //putAttributesInTextView(attributes);
 
                     //Preparación del diseño
 
                     LinearLayout contentAdvert = getView().findViewById(R.id.includeContentAdvert);
                     ListView list;
                     list = contentAdvert.findViewById(R.id.sampleListView);
-                    ArrayAdapter<String> adapter;
-                    ArrayList<String> adverts = new ArrayList<>();
+                    ArrayList<DataAdvert> adverts = new ArrayList<>();
+                    DataAdvert dataAdvert;
+                    /*Imagen fija*/
+                    int image = R.drawable.project_preview_large_2;
 
-                    ////////////////////////////////////////////////////////////////
-                    String advert;
                     for (int i=0; i< attributes.size(); ++i) {
-                        advert = "";
+                        dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
+                                attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
+                                attributes.get(i).get(5), image);
+                        adverts.add(dataAdvert);
 
-                        advert += adverts.add(attributes.get(i).get(0));
-                        advert += adverts.add(attributes.get(i).get(1));
-                        advert += adverts.add(attributes.get(i).get(2));
-                        advert += adverts.add(attributes.get(i).get(3));
-                        advert += adverts.add(attributes.get(i).get(4));
-                        adverts.add(advert);
                     }
 
-                    adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, adverts);
-                    list.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    ////////////////////////////////////////////////////////////////
+                    AdvertsAdapter myadapter = new AdvertsAdapter(getView().getContext(), adverts);
+                    list.setAdapter(myadapter);
+                    myadapter.notifyDataSetChanged();
 
                 }
                 else {
@@ -120,20 +119,6 @@ public class AdvertsFragment extends Fragment {
                 }
             }
         }.execute();
-    }
-
-    /*En esta funcion se tienen que ir poniendo en la interfaz todos los anuncios
-    * con sus respectivos atributos de la forma que se decida.*/
-    private void putAttributesInTextView(ArrayList<ArrayList<String>> attributes) {
-        /*TextView advertTextView2 = findViewById(R.id.advertTextView2);
-        advertTextView2.setText("Atributos de los anuncios" + Html.fromHtml("<br />"));
-        for(int i  = 0;i < attributes.size(); ++i) {
-            advertTextView2.setText(advertTextView2.getText() + "Advert " + i + Html.fromHtml("<br />"));
-            for (int j = 0; j < attributes.get(i).size(); ++j) {
-                advertTextView2.setText(advertTextView2.getText() + attributes.get(i).get(j) + " / ");
-            }
-            advertTextView2.setText(advertTextView2.getText() + " " +Html.fromHtml("<br />"));
-        }*/
     }
 
     private ArrayList<ArrayList<String>> getAttributesAllAdverts(String stringJson) {
@@ -165,6 +150,7 @@ public class AdvertsFragment extends Fragment {
         attributesAdd.add(myJsonjObject.getString("description"));
         attributesAdd.add(myJsonjObject.getString("places"));
         attributesAdd.add(myJsonjObject.getString("typeAdvert"));
+        attributesAdd.add(myJsonjObject.getString("state"));
 
         return attributesAdd;
     }
