@@ -44,6 +44,12 @@
     <string name="email_profile">email</string>
     <string name="phone_profile">phone_profile</string>
 
+    <!-- Strings of New Advert Activity-->
+    <string name="newAdvert_title">Title</string>
+    <string name="newAdvert_description">Description</string>
+    <string name="newAdvert_places">Places</string>
+    <string name="newAdvert_screenTitle">New Advert</string>
+    <string name="newAdvert_post">Post</string>
 
     <!-- Strings of Menu-->
     <string name="menu_profile">Profile</string>
@@ -68,6 +74,12 @@
         <item>Voluntary</item>
         <item>NewComer</item>
         <item>Association</item>
+    </string-array>
+
+    <!-- Array for the spinner of advert types-->
+    <string-array name="advert_types">
+        <item>LookFor</item>
+        <item>Offer</item>
     </string-array>
 
 </resources>

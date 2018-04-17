@@ -42,11 +42,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }*/
+
+    @Override
+    public void onBackPressed(){
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -109,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, fragment);
+            //ft.addToBackStack(null);
 
             ft.commit();
         }
