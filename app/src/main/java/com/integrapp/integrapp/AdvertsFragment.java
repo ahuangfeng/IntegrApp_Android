@@ -10,14 +10,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.text.Html;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -91,7 +91,7 @@ public class AdvertsFragment extends Fragment {
                     LinearLayout contentAdvert = getView().findViewById(R.id.includeContentAdvert);
                     ListView list;
                     list = contentAdvert.findViewById(R.id.sampleListView);
-                    ArrayList<DataAdvert> adverts = new ArrayList<>();
+                    final ArrayList<DataAdvert> adverts = new ArrayList<>();
                     DataAdvert dataAdvert;
                     /*Imagen fija*/
                     int image = R.drawable.project_preview_large_2;
@@ -107,6 +107,20 @@ public class AdvertsFragment extends Fragment {
                     AdvertsAdapter myadapter = new AdvertsAdapter(getView().getContext(), adverts);
                     list.setAdapter(myadapter);
                     myadapter.notifyDataSetChanged();
+
+
+                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            DataAdvert dataAdvert = adverts.get(position);
+                            Fragment fragment = new SingleAdvertFragment(dataAdvert);
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction ft = fragmentManager.beginTransaction();
+                            ft.replace(R.id.screen_area, fragment);
+                            ft.addToBackStack(null);
+                            ft.commit();
+                        }
+                    });
 
                 }
                 else {
