@@ -88,7 +88,6 @@ public class AdvertsFragment extends Fragment {
                     //putAttributesInTextView(attributes);
 
                     //Preparación del diseño
-
                     LinearLayout contentAdvert = getView().findViewById(R.id.includeContentAdvert);
                     ListView list;
                     list = contentAdvert.findViewById(R.id.sampleListView);
