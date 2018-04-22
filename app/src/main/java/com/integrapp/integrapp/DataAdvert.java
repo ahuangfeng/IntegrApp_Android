@@ -7,15 +7,17 @@ public class DataAdvert {
     private String places;
     private String type;
     private String state;
+    private String createdAt;
     private int image;
 
-    public DataAdvert(String date, String title, String description, String places, String type, String state, int image) {
+    public DataAdvert(String date, String title, String description, String places, String type, String state, String createdAt, int image) {
         this.date = date;
         this.title = title;
         this.description = description;
         this.places = places;
         this.type = type;
         this.state = state;
+        this.createdAt = createdAt;
         this.image = image;
     }
 
@@ -65,6 +67,14 @@ public class DataAdvert {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public int getImage() {

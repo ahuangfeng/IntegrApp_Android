@@ -99,7 +99,7 @@ public class AdvertsFragment extends Fragment {
                     for (int i=0; i< attributes.size(); ++i) {
                         dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
                                 attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
-                                attributes.get(i).get(5), image);
+                                attributes.get(i).get(5), attributes.get(i).get(6), image);
                         adverts.add(dataAdvert);
 
                     }
@@ -164,6 +164,7 @@ public class AdvertsFragment extends Fragment {
         attributesAdd.add(myJsonjObject.getString("places"));
         attributesAdd.add(myJsonjObject.getString("typeAdvert"));
         attributesAdd.add(myJsonjObject.getString("state"));
+        attributesAdd.add(myJsonjObject.getString("createdAt"));
 
         return attributesAdd;
     }
