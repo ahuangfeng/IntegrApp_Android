@@ -1,8 +1,15 @@
 package com.integrapp.integrapp;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +19,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class NewAdvertFragment extends Fragment {
 
@@ -63,8 +80,8 @@ public class NewAdvertFragment extends Fragment {
                 String description = descriptionEditText.getText().toString();
                 String places = placesEditText.getText().toString();
                 if(fieldsOk(title, description, places)) {
-                    Toast.makeText(getActivity(), "Connecting...", Toast.LENGTH_SHORT).show();
-                    //sendDataToServer(user, pass);
+                    Toast.makeText(getActivity(), "Creating advert...", Toast.LENGTH_SHORT).show();
+                    sendDataToServer(title, description, places);
                 }
             }
         });
@@ -72,11 +89,49 @@ public class NewAdvertFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private void sendDataToServer(String title, String description, String places) {
+
+        try {
+            final String json = generateRequestNewAdvert(title, description, places);
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.setNewAdvert(json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    System.out.println("SERVER RESPONSE: " + s);
+                    checkNewAdvert(s);
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkNewAdvert(String s) {
+        if (!s.equals("ERROR IN CREATING ADVERT")) {
+            Toast.makeText(getActivity(), "Advert created successful", Toast.LENGTH_SHORT).show();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.screen_area, new NewAdvertFragment());
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+        else {
+            Toast.makeText(getActivity(), "ERROR IN CREATING ADVERT", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void passFromSpinner(String element) {
         switch (element) {
             case "LookFor":
                 itemSelectedSpinner = "lookFor";
-                System.out.printf("holaaaaaaaaaa: " + itemSelectedSpinner);
                 break;
             case "Offer":
                 itemSelectedSpinner = "offer";
@@ -103,6 +158,22 @@ public class NewAdvertFragment extends Fragment {
         }
 
         return valid;
+    }
+
+    private String generateRequestNewAdvert(String title, String description, String places) throws JSONException {
+        JSONObject oJSON = new JSONObject();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        currentDate.setTimeZone(TimeZone.getTimeZone("CET"));
+        String date = currentDate.format(new Date());
+
+        oJSON.put("date", date);
+        oJSON.put("title", title);
+        oJSON.put("description", description);
+        oJSON.put("places", places);
+        oJSON.put("type", itemSelectedSpinner);
+
+        return oJSON.toString(1);
     }
 
     @Override
