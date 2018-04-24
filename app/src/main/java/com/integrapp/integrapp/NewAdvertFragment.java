@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,21 +20,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.TimeZone;
 
 public class NewAdvertFragment extends Fragment {
 
@@ -45,7 +34,6 @@ public class NewAdvertFragment extends Fragment {
     private EditText timeText;
     private EditText dateText;
     private String itemSelectedSpinner;
-    private String element_spinner;
     private Server server;
 
     @Nullable
@@ -69,9 +57,16 @@ public class NewAdvertFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                element_spinner = parent.getItemAtPosition(position).toString();
-                passFromSpinner(element_spinner);
-            }
+                switch (position) {
+                    case 0:
+                        itemSelectedSpinner = "lookFor";
+                        break;
+                    case 1:
+                        itemSelectedSpinner = "offer";
+                        break;
+                    default:
+                }
+             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -92,7 +87,7 @@ public class NewAdvertFragment extends Fragment {
                 String date = dateText.getText().toString();
                 String time = timeText.getText().toString();
                 if(fieldsOk(title, description, places, date, time)) {
-                    Toast.makeText(getActivity(), "Creating advert...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.newAdvert_creating), Toast.LENGTH_SHORT).show();
                     sendDataToServer(title, description, places);
                 }
             }
@@ -116,10 +111,10 @@ public class NewAdvertFragment extends Fragment {
                             month = "0" + month;
                         if (selectedDay < 10)
                             day = "0" + day;
-                        dateText.setText(selectedYear + "-" + month + "-" + day);
+                        String concatenatedDate = selectedYear + "-" + month + "-" + day;
+                        dateText.setText(concatenatedDate);
                     }
                 }, cYear, cMonth, cDay);
-                DatePicker.setTitle("Select Date");
                 DatePicker.show();
             }
         });
@@ -129,8 +124,8 @@ public class NewAdvertFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar currentTime = Calendar.getInstance();
-                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = currentTime.get(Calendar.MINUTE);
+                int cHour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int cMinute = currentTime.get(Calendar.MINUTE);
                 TimePickerDialog TimePicker;
                 TimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -141,10 +136,10 @@ public class NewAdvertFragment extends Fragment {
                             hour = "0" + hour;
                         if (selectedMinute < 10)
                             minute = "0" + minute;
-                        timeText.setText(hour + ":" + minute);
+                        String concatenatedTime = hour + minute;
+                        timeText.setText(concatenatedTime);
                     }
-                }, hour, minute, true);//Yes 24 hour time
-                TimePicker.setTitle("Select Time");
+                }, cHour, cMinute, true);
                 TimePicker.show();
 
             }
@@ -179,8 +174,8 @@ public class NewAdvertFragment extends Fragment {
     }
 
     private void checkNewAdvert(String s) {
-        if (!s.equals("ERROR IN CREATING ADVERT")) {
-            Toast.makeText(getActivity(), "Advert created successful", Toast.LENGTH_SHORT).show();
+        if (!s.equals("ERROR CREATING ADVERT")) {
+            Toast.makeText(getActivity(), getString(R.string.newAdvert_success), Toast.LENGTH_SHORT).show();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, new AdvertsFragment());
@@ -188,19 +183,7 @@ public class NewAdvertFragment extends Fragment {
             ft.commit();
         }
         else {
-            Toast.makeText(getActivity(), "ERROR IN CREATING ADVERT", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void passFromSpinner(String element) {
-        switch (element) {
-            case "LookFor":
-                itemSelectedSpinner = "lookFor";
-                break;
-            case "Offer":
-                itemSelectedSpinner = "offer";
-                break;
-            default:
+            Toast.makeText(getActivity(), getString(R.string.newAdvert_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -222,12 +205,12 @@ public class NewAdvertFragment extends Fragment {
         }
 
         if (date.isEmpty()) {
-            dateText.setError("Select a date");
+            dateText.setError(getString(R.string.error_date_not_selected));
             valid = false;
         }
 
         if (time.isEmpty()) {
-            timeText.setError("Select time");
+            timeText.setError(getString(R.string.error_time_not_selected));
             valid = false;
         }
 

@@ -1,13 +1,11 @@
 package com.integrapp.integrapp;
 
 import org.apache.http.client.methods.HttpGet;
-    import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.io.IOException;
-
 
 class Server {
     private static final Server serverInstance = new Server();
@@ -99,6 +97,6 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR IN CREATING ADVERT";
+        return "ERROR CREATING ADVERT";
     }
 }

@@ -1,9 +1,7 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -15,11 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,11 +26,11 @@ public class SignUp extends AppCompatActivity {
     private EditText cifEditText;
     private EditText nameEditText;
     private String itemSelectedSpinner;
+    private int itemSelectedSpinnerPos;
     private Server server;
 
     private static final String USERNAME_PATTERN = "^[A-z0-9_-]{3,20}$";
     private Pattern pattern;
-    private String element_spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +45,25 @@ public class SignUp extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                element_spinner = parent.getItemAtPosition(position).toString();
-                passFromSpinner(element_spinner);
+                itemSelectedSpinnerPos = position;
+                switch (position) {
+                    case 0:
+                        itemSelectedSpinner = "voluntary";
+                        break;
+                    case 1:
+                        itemSelectedSpinner = "newComer";
+                        break;
+                    case 2:
+                        itemSelectedSpinner = "association";
+                        break;
+                    default:
+                }
                 layoutCIF = findViewById(R.id.cifLayout);
 
-                if(Objects.equals(element_spinner, "Association")) {
+                if( position == 2) {
                     layoutCIF.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -87,26 +94,11 @@ public class SignUp extends AppCompatActivity {
                 String name = nameEditText.getText().toString();
 
                 if (fieldsOK(user, pass, cif, name)) {
-                    Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.connecting), Toast.LENGTH_SHORT).show();
                     sendDataToServer(user, pass, cif, name);
                 }
             }
         });
-    }
-
-    private void passFromSpinner(String element) {
-        switch (element) {
-            case "Association":
-                itemSelectedSpinner = "association";
-                break;
-            case "Voluntary":
-                itemSelectedSpinner = "voluntary";
-                break;
-            case "NewComer":
-                itemSelectedSpinner = "newComer";
-                break;
-            default:
-        }
     }
 
     private String generateRequestRegister(String username, String password, String cif, String name) throws JSONException {
@@ -160,13 +152,13 @@ public class SignUp extends AppCompatActivity {
 
     private void checkSignUp(String s) {
         if (!s.equals("ERROR IN SIGN UP")) {
-            Toast.makeText(getApplicationContext(), "Create successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.signUp_success), Toast.LENGTH_SHORT).show();
             Intent i = new Intent(SignUp.this, LogIn.class);
             startActivity(i);
             finish();
         }
         else {
-            Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.user_exists), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -193,7 +185,7 @@ public class SignUp extends AppCompatActivity {
             valid = false;
         }
 
-        if (itemSelectedSpinner.equals("association") && checkInputText(cif, 9, 9)) {
+        if (itemSelectedSpinnerPos == 2 && checkInputText(cif, 9, 9)) {
             cifEditText.setError(getString(R.string.error_cif_empty));
             valid = false;
         }
