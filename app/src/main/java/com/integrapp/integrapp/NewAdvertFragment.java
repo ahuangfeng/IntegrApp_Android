@@ -1,6 +1,8 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +18,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +42,8 @@ public class NewAdvertFragment extends Fragment {
     private EditText titleEditText;
     private EditText descriptionEditText;
     private EditText placesEditText;
+    private EditText timeText;
+    private EditText dateText;
     private String itemSelectedSpinner;
     private String element_spinner;
     private Server server;
@@ -49,6 +56,10 @@ public class NewAdvertFragment extends Fragment {
 
         this.server = Server.getInstance();
         Button postButton = view.findViewById(R.id.newAdvertPostButton);
+        Button setDate = view.findViewById(R.id.setDateButton);
+        Button setTime = view.findViewById(R.id.setTimeButton);
+        dateText = view.findViewById(R.id.dateText);
+        timeText = view.findViewById(R.id.timeText);
 
         Spinner spinner = view.findViewById(R.id.newAdvertSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.advert_types, R.layout.my_spinner_advert);
@@ -69,7 +80,6 @@ public class NewAdvertFragment extends Fragment {
         });
 
         postButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 titleEditText = view.findViewById(R.id.newAdvertTitleEditText);
@@ -79,10 +89,64 @@ public class NewAdvertFragment extends Fragment {
                 String title = titleEditText.getText().toString();
                 String description = descriptionEditText.getText().toString();
                 String places = placesEditText.getText().toString();
-                if(fieldsOk(title, description, places)) {
+                String date = dateText.getText().toString();
+                String time = timeText.getText().toString();
+                if(fieldsOk(title, description, places, date, time)) {
                     Toast.makeText(getActivity(), "Creating advert...", Toast.LENGTH_SHORT).show();
                     sendDataToServer(title, description, places);
                 }
+            }
+        });
+
+        setDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentDate = Calendar.getInstance();
+                int cYear = currentDate.get(Calendar.YEAR);
+                int cMonth = currentDate.get(Calendar.MONTH);
+                int cDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog DatePicker;
+                DatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        selectedMonth = selectedMonth + 1;
+                        String month = String.valueOf(selectedMonth);
+                        String day = String.valueOf(selectedDay);
+                        if (selectedMonth < 10)
+                            month = "0" + month;
+                        if (selectedDay < 10)
+                            day = "0" + day;
+                        dateText.setText(selectedYear + "-" + month + "-" + day);
+                    }
+                }, cYear, cMonth, cDay);
+                DatePicker.setTitle("Select Date");
+                DatePicker.show();
+            }
+        });
+
+        setTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = currentTime.get(Calendar.MINUTE);
+                TimePickerDialog TimePicker;
+                TimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String hour = String.valueOf(selectedHour);
+                        String minute = String.valueOf(selectedMinute);
+                        if (selectedHour < 10)
+                            hour = "0" + hour;
+                        if (selectedMinute < 10)
+                            minute = "0" + minute;
+                        timeText.setText(hour + ":" + minute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                TimePicker.setTitle("Select Time");
+                TimePicker.show();
+
             }
         });
 
@@ -119,7 +183,7 @@ public class NewAdvertFragment extends Fragment {
             Toast.makeText(getActivity(), "Advert created successful", Toast.LENGTH_SHORT).show();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.screen_area, new NewAdvertFragment());
+            ft.replace(R.id.screen_area, new AdvertsFragment());
             ft.addToBackStack(null);
             ft.commit();
         }
@@ -140,7 +204,7 @@ public class NewAdvertFragment extends Fragment {
         }
     }
 
-    private boolean fieldsOk(String title, String description, String places) {
+    private boolean fieldsOk(String title, String description, String places, String date, String time) {
         boolean valid = true;
         if (title.isEmpty()) {
             titleEditText.setError(getString(R.string.error_title_empty));
@@ -157,21 +221,29 @@ public class NewAdvertFragment extends Fragment {
             valid = false;
         }
 
+        if (date.isEmpty()) {
+            dateText.setError("Select a date");
+            valid = false;
+        }
+
+        if (time.isEmpty()) {
+            timeText.setError("Select time");
+            valid = false;
+        }
+
         return valid;
     }
 
     private String generateRequestNewAdvert(String title, String description, String places) throws JSONException {
         JSONObject oJSON = new JSONObject();
 
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        currentDate.setTimeZone(TimeZone.getTimeZone("CET"));
-        String date = currentDate.format(new Date());
+        String expectedDate = dateText.getText().toString() + " " + timeText.getText().toString() + ":00";
 
-        oJSON.put("date", date);
+        oJSON.put("date", expectedDate);
         oJSON.put("title", title);
         oJSON.put("description", description);
         oJSON.put("places", places);
-        oJSON.put("type", itemSelectedSpinner);
+        oJSON.put("typeAdvert", itemSelectedSpinner);
 
         return oJSON.toString(1);
     }
