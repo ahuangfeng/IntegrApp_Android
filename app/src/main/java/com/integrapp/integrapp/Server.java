@@ -83,4 +83,9 @@ class Server {
         }
         return "ERROR IN GET INFO USER";
     }
+
+    public String getForumDocu() {
+        HttpGet get = new HttpGet(API_URI+"/fullForum/documentation");
+        return null;
+    }
 }

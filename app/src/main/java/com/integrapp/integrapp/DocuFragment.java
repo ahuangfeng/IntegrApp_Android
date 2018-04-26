@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 public class DocuFragment extends Fragment {
 
+    private Server server;
+
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);

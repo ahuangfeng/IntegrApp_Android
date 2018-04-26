@@ -3,25 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Dummy content. -->
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-        <TextView android:id="@android:id/text1"
-            style="?android:textAppearanceLarge"
-            android:textStyle="bold"
+        <ListView
+            android:id="@+id/sampleListView"
+            style="@style/Widget.AppCompat.Light.ListView.DropDown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text='HOLA!!' />
-
-        <TextView style="?android:textAppearanceMedium"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ADEU!!" />
+            android:background="@android:color/background_light"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="#CCCCCC"
+            android:dividerHeight="4dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:scrollbars="vertical"></ListView>
 
     </LinearLayout>
 
