@@ -87,6 +87,15 @@
     <string name="error_date_not_selected">Select a date</string>
     <string name="error_time_not_selected">Select time</string>
 
+    <!-- Strings of SingleAdvert fragment-->
+    <string name="username_advert">Username</string>
+    <string name="profileButton_advert">Profile</string>
+    <string name="tittle_advert">Ad tittle</string>
+    <string name="description_advert">Description of the advert</string>
+    <string name="places_advert">Places</string>
+    <string name="expectedDate_advert">Expected date</string>
+    <string name="wantItButton_advert">I want it !</string>
+
     <!-- Server errors-->
 
     <!-- Array for the spinner of user types-->
@@ -95,10 +104,6 @@
         <item>NewComer</item>
         <item>Association</item>
     </string-array>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
   
     <!-- Array for the spinner of advert types-->
       <string-array name="advert_types">

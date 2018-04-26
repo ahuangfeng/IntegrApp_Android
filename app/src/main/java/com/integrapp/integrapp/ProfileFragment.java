@@ -99,48 +99,26 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void deleteUserById(final String id) {
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... voids) {
-                    return server.deleteUserById(id);
-                }
-
-                @Override
-                protected void onPostExecute(String s) {
-                    if (!s.equals("ERROR IN DELETING USER")) {
-                        System.out.println("DELETE USER SUCCESSFULL RESPONSE: " +s);
-                        Toast.makeText(getActivity().getApplicationContext(), "User deleted successfully", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
-                        startActivity(i);
-                        getActivity().finish();
-                    }
-                    else {
-                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }.execute();
-        }
-
-    private void getInfoUser(String s) {
-        try {
-            JSONObject myJsonjObject = new JSONObject(s);
-            String username = myJsonjObject.getString("username");
-            String type = myJsonjObject.getString("type");
-            String name = myJsonjObject.getString("name");
-            String email = "No e-mail";
-            String phone = "No phone";
-            if(myJsonjObject.has("email")) {
-                email = myJsonjObject.getString("email");
-            }
-            if(myJsonjObject.has("phone")) {
-                phone = myJsonjObject.getString("phone");
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.deleteUserById(id);
             }
 
-            setAttributes(username, type, name, email, phone);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN DELETING USER")) {
+                    System.out.println("DELETE USER SUCCESSFULL RESPONSE: " +s);
+                    Toast.makeText(getActivity().getApplicationContext(), "User deleted successfully", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
+                    startActivity(i);
+                    getActivity().finish();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 
     private void setAttributes(String name, String username, String type, String email, String phone) {

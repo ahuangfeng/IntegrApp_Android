@@ -89,7 +89,7 @@ public class SingleAdvertFragment extends Fragment {
 
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.screen_area, fragment);
-                //ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.commit();
 
             }
