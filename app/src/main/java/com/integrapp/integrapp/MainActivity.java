@@ -119,8 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, fragment);
-            //ft.addToBackStack(null);
-
+            ft.addToBackStack(null);
             ft.commit();
         }
 
