@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,6 +12,10 @@
     android:paddingRight="18dp"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.integrapp.integrapp.SignUp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -181,5 +187,5 @@
             android:textSize="18sp" />
 
     </LinearLayout>
-
+    </ScrollView>
 </RelativeLayout>
