@@ -57,15 +57,7 @@ public class NewAdvertFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        itemSelectedSpinner = "lookFor";
-                        break;
-                    case 1:
-                        itemSelectedSpinner = "offer";
-                        break;
-                    default:
-                }
+                passFromSpinner(position);
              }
 
             @Override
@@ -136,7 +128,7 @@ public class NewAdvertFragment extends Fragment {
                             hour = "0" + hour;
                         if (selectedMinute < 10)
                             minute = "0" + minute;
-                        String concatenatedTime = hour + minute;
+                        String concatenatedTime = hour + ":" + minute;
                         timeText.setText(concatenatedTime);
                     }
                 }, cHour, cMinute, true);
@@ -170,6 +162,18 @@ public class NewAdvertFragment extends Fragment {
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void passFromSpinner(int position) {
+        switch (position) {
+            case 0:
+                itemSelectedSpinner = "lookFor";
+                break;
+            case 1:
+                itemSelectedSpinner = "offer";
+                break;
+            default:
         }
     }
 

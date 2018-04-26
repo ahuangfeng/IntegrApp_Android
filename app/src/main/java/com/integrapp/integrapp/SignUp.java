@@ -26,7 +26,6 @@ public class SignUp extends AppCompatActivity {
     private EditText cifEditText;
     private EditText nameEditText;
     private String itemSelectedSpinner;
-    private int itemSelectedSpinnerPos;
     private Server server;
 
     private static final String USERNAME_PATTERN = "^[A-z0-9_-]{3,20}$";
@@ -48,22 +47,11 @@ public class SignUp extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                itemSelectedSpinnerPos = position;
-                switch (position) {
-                    case 0:
-                        itemSelectedSpinner = "voluntary";
-                        break;
-                    case 1:
-                        itemSelectedSpinner = "newComer";
-                        break;
-                    case 2:
-                        itemSelectedSpinner = "association";
-                        break;
-                    default:
-                }
+
+                passFromSpinner(position);
                 layoutCIF = findViewById(R.id.cifLayout);
 
-                if( position == 2) {
+                if(position == 2) {
                     layoutCIF.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -99,6 +87,21 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void passFromSpinner(int position) {
+        switch (position) {
+            case 0:
+                itemSelectedSpinner = "voluntary";
+                break;
+            case 1:
+                itemSelectedSpinner = "newComer";
+                break;
+            case 2:
+                itemSelectedSpinner = "association";
+                break;
+            default:
+        }
     }
 
     private String generateRequestRegister(String username, String password, String cif, String name) throws JSONException {
@@ -185,7 +188,7 @@ public class SignUp extends AppCompatActivity {
             valid = false;
         }
 
-        if (itemSelectedSpinnerPos == 2 && checkInputText(cif, 9, 9)) {
+        if (itemSelectedSpinner.equals("association") && checkInputText(cif, 9, 9)) {
             cifEditText.setError(getString(R.string.error_cif_empty));
             valid = false;
         }
