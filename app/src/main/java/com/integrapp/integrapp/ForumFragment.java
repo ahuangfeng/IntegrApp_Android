@@ -44,32 +44,8 @@ public class ForumFragment extends Fragment {
         tabs.setupWithViewPager(viewPager);
 
         return view;
-        /*tabLayout.addTab(tabLayout.newTab().setText("Documentation"));
-        tabLayout.addTab(tabLayout.newTab().setText("Languages"));
-        tabLayout.addTab(tabLayout.newTab().setText("Entretaintment"));
-        tabLayout.addTab(tabLayout.newTab().setText("Others"));*/
-
-        /*lang = new LangFragment();
-        entre = new EntrFragment();
-        other = new OtherFragment();
-
-        pagerAdapter = new FragmentAdapter(getChildFragmentManager());
-
-        viewPager.setAdapter(pagerAdapter);*/
 
     }
-
-    /*@Override
-    public void onTabSelected(TabLayout.Tab tab) {
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-    }*/
 
     //ADD FRAGMENTS TO TABS
     private void setupViewPager (ViewPager viewPager) {
