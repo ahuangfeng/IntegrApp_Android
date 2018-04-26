@@ -36,6 +36,7 @@ public class ProfileFragment extends Fragment {
     private TextView emailTextView;
     private TextView phoneTextView;
     private String typeProfile;
+    private Server server;
 
     public ProfileFragment() {
     }
@@ -52,6 +53,7 @@ public class ProfileFragment extends Fragment {
 
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.activity_profile, container, false);
+        this.server = Server.getInstance();
 
         nameTextView = view.findViewById(R.id.nameTextView);
         usernameTextView = view.findViewById(R.id.usernameTextView);
