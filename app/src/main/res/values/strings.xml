@@ -38,6 +38,9 @@
     <string name="type">Type</string>
     <string name="cif">CIF</string>
     <string name="button_create">Register</string>
+    <string name="signUp_success">User created successfully</string>
+    <string name="user_exists">User already exists</string>
+    <string name="connecting">Connecting&#8230;</string>
 
     <!-- Strings of Profile activity-->
     <string name="adds_profile">Ads</string>
@@ -47,6 +50,19 @@
     <string name="email_profile">email</string>
     <string name="phone_profile">phone_profile</string>
 
+    <!-- Strings of New Advert Activity-->
+    <string name="newAdvert_title">Title</string>
+    <string name="newAdvert_description">Description</string>
+    <string name="newAdvert_places">Places</string>
+    <string name="newAdvert_screenTitle">New Advert</string>
+    <string name="newAdvert_post">Post</string>
+    <string name="newAdvert_success">Advert created successfully</string>
+    <string name="newAdvert_error">Error creating advert</string>
+    <string name="newAdvert_creating">Creating advert&#8230;</string>
+    <string name="newAdvert_expectedDate">Expected Date</string>
+    <string name="newAdvert_expectedTime">Expected Time</string>
+    <string name="newAdvert_buttonDate">Date</string>
+    <string name="newAdvert_buttonTime">Time</string>
 
     <!-- Strings of Menu-->
     <string name="menu_profile">Profile</string>
@@ -65,12 +81,25 @@
     <string name="error_cif_empty">CIF must contain 9 characters</string>
     <string name="error_username_empty">Username must be filled</string>
     <string name="error_password_empty">Password must be filled</string>
+    <string name="error_title_empty">Title must be filled</string>
+    <string name="error_description_empty">Description must be filled</string>
+    <string name="error_places_empty">Places must be filled</string>
+    <string name="error_date_not_selected">Select a date</string>
+    <string name="error_time_not_selected">Select time</string>
+
+    <!-- Server errors-->
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
         <item>Voluntary</item>
         <item>NewComer</item>
         <item>Association</item>
+    </string-array>
+
+    <!-- Array for the spinner of advert types-->
+    <string-array name="advert_types">
+        <item>LookFor</item>
+        <item>Offer</item>
     </string-array>
 
 </resources>

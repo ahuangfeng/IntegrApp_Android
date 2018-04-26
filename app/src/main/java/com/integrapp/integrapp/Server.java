@@ -2,13 +2,11 @@ package com.integrapp.integrapp;
 
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
-    import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.io.IOException;
-
 
 class Server {
     private static final Server serverInstance = new Server();
@@ -85,6 +83,24 @@ class Server {
         return "ERROR IN GET INFO USER";
     }
 
+    public String setNewAdvert(String json) {
+        HttpPost post = new HttpPost(API_URI+"/advert");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+        
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR CREATING ADVERT";
+    }
+
     public String deleteUserById(String id) {
         HttpDelete delete = new HttpDelete(API_URI+"/user/"+id);
         try {
@@ -98,5 +114,4 @@ class Server {
         }
         return "ERROR IN DELETING USER";
     }
-
 }
