@@ -7,9 +7,10 @@ public class DataAdvert {
     private String places;
     private String type;
     private String state;
+    private String userId;
     private int image;
 
-    public DataAdvert(String date, String title, String description, String places, String type, String state, int image) {
+    public DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image) {
         this.date = date;
         this.title = title;
         this.description = description;
@@ -17,6 +18,7 @@ public class DataAdvert {
         this.type = type;
         this.state = state;
         this.image = image;
+        this.userId = userId;
     }
 
     public String getDate() {
@@ -65,6 +67,14 @@ public class DataAdvert {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getImage() {

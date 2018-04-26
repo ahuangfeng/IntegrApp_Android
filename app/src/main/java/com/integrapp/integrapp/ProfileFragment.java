@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
@@ -34,7 +35,15 @@ public class ProfileFragment extends Fragment {
     private TextView typeUserTextView;
     private TextView emailTextView;
     private TextView phoneTextView;
-    private Server server;
+    private String typeProfile;
+
+    public ProfileFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public ProfileFragment(String typeProfile) {
+        this.typeProfile = typeProfile;
+    }
 
     @SuppressLint("StaticFieldLeak")
     @Nullable
@@ -44,40 +53,35 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.activity_profile, container, false);
 
-        this.server = Server.getInstance();
         nameTextView = view.findViewById(R.id.nameTextView);
         usernameTextView = view.findViewById(R.id.usernameTextView);
         typeUserTextView = view.findViewById(R.id.typeUserTextView);
         emailTextView = view.findViewById(R.id.emailTextView);
         phoneTextView = view.findViewById(R.id.phoneTextView);
 
-        getUserInfoByUsername();
+        if (Objects.equals(typeProfile, "advertiserUser")) {
+            String username = getArguments() != null ? getArguments().getString("username") : "username";
+            String type = getArguments() != null ? getArguments().getString("type") : "type";
+            String name = getArguments() != null ? getArguments().getString("name") : "name";
+            String email = getArguments() != null ? getArguments().getString("email") : "email";
+            String phone = getArguments() != null ? getArguments().getString("phone") : "phone";
 
-        return view;
-    }
+            System.out.println("COSIKAAS: " + username + " " + type + " " + name+ " "+ email+ " "+ phone);
 
-    @SuppressLint("StaticFieldLeak")
-    private void getUserInfoByUsername() {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                server.token = preferences.getString("user_token", "user_token");
-                String username = preferences.getString("username", "username");
-                return server.getUserInfoByUsername(username);
-            }
+            setAttributes(name, username, type, email, phone);
 
-            @Override
-            protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
-                    getInfoUser(s);
-                }
-                else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }.execute();
+        }
+        else {
+            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            String username = preferences.getString("username", "username");
+            String name = preferences.getString("name", "name");
+            String type = preferences.getString("type", "type");
+            String email = preferences.getString("email", "email");
+            String phone = preferences.getString("phone", "phone");
+
+            setAttributes(name, username, type, email, phone);
+        }
+      return view;
     }
 
     private void getIdUser(String s) {
@@ -137,7 +141,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void setAttributes(String username, String type, String name, String email, String phone) {
+    private void setAttributes(String name, String username, String type, String email, String phone) {
         nameTextView.setText(name);
         usernameTextView.setText(username);
         typeUserTextView.setText(type);

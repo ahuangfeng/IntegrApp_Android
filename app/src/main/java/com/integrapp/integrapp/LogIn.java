@@ -88,9 +88,11 @@ public class LogIn extends AppCompatActivity {
             editor.putString("username", userEditText.getText().toString());
             String token = getTokenResponse(s);
             server.token = token;
-            //System.out.println("TOKEN: " + token); //Per probar. Correcto!
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
+
             editor.apply();
+
+            doServerCallForSaveInfoUser();//otra async task para obtener los datos del usuario
 
             Intent i = new Intent(LogIn.this, MainActivity.class);
             startActivity(i);
@@ -98,6 +100,55 @@ public class LogIn extends AppCompatActivity {
         }
         else {
             Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void doServerCallForSaveInfoUser() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                String username = preferences.getString("username", "username");
+                return server.getUserInfoByUsername(username);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO USER")) {
+                    System.out.println("INFO USUARI RESPONSE: " +s);
+                    saveInfoUser(s);
+                }
+            }
+        }.execute();
+    }
+
+    private void saveInfoUser(String s) {
+        try {
+            JSONObject myJsonjObject = new JSONObject(s);
+            String username = myJsonjObject.getString("username");
+            String type = myJsonjObject.getString("type");
+            String name = myJsonjObject.getString("name");
+            String email = "No e-mail";
+            String phone = "No phone";
+            if(myJsonjObject.has("email")) {
+                email = myJsonjObject.getString("email");
+            }
+            if(myJsonjObject.has("phone")) {
+                phone = myJsonjObject.getString("phone");
+            }
+            SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("username", username);
+            editor.putString("type", type);
+            editor.putString("name", name);
+            editor.putString("email", email);
+            editor.putString("phone", phone);
+            editor.apply();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
