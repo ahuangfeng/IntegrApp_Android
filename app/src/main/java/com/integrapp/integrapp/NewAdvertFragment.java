@@ -183,8 +183,8 @@ public class NewAdvertFragment extends Fragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, new AdvertsFragment());
-            ft.addToBackStack(null);
             ft.commit();
+            fragmentManager.popBackStack();
         }
         else {
             Toast.makeText(getActivity(), getString(R.string.newAdvert_error), Toast.LENGTH_SHORT).show();
