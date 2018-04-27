@@ -2,12 +2,14 @@ package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -163,50 +165,74 @@ public class ProfileFragment extends Fragment {
             String username = preferences.getString("username", "username");
 
             getIdByUsername(username);
-        }
-
-        else if (id == R.id.action_edit) {
-            nameTextView.setEnabled(true);
-            usernameTextView.setEnabled(true);
-            emailTextView.setEnabled(true);
-            phoneTextView.setEnabled(true);
+        } else if (id == R.id.action_edit) {
 
             nameView = getView().findViewById(R.id.viewName);
             usernameView = getView().findViewById(R.id.viewUsername);
             emailView = getView().findViewById(R.id.viewEmail);
             phoneView = getView().findViewById(R.id.viewPhone);
-
-            nameView.setVisibility(View.VISIBLE);
-            usernameView.setVisibility(View.VISIBLE);
-            emailView.setVisibility(View.VISIBLE);
-            phoneView.setVisibility(View.VISIBLE);
-
             saveProfileButton = getView().findViewById(R.id.saveProfileButton);
-            saveProfileButton.setVisibility(View.VISIBLE);
+
+            setVisibility(true, View.VISIBLE);
 
             saveProfileButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    saveChanges();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
+                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setVisibility(false, View.INVISIBLE);
+                            saveChanges();
+                            Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setVisibility(false, View.INVISIBLE);
+                            undoChanges();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             });
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    private void setVisibility(boolean b, int visibility) {
+        nameTextView.setEnabled(b);
+        usernameTextView.setEnabled(b);
+        emailTextView.setEnabled(b);
+        phoneTextView.setEnabled(b);
+
+        nameView.setVisibility(visibility);
+        usernameView.setVisibility(visibility);
+        emailView.setVisibility(visibility);
+        phoneView.setVisibility(visibility);
+
+        saveProfileButton.setVisibility(visibility);
+    }
+
+    private void undoChanges() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        server.token = preferences.getString("user_token", "user_token");
+        String username = preferences.getString("username", "username");
+        String name = preferences.getString("name", "name");
+        String email = preferences.getString("email", "email");
+        String phone = preferences.getString("phone", "phone");
+        String type = preferences.getString("type", "type");
+
+        setAttributes(name, username, type, email, phone);
+    }
+
     private void saveChanges() {
-        nameTextView.setEnabled(false);
-        usernameTextView.setEnabled(false);
-        emailTextView.setEnabled(false);
-        phoneTextView.setEnabled(false);
-
-        nameView.setVisibility(View.INVISIBLE);
-        usernameView.setVisibility(View.INVISIBLE);
-        emailView.setVisibility(View.INVISIBLE);
-        phoneView.setVisibility(View.INVISIBLE);
-
-        saveProfileButton.setVisibility(View.INVISIBLE);
+        /*TODO: llamada a servidor para guardar los datos modificados*/
     }
 
     @SuppressLint("StaticFieldLeak")

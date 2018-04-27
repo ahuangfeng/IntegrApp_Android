@@ -52,6 +52,10 @@
     <string name="name_profile">full name</string>
     <string name="username_profile">username</string>
     <string name="saveProfile_button">Save</string>
+    <string name="dialog_save">Are you sure you want to save the changes?</string>
+    <string name="tittle_dialogSave">Changes will be saved</string>
+    <string name="accept">ACCEPT</string>
+    <string name="cancel">CANCEL</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Title</string>
