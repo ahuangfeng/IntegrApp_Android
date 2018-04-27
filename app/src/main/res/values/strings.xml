@@ -51,6 +51,7 @@
     <string name="phone_profile">phone</string>
     <string name="name_profile">full name</string>
     <string name="username_profile">username</string>
+    <string name="saveProfile_button">Save</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Title</string>

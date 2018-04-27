@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,6 +37,11 @@ public class ProfileFragment extends Fragment {
     private TextView emailTextView;
     private TextView phoneTextView;
     private String typeProfile;
+    private Button saveProfileButton;
+    private View nameView;
+    private View usernameView;
+    private View emailView;
+    private View phoneView;
     private Server server;
 
     public ProfileFragment() {
@@ -153,7 +159,48 @@ public class ProfileFragment extends Fragment {
             getIdByUsername(username);
         }
 
+        else if (id == R.id.action_edit) {
+            nameTextView.setEnabled(true);
+            usernameTextView.setEnabled(true);
+            emailTextView.setEnabled(true);
+            phoneTextView.setEnabled(true);
+
+            nameView = getView().findViewById(R.id.viewName);
+            usernameView = getView().findViewById(R.id.viewUsername);
+            emailView = getView().findViewById(R.id.viewEmail);
+            phoneView = getView().findViewById(R.id.viewPhone);
+
+            nameView.setVisibility(View.VISIBLE);
+            usernameView.setVisibility(View.VISIBLE);
+            emailView.setVisibility(View.VISIBLE);
+            phoneView.setVisibility(View.VISIBLE);
+
+            saveProfileButton = getView().findViewById(R.id.saveProfileButton);
+            saveProfileButton.setVisibility(View.VISIBLE);
+
+            saveProfileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveChanges();
+                }
+            });
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveChanges() {
+        nameTextView.setEnabled(false);
+        usernameTextView.setEnabled(false);
+        emailTextView.setEnabled(false);
+        phoneTextView.setEnabled(false);
+
+        nameView.setVisibility(View.INVISIBLE);
+        usernameView.setVisibility(View.INVISIBLE);
+        emailView.setVisibility(View.INVISIBLE);
+        phoneView.setVisibility(View.INVISIBLE);
+
+        saveProfileButton.setVisibility(View.INVISIBLE);
     }
 
     @SuppressLint("StaticFieldLeak")
