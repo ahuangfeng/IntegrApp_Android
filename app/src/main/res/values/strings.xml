@@ -46,9 +46,11 @@
     <string name="adds_profile">Ads</string>
     <string name="likes_profile">Likes</string>
     <string name="dislikes_profile">Dislikes</string>
-    <string name="typeUser_profile">Type_user</string>
+    <string name="typeUser_profile">userType</string>
     <string name="email_profile">email</string>
-    <string name="phone_profile">phone_profile</string>
+    <string name="phone_profile">phone</string>
+    <string name="name_profile">full name</string>
+    <string name="username_profile">username</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Title</string>
