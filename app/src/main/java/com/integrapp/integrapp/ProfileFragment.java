@@ -139,6 +139,12 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.profile, menu);
         menu.findItem(R.id.action_settings).setVisible(false);
+        /*Solo se muestran las opciones de delte y edit cuando se consulta el perfil del usuario
+        logueado pero no si se está consultando un perfil de un anunciante */
+        if (typeProfile == "advertiserUser") {
+            menu.findItem(R.id.action_delete).setVisible(false);
+            menu.findItem(R.id.action_edit).setVisible(false);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
