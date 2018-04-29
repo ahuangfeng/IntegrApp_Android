@@ -113,7 +113,12 @@ public class ProfileFragment extends Fragment {
                     Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
                     startActivity(i);
                     getActivity().finish();
-                    /*TODO: falta limpiar el editor de las preferencias*/
+
+                    //Ponemos islogged a false para que no entre a la pantalla de anuncios, si no que se quede en el login
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("isLogged", false);
+                    editor.apply();
                 }
                 else {
                     Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
