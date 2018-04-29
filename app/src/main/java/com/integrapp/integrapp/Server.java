@@ -8,7 +8,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
-import java.sql.SQLOutput;
 
 class Server {
     private static final Server serverInstance = new Server();

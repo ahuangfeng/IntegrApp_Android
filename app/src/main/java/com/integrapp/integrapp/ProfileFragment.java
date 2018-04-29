@@ -23,7 +23,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLOutput;
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
@@ -211,14 +210,38 @@ public class ProfileFragment extends Fragment {
 
                     if (fieldsOK(currentPass, newPass, confirmPass)) {
                         if (passwordsOk(currentPass, newPass, confirmPass)) {
-                            Toast.makeText(getActivity(), "Password changed correctly", Toast.LENGTH_SHORT).show();
-                            dialog.cancel();
+                            saveChangePassword(idUser, newPass, dialog);
                         }
                     }
                 }
             });
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void saveChangePassword(final String idUser, String newPass, final AlertDialog dialog) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("password", newPass);
+        editor.apply();
+
+        final String json = generateRequestModifyProfile();
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.modifyProfileById(idUser, json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR MODIFY PROFILE")) {
+                    System.out.println("MODIFY RESPONSE " +s);
+                    Toast.makeText(getActivity(), "Password changed correctly", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+                }
+            }
+        }.execute();
     }
 
     private boolean passwordsOk(String currentPass, String newPass, String confirmPass) {
@@ -295,7 +318,7 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void saveChanges(final String idUser) {
-        final String json = generateRequestRegister();
+        final String json = generateRequestModifyProfile();
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -334,7 +357,7 @@ public class ProfileFragment extends Fragment {
         editor.apply();
     }
 
-    private String generateRequestRegister() {
+    private String generateRequestModifyProfile() {
         String username = usernameTextView.getText().toString();
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String password = preferences.getString("password", "password");
