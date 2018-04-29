@@ -128,6 +128,7 @@ public class LogIn extends AppCompatActivity {
     private void saveInfoUser(String s) {
         try {
             JSONObject myJsonjObject = new JSONObject(s);
+            String idUser = myJsonjObject.getString("_id");
             String username = myJsonjObject.getString("username");
             String type = myJsonjObject.getString("type");
             String name = myJsonjObject.getString("name");
@@ -141,6 +142,7 @@ public class LogIn extends AppCompatActivity {
             }
             SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("idUser", idUser);
             editor.putString("username", username);
             editor.putString("type", type);
             editor.putString("name", name);

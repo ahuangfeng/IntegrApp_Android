@@ -55,8 +55,8 @@
     <string name="saveProfile_button">Save</string>
     <string name="dialog_save">Are you sure you want to save the changes?</string>
     <string name="tittle_dialogSave">Changes will be saved</string>
-    <string name="accept">ACCEPT</string>
-    <string name="cancel">CANCEL</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Title</string>
@@ -94,7 +94,7 @@
     <string name="error_places_empty">Places must be filled</string>
     <string name="error_date_not_selected">Select a date</string>
     <string name="error_time_not_selected">Select time</string>
-    <string name="error_currentPass_empty">This field must be filled</string>
+    <string name="error_changePassField_empty">This field must be filled</string>
 
     <!-- Strings of SingleAdvert fragment-->
     <string name="username_advert">Username</string>

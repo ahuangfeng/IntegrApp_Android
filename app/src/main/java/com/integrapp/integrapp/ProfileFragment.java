@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.SQLOutput;
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
@@ -40,7 +42,6 @@ public class ProfileFragment extends Fragment {
     private EditText currentPassEditText;
     private EditText newPassEditText;
     private EditText confirmNewPassEditText;
-    private Button changePasswordButton;
     private Server server;
 
     public ProfileFragment() {
@@ -97,17 +98,6 @@ public class ProfileFragment extends Fragment {
       return view;
     }
 
-    private void getIdUser(String s) {
-        try {
-            JSONObject myJsonjObject = new JSONObject(s);
-            String id = myJsonjObject.getString("_id");
-            System.out.print("myuserid"+id);
-            deleteUserById(id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     @SuppressLint("StaticFieldLeak")
     private void deleteUserById(final String id) {
         new AsyncTask<Void, Void, String>() {
@@ -124,6 +114,7 @@ public class ProfileFragment extends Fragment {
                     Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
                     startActivity(i);
                     getActivity().finish();
+                    /*TODO: falta limpiar el editor de las preferencias*/
                 }
                 else {
                     Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
@@ -161,14 +152,13 @@ public class ProfileFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        server.token = preferences.getString("user_token", "user_token");
+        final String idUser = preferences.getString("idUser", "idUser");
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
-
-            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-            server.token = preferences.getString("user_token", "user_token");
-            String username = preferences.getString("username", "username");
-
-            getIdByUsername(username);
+            deleteUserById(idUser);
         } else if (id == R.id.action_edit) {
 
             setVisibility(true, View.VISIBLE);
@@ -182,9 +172,7 @@ public class ProfileFragment extends Fragment {
                     builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            setVisibility(false, View.INVISIBLE);
-                            saveChanges();
-                            Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
+                            saveChanges(idUser);
                         }
                     });
 
@@ -212,7 +200,7 @@ public class ProfileFragment extends Fragment {
             currentPassEditText = dialogView.findViewById(R.id.currentPassEditText);
             newPassEditText = dialogView.findViewById(R.id.newPassEditText);
             confirmNewPassEditText = dialogView.findViewById(R.id.confirmPassEditText);
-            changePasswordButton = dialogView.findViewById(R.id.changePassButton);
+            Button changePasswordButton = dialogView.findViewById(R.id.changePassButton);
 
             changePasswordButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -253,12 +241,12 @@ public class ProfileFragment extends Fragment {
         boolean valid = true;
 
         if (currentPass.isEmpty()) {
-            currentPassEditText.setError(getString(R.string.error_currentPass_empty));
+            currentPassEditText.setError(getString(R.string.error_changePassField_empty));
             valid = false;
         }
 
         if (newPass.isEmpty()) {
-            newPassEditText.setError(getString(R.string.error_currentPass_empty));
+            newPassEditText.setError(getString(R.string.error_changePassField_empty));
             valid = false;
         }else if (checkInputText(newPass, 6, 128)) {
             newPassEditText.setError(getString(R.string.error_password_length));
@@ -266,7 +254,7 @@ public class ProfileFragment extends Fragment {
         }
 
         if (confirmPass.isEmpty()) {
-            confirmNewPassEditText.setError(getString(R.string.error_currentPass_empty));
+            confirmNewPassEditText.setError(getString(R.string.error_changePassField_empty));
             valid = false;
         }else if (checkInputText(confirmPass, 6, 128)){
             confirmNewPassEditText.setError(getString(R.string.error_password_length));
@@ -305,29 +293,71 @@ public class ProfileFragment extends Fragment {
         setAttributes(name, username, type, email, phone);
     }
 
-    private void saveChanges() {
-        /*TODO: llamada a servidor para guardar los datos modificados*/
-    }
-
     @SuppressLint("StaticFieldLeak")
-    private void getIdByUsername(final String username) {
+    private void saveChanges(final String idUser) {
+        final String json = generateRequestRegister();
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                return server.getUserInfoByUsername(username);
+                return server.modifyProfileById(idUser, json);
             }
 
             @Override
             protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
-                    getIdUser(s);
-                }
-                else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                if (!s.equals("ERROR MODIFY PROFILE")) {
+                    System.out.println("MODIFY RESPONSE " +s);
+                    setVisibility(false, View.INVISIBLE);
+                    setNewPreferences();
+                    Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
+    }
+
+    private void setNewPreferences() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        String username = usernameTextView.getText().toString();
+        String name = nameTextView.getText().toString();
+        String email = emailTextView.getText().toString();
+        String phone = phoneTextView.getText().toString();
+        String type = typeUserTextView.getText().toString();
+
+        /*TODO: SI NO HAY EMAIL O PHONE PONER "No-email" "No-phone" en las preferncias (ver login)*/
+
+        editor.putString("username", username);
+        editor.putString("name", name);
+        editor.putString("email", email);
+        editor.putString("phone", phone);
+        editor.putString("type", type);
+        editor.apply();
+    }
+
+    private String generateRequestRegister() {
+        String username = usernameTextView.getText().toString();
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String password = preferences.getString("password", "password");
+        String name = nameTextView.getText().toString();
+        String email = emailTextView.getText().toString();
+        String phone = phoneTextView.getText().toString();
+        String type = typeUserTextView.getText().toString();
+
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("username", username);
+            oJSON.put("password", password);
+            oJSON.put("name", name);
+            if (!email.isEmpty()) oJSON.put("email", email);
+            if (!phone.isEmpty()) oJSON.put("phone", phone);
+            oJSON.put("type", type);
+
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
