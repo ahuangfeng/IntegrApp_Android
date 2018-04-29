@@ -217,12 +217,66 @@ public class ProfileFragment extends Fragment {
             changePasswordButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Password changed correctly", Toast.LENGTH_SHORT).show();
-                    dialog.cancel();
+                    String currentPass = currentPassEditText.getText().toString();
+                    String newPass = newPassEditText.getText().toString();
+                    String confirmPass = confirmNewPassEditText.getText().toString();
+
+                    if (fieldsOK(currentPass, newPass, confirmPass)) {
+                        if (passwordsOk(currentPass, newPass, confirmPass)) {
+                            Toast.makeText(getActivity(), "Password changed correctly", Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+                        }
+                    }
                 }
             });
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean passwordsOk(String currentPass, String newPass, String confirmPass) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        server.token = preferences.getString("user_token", "user_token");
+        String password = preferences.getString("password", "password");
+
+        if (!Objects.equals(newPass, confirmPass)) {
+            Toast.makeText(getActivity(), "The new passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!Objects.equals(currentPass, password)) {
+            Toast.makeText(getActivity(), "Invalid current password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean fieldsOK(String currentPass, String newPass, String confirmPass) {
+        boolean valid = true;
+
+        if (currentPass.isEmpty()) {
+            currentPassEditText.setError(getString(R.string.error_currentPass_empty));
+            valid = false;
+        }
+
+        if (newPass.isEmpty()) {
+            newPassEditText.setError(getString(R.string.error_currentPass_empty));
+            valid = false;
+        }else if (checkInputText(newPass, 6, 128)) {
+            newPassEditText.setError(getString(R.string.error_password_length));
+            valid = false;
+        }
+
+        if (confirmPass.isEmpty()) {
+            confirmNewPassEditText.setError(getString(R.string.error_currentPass_empty));
+            valid = false;
+        }else if (checkInputText(confirmPass, 6, 128)){
+            confirmNewPassEditText.setError(getString(R.string.error_password_length));
+            valid = false;
+        }
+        return valid;
+    }
+
+    private boolean checkInputText(String text, int min, int max) {
+        return text.isEmpty() || text.length() < min || text.length() > max;
     }
 
     private void setVisibility(boolean b, int visibility) {

@@ -86,6 +86,7 @@ public class LogIn extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isLogged", true);
             editor.putString("username", userEditText.getText().toString());
+            editor.putString("password", passEditText.getText().toString());
             String token = getTokenResponse(s);
             server.token = token;
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
