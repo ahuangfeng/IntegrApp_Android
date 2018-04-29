@@ -16,19 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
@@ -44,6 +37,10 @@ public class ProfileFragment extends Fragment {
     private View usernameView;
     private View emailView;
     private View phoneView;
+    private EditText currentPassEditText;
+    private EditText newPassEditText;
+    private EditText confirmNewPassEditText;
+    private Button changePasswordButton;
     private Server server;
 
     public ProfileFragment() {
@@ -68,6 +65,12 @@ public class ProfileFragment extends Fragment {
         typeUserTextView = view.findViewById(R.id.typeUserTextView);
         emailTextView = view.findViewById(R.id.emailTextView);
         phoneTextView = view.findViewById(R.id.phoneTextView);
+
+        nameView = view.findViewById(R.id.viewName);
+        usernameView = view.findViewById(R.id.viewUsername);
+        emailView = view.findViewById(R.id.viewEmail);
+        phoneView = view.findViewById(R.id.viewPhone);
+        saveProfileButton = view.findViewById(R.id.saveProfileButton);
 
         if (Objects.equals(typeProfile, "advertiserUser")) {
             String username = getArguments() != null ? getArguments().getString("username") : "username";
@@ -146,6 +149,7 @@ public class ProfileFragment extends Fragment {
         if (Objects.equals(typeProfile, "advertiserUser")) {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
+            menu.findItem(R.id.action_changePass).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -166,12 +170,6 @@ public class ProfileFragment extends Fragment {
 
             getIdByUsername(username);
         } else if (id == R.id.action_edit) {
-
-            nameView = getView().findViewById(R.id.viewName);
-            usernameView = getView().findViewById(R.id.viewUsername);
-            emailView = getView().findViewById(R.id.viewEmail);
-            phoneView = getView().findViewById(R.id.viewPhone);
-            saveProfileButton = getView().findViewById(R.id.saveProfileButton);
 
             setVisibility(true, View.VISIBLE);
 
@@ -199,6 +197,28 @@ public class ProfileFragment extends Fragment {
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
+                }
+            });
+        }
+        else if (id == R.id.action_changePass) {
+            setVisibility(false, View.INVISIBLE);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            final View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+            builder.setView(dialogView);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+
+            currentPassEditText = dialogView.findViewById(R.id.currentPassEditText);
+            newPassEditText = dialogView.findViewById(R.id.newPassEditText);
+            confirmNewPassEditText = dialogView.findViewById(R.id.confirmPassEditText);
+            changePasswordButton = dialogView.findViewById(R.id.changePassButton);
+
+            changePasswordButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Password changed correctly", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
                 }
             });
         }

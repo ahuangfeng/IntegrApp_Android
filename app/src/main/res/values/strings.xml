@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
+    <string name="action_changePass">Change pass</string>
 
 
     <!-- Strings of SplashIntegrApp activity-->
@@ -102,6 +103,13 @@
     <string name="places_advert">Places</string>
     <string name="expectedDate_advert">Expected date</string>
     <string name="wantItButton_advert">I want it !</string>
+
+    <!-- Strings of ChangePassword Dialog -->
+    <string name="changePass_tittle">Change password</string>
+    <string name="current_pass">Current password</string>
+    <string name="new_pass">New password</string>
+    <string name="confirm_pass">Confirm new password</string>
+    <string name="changePass_button">Change</string>
 
     <!-- Server errors-->
 
