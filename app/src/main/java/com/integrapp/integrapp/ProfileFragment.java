@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
@@ -85,10 +86,46 @@ public class ProfileFragment extends Fragment {
             String name = getArguments() != null ? getArguments().getString("name") : "name";
             String email = getArguments() != null ? getArguments().getString("email") : "email";
             String phone = getArguments() != null ? getArguments().getString("phone") : "phone";
+            int likes = getArguments() != null ? getArguments().getInt("likes") : 0;
+            int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
+            int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
 
-            System.out.println("COSIKAAS: " + username + " " + type + " " + name+ " "+ email+ " "+ phone);
+            System.out.println("COSIKAAS: " + username + " " + type + " " + name+ " "+ email+ " "+ phone+ " "+likes+ " "+dislikes+ " "+ ads);
 
             setAttributes(name, username, type, email, phone);
+            setRateAndAds(likes,dislikes,ads);
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            String usernamePreferences = preferences.getString("username", "username");
+
+            LinearLayout adsLayout = view.findViewById(R.id.adsLayout);
+            adsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            /*No se puede votar a uno mismo.*/
+            /*TODO: funcionalidad de votar (back-end no implementada)*/
+            if(!Objects.equals(usernamePreferences, username)) {
+
+                LinearLayout likesLayout = view.findViewById(R.id.likesLayout);
+                LinearLayout dislikesLayout = view.findViewById(R.id.dislikesLayout);
+
+                likesLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "You voted 'like'", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dislikesLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "You voted 'dislike'", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
         }
         else {
@@ -104,6 +141,14 @@ public class ProfileFragment extends Fragment {
 
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes, dislikes, ads);
+
+            LinearLayout adsLayout = view.findViewById(R.id.adsLayout);
+            adsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
       return view;
     }
