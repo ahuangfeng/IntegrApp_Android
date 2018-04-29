@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -425,6 +426,22 @@ public class ProfileFragment extends Fragment {
         editor.putString("phone", phone);
         editor.putString("type", type);
         editor.apply();
+
+        setHeadersNavigation();
+    }
+
+    private void setHeadersNavigation() {
+        NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+
+        View header = navigationView.getHeaderView(0);
+        TextView headerName = header.findViewById(R.id.headerName);
+        TextView headerEmail = header.findViewById(R.id.headerEmail);
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String name = preferences.getString("name", "name");
+        headerName.setText(name);
+        String email = preferences.getString("email", "email");
+        headerEmail.setText(email);
     }
 
     private String generateRequestModifyProfile() {

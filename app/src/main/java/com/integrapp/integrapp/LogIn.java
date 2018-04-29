@@ -91,14 +91,9 @@ public class LogIn extends AppCompatActivity {
             String token = getTokenResponse(s);
             server.token = token;
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
-
             editor.apply();
 
             doServerCallForSaveInfoUser();//otra async task para obtener los datos del usuario
-
-            Intent i = new Intent(LogIn.this, MainActivity.class);
-            startActivity(i);
-            finish();
         }
         else {
             Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
@@ -161,6 +156,10 @@ public class LogIn extends AppCompatActivity {
             editor.putInt("dislikes", dislikes);
             editor.putInt("ads", myJsonArrayAds.length());
             editor.apply();
+
+            Intent i = new Intent(LogIn.this, MainActivity.class);
+            startActivity(i);
+            finish();
 
         } catch (JSONException e) {
             e.printStackTrace();

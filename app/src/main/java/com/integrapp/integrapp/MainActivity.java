@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -40,6 +42,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        TextView headerName = header.findViewById(R.id.headerName);
+        TextView headerEmail = header.findViewById(R.id.headerEmail);
+
+        SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String name = preferences.getString("name", "name");
+        headerName.setText(name);
+        String email = preferences.getString("email", "email");
+        headerEmail.setText(email);
     }
 
     /*@Override
