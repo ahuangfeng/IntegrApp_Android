@@ -113,6 +113,7 @@
                         android:textSize="20sp"
                         />
                     <TextView
+                        android:id="@+id/adsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="125"
@@ -135,6 +136,7 @@
                         android:textSize="20sp"
                         />
                     <TextView
+                        android:id="@+id/likesTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1205"
@@ -157,6 +159,7 @@
                         android:textSize="20sp"
                         />
                     <TextView
+                        android:id="@+id/dislikesTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="360"
@@ -185,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
-            android:drawablePadding="20dp"
+            android:drawablePadding="10dp"
             android:drawableStart="@drawable/ic_email_black_24dp"
             android:enabled="false"
             android:hint="@string/email_profile"
@@ -208,7 +211,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
-            android:drawablePadding="20dp"
+            android:drawablePadding="10dp"
             android:drawableStart="@drawable/ic_phone_android_black_24dp"
             android:enabled="false"
             android:hint="@string/phone_profile"
@@ -231,7 +234,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
-            android:drawablePadding="20dp"
+            android:drawablePadding="10dp"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:enabled="false"
             android:hint="@string/typeUser_profile"

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -140,6 +141,14 @@ public class LogIn extends AppCompatActivity {
             if(myJsonjObject.has("phone")) {
                 phone = myJsonjObject.getString("phone");
             }
+
+            String rate = myJsonjObject.getString("rate");
+            JSONObject myJsonRate = new JSONObject(rate);
+            int likes = myJsonRate.getInt("likes");
+            int dislikes = myJsonRate.getInt("dislikes");
+
+            JSONArray myJsonArrayAds = myJsonjObject.getJSONArray("adverts");
+
             SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("idUser", idUser);
@@ -148,6 +157,9 @@ public class LogIn extends AppCompatActivity {
             editor.putString("name", name);
             editor.putString("email", email);
             editor.putString("phone", phone);
+            editor.putInt("likes", likes);
+            editor.putInt("dislikes", dislikes);
+            editor.putInt("ads", myJsonArrayAds.length());
             editor.apply();
 
         } catch (JSONException e) {

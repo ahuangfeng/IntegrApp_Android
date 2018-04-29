@@ -41,6 +41,9 @@ public class ProfileFragment extends Fragment {
     private EditText currentPassEditText;
     private EditText newPassEditText;
     private EditText confirmNewPassEditText;
+    private TextView likesTextView;
+    private TextView dislikesTextView;
+    private TextView adsTextView;
     private Server server;
 
     public ProfileFragment() {
@@ -72,6 +75,10 @@ public class ProfileFragment extends Fragment {
         phoneView = view.findViewById(R.id.viewPhone);
         saveProfileButton = view.findViewById(R.id.saveProfileButton);
 
+        likesTextView = view.findViewById(R.id.likesTextView);
+        dislikesTextView = view.findViewById(R.id.dislikesTextView);
+        adsTextView = view.findViewById(R.id.adsTextView);
+
         if (Objects.equals(typeProfile, "advertiserUser")) {
             String username = getArguments() != null ? getArguments().getString("username") : "username";
             String type = getArguments() != null ? getArguments().getString("type") : "type";
@@ -91,10 +98,23 @@ public class ProfileFragment extends Fragment {
             String type = preferences.getString("type", "type");
             String email = preferences.getString("email", "email");
             String phone = preferences.getString("phone", "phone");
+            int likes = preferences.getInt("likes",0);
+            int dislikes = preferences.getInt("dislikes",0);
+            int ads = preferences.getInt("ads", 0);
 
             setAttributes(name, username, type, email, phone);
+            setRateAndAds(likes, dislikes, ads);
         }
       return view;
+    }
+
+    private void setRateAndAds(int likes, int dislikes, int ads) {
+        String likesString = Integer.toString(likes);
+        String dislikesString = Integer.toString(dislikes);
+        String adsString = Integer.toString(ads);
+        likesTextView.setText(likesString);
+        dislikesTextView.setText(dislikesString);
+        adsTextView.setText(adsString);
     }
 
     @SuppressLint("StaticFieldLeak")
