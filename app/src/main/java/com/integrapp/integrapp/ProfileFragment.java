@@ -82,6 +82,7 @@ public class ProfileFragment extends Fragment {
         adsTextView = view.findViewById(R.id.adsTextView);
 
         if (Objects.equals(typeProfile, "advertiserUser")) {
+            final String idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
             String username = getArguments() != null ? getArguments().getString("username") : "username";
             String type = getArguments() != null ? getArguments().getString("type") : "type";
             String name = getArguments() != null ? getArguments().getString("name") : "name";
@@ -91,7 +92,7 @@ public class ProfileFragment extends Fragment {
             int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
 
-            System.out.println("COSIKAAS: " + username + " " + type + " " + name+ " "+ email+ " "+ phone+ " "+likes+ " "+dislikes+ " "+ ads);
+            System.out.println("COSIKAAS: "+idUser + " " + username + " " + type + " " + name+ " "+ email+ " "+ phone+ " "+likes+ " "+dislikes+ " "+ ads);
 
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes,dislikes,ads);
@@ -107,8 +108,6 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
-            /*No se puede votar a uno mismo.*/
-            /*TODO: funcionalidad de votar (back-end no implementada)*/
             if(!Objects.equals(usernamePreferences, username)) {
 
                 LinearLayout likesLayout = view.findViewById(R.id.likesLayout);
@@ -117,13 +116,13 @@ public class ProfileFragment extends Fragment {
                 likesLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "You voted 'like'", Toast.LENGTH_SHORT).show();
+                        voteLike(idUser);
                     }
                 });
                 dislikesLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "You voted 'dislike'", Toast.LENGTH_SHORT).show();
+                        voteDislike(idUser);
                     }
                 });
             }
@@ -152,6 +151,82 @@ public class ProfileFragment extends Fragment {
             });
         }
       return view;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void voteDislike(final String idUser) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.voteDislikeUser(idUser);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN DISLIKE VOTE")) {
+                    System.out.println("DISLIKE VOTE RESPONSE: " +s);
+                    saveVote(s, "dislike");
+                }
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void voteLike(final String idUser) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.voteLikeUser(idUser);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN LIKE VOTE")) {
+                    System.out.println("LIKE VOTE RESPONSE: " +s);
+                    saveVote(s, "like");
+                }
+            }
+        }.execute();
+    }
+
+    private void saveVote(String s, String typeOfVote) {
+        try {
+            JSONObject myJsonObject = new JSONObject(s);
+            String rate = myJsonObject.getString("rate");
+            JSONObject myJsonRate = new JSONObject(rate);
+            int likes = myJsonRate.getInt("likes");
+            int dislikes = myJsonRate.getInt("dislikes");
+
+            //Para que el usuario sepa que ya ha votado en like o en dislike
+            if (Objects.equals(typeOfVote, "like")) {
+                if (Integer.parseInt(likesTextView.getText().toString()) == likes) {
+                    Toast.makeText(getActivity(), "You already voted 'like'", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "You voted 'like'", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if (Objects.equals(typeOfVote, "dislike")) {
+                if (Integer.parseInt(dislikesTextView.getText().toString()) == dislikes) {
+                    Toast.makeText(getActivity(), "You already voted 'dislike'", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "You voted 'dislike'", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            String likesString = Integer.toString(likes);
+            String dislikesString = Integer.toString(dislikes);
+            likesTextView.setText(likesString);
+            dislikesTextView.setText(dislikesString);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setRateAndAds(int likes, int dislikes, int ads) {

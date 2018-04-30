@@ -133,4 +133,32 @@ class Server {
         }
         return "ERROR MODIFY PROFILE";
     }
+
+    public String voteLikeUser(String idUser) {
+        HttpPost post = new HttpPost(API_URI+"/like/"+idUser);
+        try {
+            post.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN LIKE VOTE";
+    }
+
+    public String voteDislikeUser(String idUser) {
+        HttpPost post = new HttpPost(API_URI+"/dislike/"+idUser);
+        try {
+            post.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN DISLIKE VOTE";
+    }
 }
