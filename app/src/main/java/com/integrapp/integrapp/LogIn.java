@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,17 +87,13 @@ public class LogIn extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isLogged", true);
             editor.putString("username", userEditText.getText().toString());
+            editor.putString("password", passEditText.getText().toString());
             String token = getTokenResponse(s);
             server.token = token;
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
-
             editor.apply();
 
             doServerCallForSaveInfoUser();//otra async task para obtener los datos del usuario
-
-            Intent i = new Intent(LogIn.this, MainActivity.class);
-            startActivity(i);
-            finish();
         }
         else {
             Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
@@ -127,6 +124,7 @@ public class LogIn extends AppCompatActivity {
     private void saveInfoUser(String s) {
         try {
             JSONObject myJsonjObject = new JSONObject(s);
+            String idUser = myJsonjObject.getString("_id");
             String username = myJsonjObject.getString("username");
             String type = myJsonjObject.getString("type");
             String name = myJsonjObject.getString("name");
@@ -138,14 +136,30 @@ public class LogIn extends AppCompatActivity {
             if(myJsonjObject.has("phone")) {
                 phone = myJsonjObject.getString("phone");
             }
+
+            String rate = myJsonjObject.getString("rate");
+            JSONObject myJsonRate = new JSONObject(rate);
+            int likes = myJsonRate.getInt("likes");
+            int dislikes = myJsonRate.getInt("dislikes");
+
+            JSONArray myJsonArrayAds = myJsonjObject.getJSONArray("adverts");
+
             SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("idUser", idUser);
             editor.putString("username", username);
             editor.putString("type", type);
             editor.putString("name", name);
             editor.putString("email", email);
             editor.putString("phone", phone);
+            editor.putInt("likes", likes);
+            editor.putInt("dislikes", dislikes);
+            editor.putInt("ads", myJsonArrayAds.length());
             editor.apply();
+
+            Intent i = new Intent(LogIn.this, MainActivity.class);
+            startActivity(i);
+            finish();
 
         } catch (JSONException e) {
             e.printStackTrace();

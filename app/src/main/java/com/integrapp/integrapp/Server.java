@@ -3,6 +3,7 @@ package com.integrapp.integrapp;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -113,5 +114,51 @@ class Server {
             e.printStackTrace();
         }
         return "ERROR IN DELETING USER";
+    }
+
+    public String modifyProfileById(String id, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/user/"+id);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR MODIFY PROFILE";
+    }
+
+    public String voteLikeUser(String idUser) {
+        HttpPost post = new HttpPost(API_URI+"/like/"+idUser);
+        try {
+            post.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN LIKE VOTE";
+    }
+
+    public String voteDislikeUser(String idUser) {
+        HttpPost post = new HttpPost(API_URI+"/dislike/"+idUser);
+        try {
+            post.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN DISLIKE VOTE";
     }
 }
