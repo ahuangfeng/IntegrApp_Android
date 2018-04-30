@@ -96,7 +96,7 @@ public class AdvertsFragment extends Fragment {
                     for (int i=0; i< attributes.size(); ++i) {
                         dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
                                 attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
-                                attributes.get(i).get(5), attributes.get(i).get(6), image);
+                                attributes.get(i).get(5), attributes.get(i).get(6), image, attributes.get(i).get(8));
                         adverts.add(dataAdvert);
 
                         //Los datos del usuario que ha publicado el anuncio
@@ -164,6 +164,8 @@ public class AdvertsFragment extends Fragment {
         attributesAdd.add(myJsonjObject.getString("userId"));
 
         attributesAdd.add(myJsonjObject.getString("user")); //el Json en string de los datos del usuario
+        attributesAdd.add(myJsonjObject.getString("_id"));
+
 
         return attributesAdd;
     }

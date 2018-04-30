@@ -2,6 +2,7 @@ package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,11 +11,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +34,8 @@ public class SingleAdvertFragment extends Fragment {
     private String description;
     private String userId;
     private int image;
+    private String type_advert;
+    private String idAdvert;
 
     UserDataAdvertiser userData;
     private Server server;
@@ -47,6 +54,7 @@ public class SingleAdvertFragment extends Fragment {
         userId = dataAdvert.getUserId();
         image = dataAdvert.getImage();
 
+        idAdvert = dataAdvert.getId();
         this.userData = userData;
 
         System.out.println("Parametros: " +tittle + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId);
@@ -56,6 +64,7 @@ public class SingleAdvertFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         server = Server.getInstance();
         View view = inflater.inflate(R.layout.single_advert_fragment, container, false);
 
@@ -73,6 +82,12 @@ public class SingleAdvertFragment extends Fragment {
 
         ImageView imageView = view.findViewById(R.id.image_view_anunci);
         imageView.setImageResource(image);
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String usernamePreferences = preferences.getString("username", "username");
+
+        if (userData.getUsername().equals(usernamePreferences)) type_advert = "owner";
+        else type_advert = "other";
 
         /*TODO: Implementar boton "I want it!"*/
 
@@ -139,6 +154,61 @@ public class SingleAdvertFragment extends Fragment {
         ft.replace(R.id.screen_area, fragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.advert, menu);
+        menu.findItem(R.id.action_settings).setVisible(false);
+        /*Solo se muestran las opciones de delte y edit cuando se consulta un advert del usuario
+        logueado pero no si se está consultando el de algun otro */
+        if (type_advert.equals("other")) {
+            menu.findItem(R.id.action_delete).setVisible(false);
+            menu.findItem(R.id.action_edit).setVisible(false);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_delete) {
+            deleteAdvertById(idAdvert);
+        } else if (id == R.id.action_edit) {
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void deleteAdvertById(final String id) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                System.out.print("myadvertid:"+id);
+                return server.deleteAdvertById(id);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN DELETING ADVERT")) {
+                    System.out.println("DELETE ADVERT SUCCESSFULL RESPONSE: " +s);
+                    Toast.makeText(getActivity().getApplicationContext(), "Advert deleted successfully", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(SingleAdvertFragment.this.getActivity(), MainActivity.class);
+                    startActivity(i);
+                    getActivity().finish();
+
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 
     @Override

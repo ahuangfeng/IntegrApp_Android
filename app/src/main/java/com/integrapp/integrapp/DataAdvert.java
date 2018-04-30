@@ -9,8 +9,9 @@ public class DataAdvert {
     private String state;
     private String userId;
     private int image;
+    private String id;
 
-    public DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image) {
+    DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image, String id) {
         this.date = date;
         this.title = title;
         this.description = description;
@@ -19,6 +20,7 @@ public class DataAdvert {
         this.state = state;
         this.image = image;
         this.userId = userId;
+        this.id = id;
     }
 
     public String getDate() {
@@ -84,4 +86,13 @@ public class DataAdvert {
     public void setImage(int image) {
         this.image = image;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }

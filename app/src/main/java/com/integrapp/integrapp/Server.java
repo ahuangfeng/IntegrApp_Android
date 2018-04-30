@@ -116,6 +116,20 @@ class Server {
         return "ERROR IN DELETING USER";
     }
 
+    public String deleteAdvertById(String id) {
+        HttpDelete delete = new HttpDelete(API_URI+"/advert/"+id);
+        try {
+            delete.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(delete, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN DELETING ADVERT";
+    }
+
     public String modifyProfileById(String id, String json) {
         HttpPut modify = new HttpPut(API_URI+"/user/"+id);
         try {
