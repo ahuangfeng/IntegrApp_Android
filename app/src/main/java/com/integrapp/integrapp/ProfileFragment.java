@@ -493,7 +493,9 @@ public class ProfileFragment extends Fragment {
         String phone = phoneTextView.getText().toString();
         String type = typeUserTextView.getText().toString();
 
-        /*TODO: SI NO HAY EMAIL O PHONE PONER "No-email" "No-phone" en las preferncias (ver login)*/
+        /*Si el usuario quiere hacer el email o el phone no visible*/
+        if (email.isEmpty()) email = "No e-mail";
+        if (phone.isEmpty()) phone = "No phone";
 
         editor.putString("username", username);
         editor.putString("name", name);
