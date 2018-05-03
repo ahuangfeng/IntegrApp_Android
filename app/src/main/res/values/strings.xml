@@ -19,6 +19,8 @@
     <string name="checkbox_text">Remember me</string>
     <string name="button_login_text">Log in</string>
     <string name="signUp_text">DON\'T HAVE AN ACCOUNT? SIGN UP</string>
+    <string name="success_login">Log in successful</string>
+    <string name="login_error">Username or password are incorrect</string>
 
     <!-- Strings of Advert activity-->
     <string name="date">Date</string>
@@ -103,7 +105,13 @@
     <string name="description_advert">Description of the advert</string>
     <string name="places_advert">Places</string>
     <string name="expectedDate_advert">Expected date</string>
-    <string name="wantItButton_advert">I want it !</string>
+    <string name="wantItButton_advert">I WANT IT!</string>
+    <string name="acceptedButton_advert">ACCEPTED</string>
+    <string name="pendingButton_advert">PENDING</string>
+    <string name="completedButton_advert">COMPLETED</string>
+    <string name="refusedButton_advert">REFUSED</string>
+    <string name="manageInscriptions">MANAGE INSCRIPTIONS</string>
+    <string name="inscription_error">Error making inscription</string>
 
     <!-- Strings of ChangePassword Dialog -->
     <string name="changePass_tittle">Change password</string>

@@ -83,8 +83,7 @@ public class LogIn extends AppCompatActivity {
 
     private void checkLogIn(String s) {
         if(!s.equals("ERROR IN LOGIN")) {
-            Toast.makeText(getApplicationContext(), "Log in successful", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(getApplicationContext(), getString(R.string.success_login), Toast.LENGTH_SHORT).show();
             SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isLogged", true);
@@ -97,7 +96,7 @@ public class LogIn extends AppCompatActivity {
             doServerCallForSaveInfoUser();//otra async task para obtener los datos del usuario
         }
         else {
-            Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.login_error), Toast.LENGTH_SHORT).show();
         }
     }
 

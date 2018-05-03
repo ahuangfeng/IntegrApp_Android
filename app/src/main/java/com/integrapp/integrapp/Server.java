@@ -176,7 +176,7 @@ class Server {
         return "ERROR IN DISLIKE VOTE";
     }
 
-    public String inscriptionAdvert(String json) {
+    public String createInscriptionAdvert(String json) {
         HttpPost post = new HttpPost(API_URI+"/inscription");
         try {
             StringEntity entity = new StringEntity(json);
@@ -191,7 +191,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR CREATING ADVERT";
+        return "ERROR CREATING INSCRIPTION";
     }
 
     public String getInscriptionsByUserId(String userId) {
