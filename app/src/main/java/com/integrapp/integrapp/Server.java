@@ -194,8 +194,8 @@ class Server {
         return "ERROR CREATING ADVERT";
     }
 
-    /*public String getUserInfoByUsername(String username) {
-        HttpGet get = new HttpGet(API_URI+"/user?username="+username);
+    public String getInscriptionsByUserId(String userId) {
+        HttpGet get = new HttpGet(API_URI+"/inscriptionsUser/"+userId);
         try {
             get.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
@@ -205,7 +205,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR IN GET INFO USER";
-    }*/
+        return "ERROR IN GETTING INSCRIPTIONS";
+    }
 
 }

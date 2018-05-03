@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,6 +71,60 @@ public class SingleAdvertFragment extends Fragment {
         server = Server.getInstance();
         View view = inflater.inflate(R.layout.single_advert_fragment, container, false);
 
+        loadAdvertData(view);
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String usernamePreferences = preferences.getString("username", "username");
+
+        final Button inscriptionButton = view.findViewById(R.id.inscriptionButton);
+
+        if (userData.getUsername().equals(usernamePreferences)) type_advert = "owner";
+        else {
+            type_advert = "other";
+            String userInscriptions = preferences.getString("inscriptions", "[]");
+            String advertStatus = checkAdvertStatus(userInscriptions);
+            inscriptionButton.setFocusable(false);
+            switch (advertStatus) {
+                case "pending":
+                    inscriptionButton.setText("PENDING");
+                    break;
+                case "refused":
+                    inscriptionButton.setText("REFUSED");
+                    break;
+                case "completed":
+                    inscriptionButton.setText("COMPLETED");
+                    break;
+                case "accepted":
+                    inscriptionButton.setText("ACCEPTED");
+                    break;
+                case "canEnroll":
+                    inscriptionButton.setText("TEST HA ENTRADO");
+                    inscriptionButton.setFocusable(true);
+                    break;
+                default:
+            }
+        }
+
+        inscriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inscriptionButton.setText("PENDINGggggggg");
+
+            }
+        });
+
+        Button profileButton = view.findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getInfoUser(userData.getUsername());
+            }
+        });
+
+        return view;
+    }
+
+    private void loadAdvertData(View view) {
         TextView textViewUsername = view.findViewById(R.id.textView_username);
         TextView textViewTitle = view.findViewById(R.id.textView_title);
         TextView textViewDescription = view.findViewById(R.id.textView_description);
@@ -84,31 +139,28 @@ public class SingleAdvertFragment extends Fragment {
 
         ImageView imageView = view.findViewById(R.id.image_view_anunci);
         imageView.setImageResource(image);
+    }
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-        String usernamePreferences = preferences.getString("username", "username");
-
-        if (userData.getUsername().equals(usernamePreferences)) type_advert = "owner";
-        else type_advert = "other";
-
-        /*TODO: Implementar boton "I want it!"*/
-        final Button inscriptionButton = view.findViewById(R.id.inscriptionButton);
-        inscriptionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inscriptionButton.setText("PENDING");
+    private String checkAdvertStatus(String userInscriptions) {
+        try {
+            JSONArray myJSONArray = new JSONArray(userInscriptions);
+            System.out.println("QUE HAY AQUI!! -- " + myJSONArray);
+            String advertId;
+            for (int i = 0; i < myJSONArray.length(); ++i) {
+                System.out.println("QUE HAY AQUI22-- " + myJSONArray.getJSONObject(i));
+                advertId = myJSONArray.getJSONObject(i).getString("advertId");
+                if (advertId.equals(idAdvert)) {
+                    String status = myJSONArray.getJSONObject(i).getString("status");
+                    return status;
+                }
             }
-        });
 
-        Button profileButton = view.findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getInfoUser(userData.getUsername());
-            }
-        });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        return view;
+        return "canEnroll";
+
     }
 
     @SuppressLint("StaticFieldLeak")
