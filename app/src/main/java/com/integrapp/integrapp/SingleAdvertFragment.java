@@ -28,7 +28,7 @@ import org.json.JSONObject;
 
 public class SingleAdvertFragment extends Fragment {
 
-    private String tittle;
+    private String title;
     private String type;
     private String state;
     private String places;
@@ -47,7 +47,7 @@ public class SingleAdvertFragment extends Fragment {
 
     @SuppressLint({"ValidFragment", "SetTextI18n"})
     public SingleAdvertFragment(DataAdvert dataAdvert, UserDataAdvertiser userData) {
-        tittle = dataAdvert.getTitle();
+        title = dataAdvert.getTitle();
         type = dataAdvert.getType();
         state = dataAdvert.getState();
         places = dataAdvert.getPlaces();
@@ -59,7 +59,7 @@ public class SingleAdvertFragment extends Fragment {
         idAdvert = dataAdvert.getId();
         this.userData = userData;
 
-        System.out.println("Parametros: " +tittle + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId);
+        System.out.println("Parametros: " +title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -77,7 +77,7 @@ public class SingleAdvertFragment extends Fragment {
         TextView textViewDate = view.findViewById(R.id.textView_date);
 
         textViewUsername.setText(userData.getUsername());
-        textViewTitle.setText(tittle);
+        textViewTitle.setText(title);
         textViewDescription.setText(description);
         textViewPlaces.setText("Places: "+ places);
         textViewDate.setText("Expected date: "+date);
@@ -92,6 +92,13 @@ public class SingleAdvertFragment extends Fragment {
         else type_advert = "other";
 
         /*TODO: Implementar boton "I want it!"*/
+        final Button inscriptionButton = view.findViewById(R.id.inscriptionButton);
+        inscriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inscriptionButton.setText("PENDING");
+            }
+        });
 
         Button profileButton = view.findViewById(R.id.profileButton);
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -229,6 +236,40 @@ public class SingleAdvertFragment extends Fragment {
                 }
             }
         }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void sendDataToServer() {
+
+        try {
+            final String json = generateRequestInscription();
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.setNewAdvert(json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    System.out.println("SERVER RESPONSE: " + s);
+                    //checkNewAdvert(s);
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateRequestInscription() throws JSONException {
+        JSONObject oJSON = new JSONObject();
+
+        oJSON.put("userId", userId);
+        oJSON.put("advertId", idAdvert);
+
+        return oJSON.toString(1);
     }
 
     @Override

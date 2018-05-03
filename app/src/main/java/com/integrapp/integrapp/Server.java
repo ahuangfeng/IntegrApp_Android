@@ -175,4 +175,37 @@ class Server {
         }
         return "ERROR IN DISLIKE VOTE";
     }
+
+    public String inscriptionAdvert(String json) {
+        HttpPost post = new HttpPost(API_URI+"/inscription");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR CREATING ADVERT";
+    }
+
+    /*public String getUserInfoByUsername(String username) {
+        HttpGet get = new HttpGet(API_URI+"/user?username="+username);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GET INFO USER";
+    }*/
+
 }

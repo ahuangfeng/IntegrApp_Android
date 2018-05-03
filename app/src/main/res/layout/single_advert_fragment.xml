@@ -127,7 +127,7 @@
             tools:ignore="ContentDescription" />
 
         <Button
-            android:id="@+id/wantitButton"
+            android:id="@+id/inscriptionButton"
             style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
