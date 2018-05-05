@@ -105,9 +105,12 @@
     <string name="description_advert">Description of the advert</string>
     <string name="places_advert">Places</string>
     <string name="expectedDate_advert">Expected date</string>
-    <string name="wantItButton_advert">I want it !</string>
+    <string name="wantItButton_advertOther">I want it !</string>
+    <string name="wantItButton_advertOwner">View Inscriptions</string>
     <string name="dialog_delete_advert">Are you sure you want to delete the advert?</string>
     <string name="tittle_dialogDeleteAdvert">Advert will be deleted</string>
+    <string name="wantItButton_editadvert">Save Changes</string>
+
 
 
     <!-- Strings of ChangePassword Dialog -->

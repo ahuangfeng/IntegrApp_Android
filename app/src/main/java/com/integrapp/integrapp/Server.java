@@ -148,6 +148,24 @@ class Server {
         return "ERROR MODIFY PROFILE";
     }
 
+    public String modifyAdvertById(String id, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/advert/"+id);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR MODIFY ADVERT";
+    }
+
     public String voteLikeUser(String idUser) {
         HttpPost post = new HttpPost(API_URI+"/like/"+idUser);
         try {

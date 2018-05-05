@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,9 +27,11 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 public class SingleAdvertFragment extends Fragment {
 
-    private String tittle;
+    private String title;
     private String type;
     private String state;
     private String places;
@@ -38,6 +41,17 @@ public class SingleAdvertFragment extends Fragment {
     private int image;
     private String type_advert;
     private String idAdvert;
+    private EditText textViewTitle;
+    private EditText textViewDescription;
+    private EditText textViewPlaces;
+    private EditText textViewDate;
+    private View viewTitle;
+    private View viewDescription;
+    private View viewPlaces;
+    private View viewDate;
+
+    private Button button;
+
 
     UserDataAdvertiser userData;
     private Server server;
@@ -47,7 +61,7 @@ public class SingleAdvertFragment extends Fragment {
 
     @SuppressLint({"ValidFragment", "SetTextI18n"})
     public SingleAdvertFragment(DataAdvert dataAdvert, UserDataAdvertiser userData) {
-        tittle = dataAdvert.getTitle();
+        title = dataAdvert.getTitle();
         type = dataAdvert.getType();
         state = dataAdvert.getState();
         places = dataAdvert.getPlaces();
@@ -59,7 +73,7 @@ public class SingleAdvertFragment extends Fragment {
         idAdvert = dataAdvert.getId();
         this.userData = userData;
 
-        System.out.println("Parametros: " +tittle + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId);
+        System.out.println("Parametros: " + title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -71,16 +85,20 @@ public class SingleAdvertFragment extends Fragment {
         View view = inflater.inflate(R.layout.single_advert_fragment, container, false);
 
         TextView textViewUsername = view.findViewById(R.id.textView_username);
-        TextView textViewTitle = view.findViewById(R.id.textView_title);
-        TextView textViewDescription = view.findViewById(R.id.textView_description);
-        TextView textViewPlaces = view.findViewById(R.id.textView_places);
-        TextView textViewDate = view.findViewById(R.id.textView_date);
+        textViewTitle = view.findViewById(R.id.textView_title);
+        textViewDescription = view.findViewById(R.id.textView_description);
+        textViewPlaces = view.findViewById(R.id.textView_places);
+        textViewDate = view.findViewById(R.id.textView_date);
 
         textViewUsername.setText(userData.getUsername());
-        textViewTitle.setText(tittle);
-        textViewDescription.setText(description);
-        textViewPlaces.setText("Places: "+ places);
-        textViewDate.setText("Expected date: "+date);
+        setEditableTexts();
+
+        viewTitle = view.findViewById(R.id.viewTitle);
+        viewDescription = view.findViewById(R.id.viewDescription);
+        viewPlaces = view.findViewById(R.id.viewPlaces);
+        viewDate = view.findViewById(R.id.viewDate);
+
+        button = view.findViewById(R.id.wantitButton);
 
         ImageView imageView = view.findViewById(R.id.image_view_anunci);
         imageView.setImageResource(image);
@@ -88,7 +106,10 @@ public class SingleAdvertFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String usernamePreferences = preferences.getString("username", "username");
 
-        if (userData.getUsername().equals(usernamePreferences)) type_advert = "owner";
+        if (userData.getUsername().equals(usernamePreferences)) {
+            type_advert = "owner";
+            button.setText(R.string.wantItButton_advertOwner);
+        }
         else type_advert = "other";
 
         /*TODO: Implementar boton "I want it!"*/
@@ -200,9 +221,47 @@ public class SingleAdvertFragment extends Fragment {
             dialog.show();
 
         } else if (id == R.id.action_edit) {
+            setVisibility(true, View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+                    builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
+                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveChanges(idAdvert);
+                        }
+                    });
+
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setVisibility(false, View.INVISIBLE);
+                            setEditableTexts();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setEditableTexts() {
+        textViewTitle.setText(title);
+        textViewDescription.setText(description);
+        textViewPlaces.setText(places);
+        textViewDate.setText(date);
+    }
+
+    private void setAttributes() {
+        title = textViewTitle.getText().toString();
+        description = textViewDescription.getText().toString();
+        places = textViewPlaces.getText().toString();
+        date = textViewDate.getText().toString();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -230,6 +289,88 @@ public class SingleAdvertFragment extends Fragment {
             }
         }.execute();
     }
+
+    private void setVisibility(boolean b, int visibility) {
+        textViewTitle.setEnabled(b);
+        textViewDescription.setEnabled(b);
+        textViewPlaces.setEnabled(b);
+        textViewDate.setEnabled(b);
+
+        viewTitle.setVisibility(visibility);
+        viewDescription.setVisibility(visibility);
+        viewPlaces.setVisibility(visibility);
+        viewDate.setVisibility(visibility);
+
+        button.setText(R.string.wantItButton_editadvert);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void saveChanges(final String idAdvert) {
+        final String json = generateRequestModifyAdvert();
+        Boolean errors = false;
+        if (json.equals("empty")) {
+            errors = true;
+            Toast.makeText(getContext(), "Error empty values added", Toast.LENGTH_SHORT).show();
+        }
+        else if (json.equals("places greater 0")) {
+            errors = true;
+            Toast.makeText(getContext(), "Error places must be greater than 0", Toast.LENGTH_SHORT).show();
+        }
+
+        if (!errors) {
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    return server.modifyAdvertById(idAdvert, json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    if (!s.equals("ERROR MODIFY ADVERT")) {
+                        System.out.println("MODIFY RESPONSE " + s);
+                        setVisibility(false, View.INVISIBLE);
+                        setAttributes();
+                        Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Error saving changes, check date", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+        }
+    }
+
+    private String generateRequestModifyAdvert() {
+
+        String title2 = textViewTitle.getText().toString();
+        String description2 = textViewDescription.getText().toString();
+        String places2 = textViewPlaces.getText().toString();
+        String date2 = textViewDate.getText().toString();
+
+        try {
+            JSONObject oJSON = new JSONObject();
+            if (!date2.isEmpty()) {
+                oJSON.put("date", date2);
+            } else return "empty";
+
+            if (!title2.isEmpty() && !description2.isEmpty()) {
+                oJSON.put("title", title2);
+                oJSON.put("description", description2);
+            } else return "empty";
+
+            if (!places2.isEmpty()) {
+                Integer i_places = Integer.parseInt(places2);
+                if (i_places <= 0) return "places greater 0";
+                oJSON.put("places", places2);
+            } else return "empty";
+
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
