@@ -188,6 +188,7 @@ public class SingleAdvertFragment extends Fragment {
         if (type_advert.equals("other")) {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
+            menu.findItem(R.id.action_modifyAdvertState).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -246,6 +247,25 @@ public class SingleAdvertFragment extends Fragment {
                     dialog.show();
                 }
             });
+        } else if (id == R.id.action_modifyAdvertState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_modify_state_advert).setTitle(R.string.tittle_dialogModifyStateAdvert);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    modifyStateAdvertById(idAdvert);
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -371,6 +391,46 @@ public class SingleAdvertFragment extends Fragment {
         return null;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private void modifyStateAdvertById (final String id) {
+        final String json = generateRequestModifyStateAdvert();
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                System.out.print("myadvertid:"+id);
+
+
+                return server.modifyStateAdvertById(id, json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR CHANGE ADVERT STATE")) {
+                    System.out.println("CHANGE ADVERT STATE SUCCESSFULL RESPONSE: " +s);
+                    Toast.makeText(getActivity().getApplicationContext(), "Advert State changed successfully", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    public String generateRequestModifyStateAdvert() {
+        String state_to;
+        if (state == "opened") state_to = "closed";
+        else state_to = "opened";
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("state", state_to);
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

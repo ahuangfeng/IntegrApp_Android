@@ -1,5 +1,6 @@
 package com.integrapp.integrapp;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -8,6 +9,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 class Server {
     private static final Server serverInstance = new Server();
@@ -164,6 +166,24 @@ class Server {
             e.printStackTrace();
         }
         return "ERROR MODIFY ADVERT";
+    }
+
+    public String modifyStateAdvertById (String id, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/advertState/"+id);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR CHANGE ADVERT STATE";
     }
 
     public String voteLikeUser(String idUser) {

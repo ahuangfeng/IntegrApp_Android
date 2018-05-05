@@ -7,6 +7,7 @@
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
     <string name="action_changePass">Change pass</string>
+    <string name="action_modifyAdvertState">Modify State</string>
 
 
     <!-- Strings of SplashIntegrApp activity-->
@@ -108,7 +109,9 @@
     <string name="wantItButton_advertOther">I want it !</string>
     <string name="wantItButton_advertOwner">View Inscriptions</string>
     <string name="dialog_delete_advert">Are you sure you want to delete the advert?</string>
+    <string name="dialog_modify_state_advert">Are you sure you want to change the state of the advert?</string>
     <string name="tittle_dialogDeleteAdvert">Advert will be deleted</string>
+    <string name="tittle_dialogModifyStateAdvert">Advert State will be changed</string>
     <string name="wantItButton_editadvert">Save Changes</string>
 
 
