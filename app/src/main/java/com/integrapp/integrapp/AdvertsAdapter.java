@@ -37,7 +37,7 @@ public class AdvertsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View vista = view;
+        View vista;
         LayoutInflater inflate = LayoutInflater.from(contexto);
         vista = inflate.inflate(R.layout.activity_item_advert, null);
 

@@ -36,6 +36,7 @@ public class ForumFragment extends Fragment {
         lang = new LangFragment();
         entre = new EntreFragment();
         other = new OtherFragment();
+
         // Setting ViewPager for each Tabs
         ViewPager viewPager = view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -44,7 +45,6 @@ public class ForumFragment extends Fragment {
         tabs.setupWithViewPager(viewPager);
 
         return view;
-
     }
 
     //ADD FRAGMENTS TO TABS
@@ -55,34 +55,7 @@ public class ForumFragment extends Fragment {
         adapter.addFragment(entre, "ENTERTAINMENT");
         adapter.addFragment(other, "OTHER");
         viewPager.setAdapter(adapter);
-    }
-
-    private static class FragmentAdapter extends FragmentPagerAdapter {
-
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public FragmentAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+        System.out.print("NOMBRE DE FRAGMENTS: ");
+        System.out.println(adapter.getCount());
     }
 }
