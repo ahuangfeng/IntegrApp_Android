@@ -27,8 +27,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
-
 public class SingleAdvertFragment extends Fragment {
 
     private String title;
@@ -49,6 +47,7 @@ public class SingleAdvertFragment extends Fragment {
     private View viewDescription;
     private View viewPlaces;
     private View viewDate;
+    private TextView textViewState;
 
     private Button button;
 
@@ -97,6 +96,8 @@ public class SingleAdvertFragment extends Fragment {
         viewDescription = view.findViewById(R.id.viewDescription);
         viewPlaces = view.findViewById(R.id.viewPlaces);
         viewDate = view.findViewById(R.id.viewDate);
+        textViewState = view.findViewById(R.id.textViewState);
+        textViewState.setText(state);
 
         button = view.findViewById(R.id.wantitButton);
 
@@ -407,6 +408,7 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR CHANGE ADVERT STATE")) {
+                    changeState();
                     System.out.println("CHANGE ADVERT STATE SUCCESSFULL RESPONSE: " +s);
                     Toast.makeText(getActivity().getApplicationContext(), "Advert State changed successfully", Toast.LENGTH_SHORT).show();
                 }
@@ -430,6 +432,13 @@ public class SingleAdvertFragment extends Fragment {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void changeState() {
+        if (state == "opened") state = "closed";
+        else state = "opened";
+        textViewState.setText(state);
+        System.out.print("mystate "+state);
     }
 
     @Override
