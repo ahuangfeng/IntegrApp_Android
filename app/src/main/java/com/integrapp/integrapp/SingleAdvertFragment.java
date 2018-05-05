@@ -97,7 +97,7 @@ public class SingleAdvertFragment extends Fragment {
         viewPlaces = view.findViewById(R.id.viewPlaces);
         viewDate = view.findViewById(R.id.viewDate);
         textViewState = view.findViewById(R.id.textViewState);
-        textViewState.setText(state);
+        textViewState.setText(state.toUpperCase());
 
         button = view.findViewById(R.id.wantitButton);
 
@@ -437,7 +437,7 @@ public class SingleAdvertFragment extends Fragment {
     public void changeState() {
         if (state == "opened") state = "closed";
         else state = "opened";
-        textViewState.setText(state);
+        textViewState.setText(state.toUpperCase());
         System.out.print("mystate "+state);
     }
 
