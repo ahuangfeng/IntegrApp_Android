@@ -41,6 +41,7 @@ public class SingleAdvertFragment extends Fragment {
     private String type_advert;
     private String idAdvert;
     private Button inscriptionButton;
+    private String personalUserId;
 
     UserDataAdvertiser userData;
     private Server server;
@@ -62,7 +63,7 @@ public class SingleAdvertFragment extends Fragment {
         idAdvert = dataAdvert.getId();
         this.userData = userData;
 
-        System.out.println("Parametros: " +title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId);
+        System.out.println("Parametros: " +title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId + " " + idAdvert);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -77,24 +78,33 @@ public class SingleAdvertFragment extends Fragment {
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String usernamePreferences = preferences.getString("username", "username");
+        personalUserId = preferences.getString("idUser", "null");
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
+
+        final String advertStatus;
 
         if (userData.getUsername().equals(usernamePreferences)) {
             type_advert = "owner";
             inscriptionButton.setText(getString(R.string.manageInscriptions));
+            advertStatus = "owner";
         }
         else {
             type_advert = "other";
             String userInscriptions = preferences.getString("inscriptions", "[]");
-            String advertStatus = checkAdvertStatus(userInscriptions);
+            advertStatus = checkAdvertStatus(userInscriptions);
             checkInscriptionStatus(advertStatus);
         }
 
         inscriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doServerCallForCreateInscription();
+                if (advertStatus.equals("owner")) {
+                    // TODO: Manage inscriptions
+                    Toast.makeText(getActivity().getApplicationContext(), "Manage inscriptions", Toast.LENGTH_SHORT).show();
+                } else if (advertStatus.equals("canEnroll")) {
+                    doServerCallForCreateInscription();
+                }
             }
         });
 
@@ -119,9 +129,9 @@ public class SingleAdvertFragment extends Fragment {
         textViewUsername.setText(userData.getUsername());
         textViewTitle.setText(title);
         textViewDescription.setText(description);
-        String textPlaces = getString(R.string.places_advert) + places;
+        String textPlaces = getString(R.string.places_advert) + ": " + places;
         textViewPlaces.setText(textPlaces);
-        String textDate = getString(R.string.expectedDate_advert) + date;
+        String textDate = getString(R.string.expectedDate_advert) + ": " + date;
         textViewDate.setText(textDate);
 
         ImageView imageView = view.findViewById(R.id.image_view_anunci);
@@ -165,8 +175,7 @@ public class SingleAdvertFragment extends Fragment {
             for (int i = 0; i < myJSONArray.length(); ++i) {
                 advertId = myJSONArray.getJSONObject(i).getString("advertId");
                 if (advertId.equals(idAdvert)) {
-                    String status = myJSONArray.getJSONObject(i).getString("status");
-                    return status;
+                    return myJSONArray.getJSONObject(i).getString("status");
                 }
             }
 
@@ -332,6 +341,10 @@ public class SingleAdvertFragment extends Fragment {
     private void updateInscriptions(String s) {
         if(!s.equals("ERROR CREATING INSCRIPTION")) {
             inscriptionButton.setText(getString(R.string.pendingButton_advert));
+            inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
+            inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+            LogIn login = new LogIn();
+            login.doServerCallForSaveInscriptions(personalUserId);
         }
         else {
             Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
@@ -339,9 +352,10 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     private String generateRequestInscription() throws JSONException {
+        System.out.println("WHAAAAAAAAAAAAAAAAT: " + personalUserId + " " + idAdvert + " " + userId);
         JSONObject oJSON = new JSONObject();
 
-        oJSON.put("userId", userId);
+        oJSON.put("userId", personalUserId);
         oJSON.put("advertId", idAdvert);
 
         return oJSON.toString(1);

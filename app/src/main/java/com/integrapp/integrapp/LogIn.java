@@ -122,7 +122,7 @@ public class LogIn extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void doServerCallForSaveInscriptions(String userId) {
+    public void doServerCallForSaveInscriptions(String userId) {
         final String idUser = userId;
         new AsyncTask<Void, Void, String>() {
             @Override
