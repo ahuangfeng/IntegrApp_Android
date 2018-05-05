@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -180,11 +181,14 @@ public class NewAdvertFragment extends Fragment {
     private void checkNewAdvert(String s) {
         if (!s.equals("ERROR CREATING ADVERT")) {
             Toast.makeText(getActivity(), getString(R.string.newAdvert_success), Toast.LENGTH_SHORT).show();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            /*FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, new AdvertsFragment());
             ft.commit();
-            fragmentManager.popBackStack();
+            fragmentManager.popBackStack();*/
+            Intent i = new Intent(this.getActivity(), MainActivity.class);
+            startActivity(i);
+            this.getActivity().finish();
         }
         else {
             Toast.makeText(getActivity(), getString(R.string.newAdvert_error), Toast.LENGTH_SHORT).show();
