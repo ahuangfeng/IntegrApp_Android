@@ -56,8 +56,8 @@ class Server {
         return "ERROR IN LOGIN";
     }
 
-    public String getAllAdverts() {
-        HttpGet get = new HttpGet(API_URI+"/advert?type=");
+    public String getAllAdverts(String type) {
+        HttpGet get = new HttpGet(API_URI+"/advert?type="+type);
         try {
             get.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
