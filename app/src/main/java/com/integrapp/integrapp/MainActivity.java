@@ -108,7 +108,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_profile) {
             fragment = new ProfileFragment();
         } else if (id == R.id.nav_adverts) {
-            fragment = new AdvertsFragment();
+            //fragment = new AdvertsFragment();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            this.finish();
         } else if (id == R.id.nav_forum) {
             Toast.makeText(getApplicationContext(), "Function Forum not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_chats) {
