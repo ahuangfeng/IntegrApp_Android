@@ -343,12 +343,39 @@ public class SingleAdvertFragment extends Fragment {
             inscriptionButton.setText(getString(R.string.pendingButton_advert));
             inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
             inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
-            LogIn login = new LogIn();
-            login.doServerCallForSaveInscriptions(personalUserId);
+            doServerCallForSaveInscriptions(personalUserId);
         }
         else {
             Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void doServerCallForSaveInscriptions(String userId) {
+        final String idUser = userId;
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getInscriptionsByUserId(idUser);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
+                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
+                    saveInscriptions(s);
+                }
+            }
+        }.execute();
+    }
+
+    private void saveInscriptions(String inscriptions) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("inscriptions", inscriptions);
+        editor.apply();
     }
 
     private String generateRequestInscription() throws JSONException {
