@@ -112,7 +112,7 @@ public class SingleAdvertFragment extends Fragment {
         }
         else type_advert = "other";
 
-        /*TODO: Implementar boton "I want it!"*/
+        /*TODO: Implementar "I want it!"*/
 
         Button profileButton = view.findViewById(R.id.profileButton);
         profileButton.setOnClickListener(new View.OnClickListener() {
