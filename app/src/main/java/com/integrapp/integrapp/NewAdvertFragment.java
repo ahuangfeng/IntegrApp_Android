@@ -186,6 +186,13 @@ public class NewAdvertFragment extends Fragment {
             ft.replace(R.id.screen_area, new AdvertsFragment());
             ft.commit();
             fragmentManager.popBackStack();*/
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            int ads = preferences.getInt("ads", 0);
+            editor.putInt("ads", ads+1);
+            editor.apply();
+
             Intent i = new Intent(this.getActivity(), MainActivity.class);
             startActivity(i);
             this.getActivity().finish();
