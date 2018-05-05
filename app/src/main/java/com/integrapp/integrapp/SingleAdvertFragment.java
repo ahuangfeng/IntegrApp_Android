@@ -182,7 +182,7 @@ public class SingleAdvertFragment extends Fragment {
         if (id == R.id.action_delete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-            builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
+            builder.setMessage(R.string.dialog_delete_advert).setTitle(R.string.tittle_dialogDeleteAdvert);
             builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

@@ -57,6 +57,8 @@
     <string name="tittle_dialogSave">Changes will be saved</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
+    <string name="dialog_delete_user">Are you sure you want to delete the user?</string>
+    <string name="tittle_dialogDeleteUser">User will be deleted</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Title</string>
@@ -104,6 +106,9 @@
     <string name="places_advert">Places</string>
     <string name="expectedDate_advert">Expected date</string>
     <string name="wantItButton_advert">I want it !</string>
+    <string name="dialog_delete_advert">Are you sure you want to delete the advert?</string>
+    <string name="tittle_dialogDeleteAdvert">Advert will be deleted</string>
+
 
     <!-- Strings of ChangePassword Dialog -->
     <string name="changePass_tittle">Change password</string>
