@@ -72,6 +72,20 @@ class Server {
         return "ERROR IN GETTING ALL ADVERTS";
     }
 
+    public String getAllInscriptions(String idAdvert) {
+        HttpGet get = new HttpGet(API_URI+"/inscription/"+idAdvert);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING ALL INSCRIPTIONS";
+    }
+
     public String getAllUserAdverts(String type) {
         HttpGet get = new HttpGet(API_URI+"/advertsUser/"+type);
         try {
@@ -262,6 +276,20 @@ class Server {
             e.printStackTrace();
         }
         return "ERROR CREATING INSCRIPTION";
+    }
+
+    public String deleteInscriptionAdvert() {
+        HttpDelete delete = new HttpDelete(API_URI+"/inscription");
+        try {
+            delete.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(delete, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR DELETING INSCRIPTION";
     }
   
     public String getInscriptionsByUserId(String userId) {

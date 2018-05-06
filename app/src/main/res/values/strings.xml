@@ -124,6 +124,8 @@
     <string name="tittle_dialogDeleteAdvert">Advert will be deleted</string>
     <string name="tittle_dialogModifyStateAdvert">Advert State will be changed</string>
     <string name="wantItButton_editadvert">Save Changes</string>
+    <string name="dialog_delete_inscription">Are you sure you want to cancel your request?</string>
+    <string name="tittle_dialogDeleteInscription">Your inscription will be deleted</string>
 
     <!-- Strings of ChangePassword Dialog -->
     <string name="changePass_tittle">Change password</string>

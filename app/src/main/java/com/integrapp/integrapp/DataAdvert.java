@@ -1,5 +1,8 @@
 package com.integrapp.integrapp;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DataAdvert {
     private String date;
     private String title;
@@ -21,6 +24,27 @@ public class DataAdvert {
         this.image = image;
         this.userId = userId;
         this.id = id;
+    }
+
+    public DataAdvert(JSONObject userInfo, int image) {
+        decryptJson(userInfo);
+        this.image = image;
+    }
+
+    private void decryptJson(JSONObject userInfo) {
+        try {
+
+            this.date = userInfo.getString("date");
+            this.title = userInfo.getString("title");
+            this.description = userInfo.getString("description");
+            this.places = userInfo.getString("places");
+            this.type = "voluntary";
+            this.state = userInfo.getString("state");
+            this.id = userInfo.getString("_id");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getDate() {

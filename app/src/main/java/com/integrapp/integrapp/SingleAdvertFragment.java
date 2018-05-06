@@ -112,10 +112,35 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (advertStatus.equals("owner")) {
+                    Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
                     // TODO: Manage inscriptions
                     Toast.makeText(getActivity().getApplicationContext(), "Manage inscriptions", Toast.LENGTH_SHORT).show();
                 } else if (advertStatus.equals("canEnroll")) {
                     doServerCallForCreateInscription();
+                } else if (advertStatus.equals("pending")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
+                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            doServerCallForDeleteInscription();
+                        }
+                    });
+
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
@@ -349,9 +374,7 @@ public class SingleAdvertFragment extends Fragment {
     private void setEditableTexts() {   
         textViewTitle.setText(title);
         textViewDescription.setText(description);
-        String textPlaces = getString(R.string.places_advert) + ": " + places;
         textViewPlaces.setText(places);
-        String textDate = getString(R.string.expectedDate_advert) + ": " + date;
         textViewDate.setText(date);
     }
 
@@ -534,11 +557,11 @@ public class SingleAdvertFragment extends Fragment {
                     server.token = preferences.getString("user_token", "user_token");
                     return server.createInscriptionAdvert(json);
                 }
-              
+
                 @Override
                 protected void onPostExecute(String s) {
                     System.out.println("SERVER RESPONSE: " + s);
-                    updateInscriptions(s);
+                    updateInscriptions(s, "pending");
                 }
             }.execute();
 
@@ -546,12 +569,36 @@ public class SingleAdvertFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private void doServerCallForDeleteInscription() {
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.deleteInscriptionAdvert();
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    System.out.println("SERVER RESPONSE: " + s);
+                    updateInscriptions(s, "canEnroll");
+                }
+            }.execute();
+    }
   
-    private void updateInscriptions(String s) {
-        if(!s.equals("ERROR CREATING INSCRIPTION")) {
-            inscriptionButton.setText(getString(R.string.pendingButton_advert));
-            inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
-            inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+    private void updateInscriptions(String s, String state) {
+        if(!s.equals("ERROR DELETING INSCRIPTION")) {
+            if (state == "pending") {
+                inscriptionButton.setText(getString(R.string.pendingButton_advert));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+            } else {
+                inscriptionButton.setText(getString(R.string.wantItButton_advertOther));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            }
             doServerCallForSaveInscriptions(personalUserId);
         } else {
             Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
