@@ -27,8 +27,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
-
 public class SingleAdvertFragment extends Fragment {
 
     private String title;
@@ -49,6 +47,7 @@ public class SingleAdvertFragment extends Fragment {
     private View viewDescription;
     private View viewPlaces;
     private View viewDate;
+    private TextView textViewState;
 
     private Button button;
 
@@ -97,6 +96,8 @@ public class SingleAdvertFragment extends Fragment {
         viewDescription = view.findViewById(R.id.viewDescription);
         viewPlaces = view.findViewById(R.id.viewPlaces);
         viewDate = view.findViewById(R.id.viewDate);
+        textViewState = view.findViewById(R.id.textViewState);
+        textViewState.setText(state.toUpperCase());
 
         button = view.findViewById(R.id.wantitButton);
 
@@ -112,7 +113,7 @@ public class SingleAdvertFragment extends Fragment {
         }
         else type_advert = "other";
 
-        /*TODO: Implementar boton "I want it!"*/
+        /*TODO: Implementar "I want it!"*/
 
         Button profileButton = view.findViewById(R.id.profileButton);
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +189,7 @@ public class SingleAdvertFragment extends Fragment {
         if (type_advert.equals("other")) {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
+            menu.findItem(R.id.action_modifyAdvertState).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -246,6 +248,25 @@ public class SingleAdvertFragment extends Fragment {
                     dialog.show();
                 }
             });
+        } else if (id == R.id.action_modifyAdvertState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_modify_state_advert).setTitle(R.string.tittle_dialogModifyStateAdvert);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    modifyStateAdvertById(idAdvert);
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -371,6 +392,54 @@ public class SingleAdvertFragment extends Fragment {
         return null;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private void modifyStateAdvertById (final String id) {
+        final String json = generateRequestModifyStateAdvert();
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                System.out.print("myadvertid:"+id);
+
+
+                return server.modifyStateAdvertById(id, json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR CHANGE ADVERT STATE")) {
+                    changeState();
+                    System.out.println("CHANGE ADVERT STATE SUCCESSFULL RESPONSE: " +s);
+                    Toast.makeText(getActivity().getApplicationContext(), "Advert State changed successfully", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    public String generateRequestModifyStateAdvert() {
+        String state_to;
+        if (state == "opened") state_to = "closed";
+        else state_to = "opened";
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("state", state_to);
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void changeState() {
+        if (state == "opened") state = "closed";
+        else state = "opened";
+        textViewState.setText(state.toUpperCase());
+        System.out.print("mystate "+state);
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
