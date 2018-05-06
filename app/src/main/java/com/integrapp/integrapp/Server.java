@@ -72,8 +72,36 @@ class Server {
         return "ERROR IN GETTING ALL ADVERTS";
     }
 
+    public String getAllUserAdverts(String type) {
+        HttpGet get = new HttpGet(API_URI+"/advertsUser/"+type);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING ALL ADVERTS";
+    }
+
     public String getUserInfoByUsername(String username) {
         HttpGet get = new HttpGet(API_URI+"/user?username="+username);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GET INFO USER";
+    }
+
+    public String getUserInfoById(String id) {
+        HttpGet get = new HttpGet(API_URI+"/userInfoById/"+id);
         try {
             get.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();

@@ -16,11 +16,45 @@ public class UserDataAdvertiser {
         decryptJson(userInfo);
     }
 
+    public UserDataAdvertiser(String id, String userInfo) {
+        decryptJson2(id, userInfo);
+    }
+
+    public UserDataAdvertiser(String id, String username, String name, String type, String email, String phone) {
+        idUser = id;
+        this.username = username;
+        this.name = name;
+        this.type = type;
+        if (!email.equals("")) this.email = email;
+        if (!phone.equals("")) this.phone = phone;
+    }
+
     private void decryptJson(String userInfo) {
         try {
             JSONObject myJsonjObject = new JSONObject(userInfo);
 
             this.idUser = myJsonjObject.getString("_id");
+            this.username = myJsonjObject.getString("username");
+            this.name = myJsonjObject.getString("name");
+            this.type = myJsonjObject.getString("type");
+
+            if(myJsonjObject.has("email")) {
+                this.email = myJsonjObject.getString("email");
+            }
+            if(myJsonjObject.has("phone")) {
+                this.phone = myJsonjObject.getString("phone");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void decryptJson2(String id, String userInfo) {
+        try {
+            JSONObject myJsonjObject = new JSONObject(userInfo);
+
+            this.idUser = id;
             this.username = myJsonjObject.getString("username");
             this.name = myJsonjObject.getString("name");
             this.type = myJsonjObject.getString("type");
