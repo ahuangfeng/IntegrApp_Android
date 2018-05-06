@@ -7,7 +7,10 @@
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
     <string name="action_changePass">Change pass</string>
-
+    <string name="action_modifyAdvertState">Modify State</string>
+    <string name="action_lookfor">Look for ads</string>
+    <string name="action_offer">Offer ads</string>
+    <string name="action_all">All ads</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -59,6 +62,8 @@
     <string name="tittle_dialogSave">Changes will be saved</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
+    <string name="dialog_delete_user">Are you sure you want to delete the user?</string>
+    <string name="tittle_dialogDeleteUser">User will be deleted</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Title</string>
@@ -112,6 +117,13 @@
     <string name="refusedButton_advert">REFUSED</string>
     <string name="manageInscriptions">MANAGE INSCRIPTIONS</string>
     <string name="inscription_error">Error making inscription</string>
+    <string name="wantItButton_advertOther">I want it !</string>
+    <string name="wantItButton_advertOwner">View Inscriptions</string>
+    <string name="dialog_delete_advert">Are you sure you want to delete the advert?</string>
+    <string name="dialog_modify_state_advert">Are you sure you want to change the state of the advert?</string>
+    <string name="tittle_dialogDeleteAdvert">Advert will be deleted</string>
+    <string name="tittle_dialogModifyStateAdvert">Advert State will be changed</string>
+    <string name="wantItButton_editadvert">Save Changes</string>
 
     <!-- Strings of ChangePassword Dialog -->
     <string name="changePass_tittle">Change password</string>

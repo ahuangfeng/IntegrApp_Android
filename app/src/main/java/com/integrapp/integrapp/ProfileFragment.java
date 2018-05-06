@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -104,7 +106,7 @@ public class ProfileFragment extends Fragment {
             adsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
+                    showUserAdverts(idUser);
                 }
             });
 
@@ -130,7 +132,7 @@ public class ProfileFragment extends Fragment {
         }
         else {
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-            String username = preferences.getString("username", "username");
+            final String username = preferences.getString("username", "username");
             String name = preferences.getString("name", "name");
             String type = preferences.getString("type", "type");
             String email = preferences.getString("email", "email");
@@ -147,10 +149,53 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
+                    getIdByUsername(username);
                 }
             });
         }
       return view;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getIdByUsername(final String username) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.getUserInfoByUsername(username);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO USER")) {
+                    System.out.println("INFO USUARI RESPONSE: " +s);
+                    getIdUser(s);
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+       }.execute();
+    }
+
+    private void getIdUser(String s) {
+        try {
+            JSONObject myJsonjObject = new JSONObject(s);
+            String id = myJsonjObject.getString("_id");
+            System.out.print("myuserid"+id);
+            showUserAdverts(id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showUserAdverts(final String idUser) {
+        Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
+        Fragment fragment = new AdvertsFragment(idUser);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.screen_area, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -305,7 +350,7 @@ public class ProfileFragment extends Fragment {
         if (id == R.id.action_delete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-            builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
+            builder.setMessage(R.string.dialog_delete_user).setTitle(R.string.tittle_dialogDeleteUser);
             builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

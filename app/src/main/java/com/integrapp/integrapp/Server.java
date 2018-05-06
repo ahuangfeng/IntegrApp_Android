@@ -1,5 +1,6 @@
 package com.integrapp.integrapp;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -8,6 +9,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 class Server {
     private static final Server serverInstance = new Server();
@@ -56,8 +58,22 @@ class Server {
         return "ERROR IN LOGIN";
     }
 
-    public String getAllAdverts() {
-        HttpGet get = new HttpGet(API_URI+"/advert?type=");
+    public String getAllAdverts(String type) {
+        HttpGet get = new HttpGet(API_URI+"/advert?type="+type);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING ALL ADVERTS";
+    }
+
+    public String getAllUserAdverts(String type) {
+        HttpGet get = new HttpGet(API_URI+"/advertsUser/"+type);
         try {
             get.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
@@ -72,6 +88,20 @@ class Server {
 
     public String getUserInfoByUsername(String username) {
         HttpGet get = new HttpGet(API_URI+"/user?username="+username);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GET INFO USER";
+    }
+
+    public String getUserInfoById(String id) {
+        HttpGet get = new HttpGet(API_URI+"/userInfoById/"+id);
         try {
             get.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
@@ -113,6 +143,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "ERROR IN DELETING USER";
     }
 
@@ -145,7 +176,44 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "ERROR MODIFY PROFILE";
+    }
+
+    public String modifyAdvertById(String id, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/advert/"+id);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR MODIFY ADVERT";
+    }
+
+    public String modifyStateAdvertById (String id, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/advertState/"+id);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR CHANGE ADVERT STATE";
     }
 
     public String voteLikeUser(String idUser) {
@@ -159,6 +227,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "ERROR IN LIKE VOTE";
     }
 
@@ -176,6 +245,7 @@ class Server {
         return "ERROR IN DISLIKE VOTE";
     }
 
+
     public String createInscriptionAdvert(String json) {
         HttpPost post = new HttpPost(API_URI+"/inscription");
         try {
@@ -187,15 +257,43 @@ class Server {
             DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
-
-        } catch (IOException e) {
+          
+          } catch (IOException e) {
             e.printStackTrace();
         }
         return "ERROR CREATING INSCRIPTION";
     }
-
+  
     public String getInscriptionsByUserId(String userId) {
         HttpGet get = new HttpGet(API_URI+"/inscriptionsUser/"+userId);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+          
+          } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING INSCRIPTIONS";
+    }
+  
+  public String getForumDocu() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=documentation");
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+          
+          } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING FORUM(DOCUMENTATION)";
+  }
+  
+  public String getForumEntre() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=entertainment");
         try {
             get.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
@@ -205,7 +303,38 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR IN GETTING INSCRIPTIONS";
+        return "ERROR IN GETTING FORUM(ENTERTAINMENT)";
     }
+  
+  public String getForumLang() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=language");
+
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "ERROR IN GETTING FORUM(LANGUAGE)";
+    }
+  
+  public String getForumOther() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=various");
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING FORUM(VARIOUS)";
+    }
+  
 
 }
