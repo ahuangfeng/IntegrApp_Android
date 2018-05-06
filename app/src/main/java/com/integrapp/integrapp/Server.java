@@ -113,6 +113,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "ERROR IN DELETING USER";
     }
 
@@ -145,6 +146,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "ERROR MODIFY PROFILE";
     }
 
@@ -159,6 +161,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "ERROR IN LIKE VOTE";
     }
 
@@ -175,4 +178,62 @@ class Server {
         }
         return "ERROR IN DISLIKE VOTE";
     }
+
+  
+  public String getForumDocu() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=documentation");
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING FORUM(DOCUMENTATION)";
+    }
+  
+  public String getForumEntre() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=entertainment");
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING FORUM(ENTERTAINMENT)";
+    }
+  
+  public String getForumLang() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=language");
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING FORUM(LANGUAGE)";
+    }
+  
+  public String getForumOther() {
+        HttpGet get = new HttpGet(API_URI+"/forums?type=various");
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING FORUM(VARIOUS)";
+    }
+  
 }
