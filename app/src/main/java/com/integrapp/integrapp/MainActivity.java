@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -40,13 +42,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        TextView headerName = header.findViewById(R.id.headerName);
+        TextView headerEmail = header.findViewById(R.id.headerEmail);
+
+        SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String name = preferences.getString("name", "name");
+        headerName.setText(name);
+        String email = preferences.getString("email", "email");
+        headerEmail.setText(email);
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }*/
+
+    @Override
+    public void onBackPressed(){
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -55,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.advert, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -86,7 +108,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_profile) {
             fragment = new ProfileFragment();
         } else if (id == R.id.nav_adverts) {
-            fragment = new AdvertsFragment();
+            //fragment = new AdvertsFragment();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            this.finish();
         } else if (id == R.id.nav_forum) {
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
@@ -109,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, fragment);
-
+            ft.addToBackStack(null);
             ft.commit();
         }
 

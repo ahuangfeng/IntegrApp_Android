@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_delete"
+        android:id="@+id/action_all"
         android:orderInCategory="100"
-        android:title="@string/action_delete"
+        android:title="@string/action_all"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_edit"
+        android:id="@+id/action_lookfor"
         android:orderInCategory="100"
-        android:title="@string/action_edit"
+        android:title="@string/action_lookfor"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_offer"
+        android:orderInCategory="100"
+        android:title="@string/action_offer"
         app:showAsAction="never" />
 </menu>

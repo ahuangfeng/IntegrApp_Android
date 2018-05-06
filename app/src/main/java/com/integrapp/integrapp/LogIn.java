@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,18 +87,82 @@ public class LogIn extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isLogged", true);
             editor.putString("username", userEditText.getText().toString());
+            editor.putString("password", passEditText.getText().toString());
             String token = getTokenResponse(s);
             server.token = token;
-            //System.out.println("TOKEN: " + token); //Per probar. Correcto!
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
+            editor.apply();
+
+            doServerCallForSaveInfoUser();//otra async task para obtener los datos del usuario
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void doServerCallForSaveInfoUser() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                String username = preferences.getString("username", "username");
+                return server.getUserInfoByUsername(username);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO USER")) {
+                    System.out.println("INFO USUARI RESPONSE: " +s);
+                    saveInfoUser(s);
+                }
+            }
+        }.execute();
+    }
+
+    private void saveInfoUser(String s) {
+        try {
+            JSONObject myJsonjObject = new JSONObject(s);
+            String idUser = myJsonjObject.getString("_id");
+            String username = myJsonjObject.getString("username");
+            String type = myJsonjObject.getString("type");
+            String name = myJsonjObject.getString("name");
+            String email = "No e-mail";
+            String phone = "No phone";
+            if(myJsonjObject.has("email")) {
+                email = myJsonjObject.getString("email");
+            }
+            if(myJsonjObject.has("phone")) {
+                phone = myJsonjObject.getString("phone");
+            }
+
+            String rate = myJsonjObject.getString("rate");
+            JSONObject myJsonRate = new JSONObject(rate);
+            int likes = myJsonRate.getInt("likes");
+            int dislikes = myJsonRate.getInt("dislikes");
+
+            JSONArray myJsonArrayAds = myJsonjObject.getJSONArray("adverts");
+
+            SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("idUser", idUser);
+            editor.putString("username", username);
+            editor.putString("type", type);
+            editor.putString("name", name);
+            editor.putString("email", email);
+            editor.putString("phone", phone);
+            editor.putInt("likes", likes);
+            editor.putInt("dislikes", dislikes);
+            editor.putInt("ads", myJsonArrayAds.length());
             editor.apply();
 
             Intent i = new Intent(LogIn.this, MainActivity.class);
             startActivity(i);
             finish();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

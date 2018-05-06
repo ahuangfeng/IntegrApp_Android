@@ -49,7 +49,7 @@ public class AdvertsAdapter extends BaseAdapter {
         TextView type = vista.findViewById(R.id.textViewType);
         TextView state = vista.findViewById(R.id.textViewState);
 
-        title.setText(objectList.get(i).getTitle().toString());
+        title.setText(objectList.get(i).getTitle());
         date.setText(objectList.get(i).getDate());
         description.setText(objectList.get(i).getDescription());
         places.setText(objectList.get(i).getPlaces());
