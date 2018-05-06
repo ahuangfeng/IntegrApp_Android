@@ -8,7 +8,9 @@
     <string name="action_edit">Edit</string>
     <string name="action_changePass">Change pass</string>
     <string name="action_modifyAdvertState">Modify State</string>
-
+    <string name="action_lookfor">Look for ads</string>
+    <string name="action_offer">Offer ads</string>
+    <string name="action_all">All ads</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>

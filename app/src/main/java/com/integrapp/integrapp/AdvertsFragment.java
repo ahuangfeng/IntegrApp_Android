@@ -14,6 +14,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AdvertsFragment extends Fragment {
 
@@ -35,11 +39,12 @@ public class AdvertsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.activity_advert, container, false);
 
         this.server = Server.getInstance();
 
-        getAllAdverts(); //Show adverts
+        getAllAdverts(""); //Show adverts
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +67,8 @@ public class AdvertsFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void getAllAdverts() {
+    private void getAllAdverts(String type) {
+        final String getType = type;
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -71,7 +77,7 @@ public class AdvertsFragment extends Fragment {
                 String token = preferences.getString("user_token", "user_token");
                 server.token = token; //por eso lo volemos a guardar en el server
                 System.out.println("TOKEN PREFERENCES: " + token);
-                return server.getAllAdverts();
+                return server.getAllAdverts(getType);
             }
 
             @Override
@@ -168,6 +174,40 @@ public class AdvertsFragment extends Fragment {
 
 
         return attributesAdd;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.filter_advert, menu);
+        menu.findItem(R.id.action_settings).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_lookfor) {
+            getAllAdverts("lookFor");
+            Toast.makeText(getActivity(), "Look for ads", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (id == R.id.action_offer) {
+            getAllAdverts("offer");
+            Toast.makeText(getActivity(), "Offer ads", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (id == R.id.action_all) {
+            getAllAdverts("");
+            Toast.makeText(getActivity(), "All ads", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
