@@ -98,7 +98,7 @@ public class SingleAdvertFragment extends Fragment {
 
         if (userData.getUsername().equals(usernamePreferences)) {
             type_advert = "owner";
-            inscriptionButton.setText(getString(R.string.manageInscriptions));
+            inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
             advertStatus = "owner";
         }
         else {
@@ -299,7 +299,7 @@ public class SingleAdvertFragment extends Fragment {
 
         } else if (id == R.id.action_edit) {
             setVisibility(true, View.VISIBLE);
-            button.setOnClickListener(new View.OnClickListener() {
+            inscriptionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -350,9 +350,9 @@ public class SingleAdvertFragment extends Fragment {
         textViewTitle.setText(title);
         textViewDescription.setText(description);
         String textPlaces = getString(R.string.places_advert) + ": " + places;
-        textViewPlaces.setText(textPlaces);
+        textViewPlaces.setText(places);
         String textDate = getString(R.string.expectedDate_advert) + ": " + date;
-        textViewDate.setText(textDate);
+        textViewDate.setText(date);
     }
 
     private void setAttributes() {
@@ -399,7 +399,7 @@ public class SingleAdvertFragment extends Fragment {
         viewPlaces.setVisibility(visibility);
         viewDate.setVisibility(visibility);
 
-        button.setText(R.string.wantItButton_editadvert);
+        inscriptionButton.setText(R.string.wantItButton_editadvert);
     }
 
     @SuppressLint("StaticFieldLeak")
