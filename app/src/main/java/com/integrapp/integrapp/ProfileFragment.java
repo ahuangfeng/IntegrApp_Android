@@ -374,25 +374,30 @@ public class ProfileFragment extends Fragment {
             saveProfileButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    String name = nameTextView.getText().toString();
+                    String username = usernameTextView.getText().toString();
+                    if (fieldsSaveProfileOk(name, username)) {
 
-                    builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            saveChanges(idUser);
-                        }
-                    });
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            setVisibility(false, View.INVISIBLE);
-                            undoChanges();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                        builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                saveChanges(idUser);
+                            }
+                        });
+
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setVisibility(false, View.INVISIBLE);
+                                undoChanges();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
                 }
             });
         }
@@ -417,7 +422,7 @@ public class ProfileFragment extends Fragment {
                     String newPass = newPassEditText.getText().toString();
                     String confirmPass = confirmNewPassEditText.getText().toString();
 
-                    if (fieldsOK(currentPass, newPass, confirmPass)) {
+                    if (fieldsChangePassOK(currentPass, newPass, confirmPass)) {
                         if (passwordsOk(currentPass, newPass, confirmPass)) {
                             saveChangePassword(idUser, newPass, dialog);
                         }
@@ -426,6 +431,22 @@ public class ProfileFragment extends Fragment {
             });
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean fieldsSaveProfileOk(String name, String username) {
+        boolean valid = true;
+
+        if (name.isEmpty()) {
+            nameTextView.setError(getString(R.string.error_changePassField_empty));
+            valid = false;
+        }
+
+        if (username.isEmpty()) {
+            usernameTextView.setError(getString(R.string.error_changePassField_empty));
+            valid = false;
+        }
+
+        return valid;
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -469,7 +490,7 @@ public class ProfileFragment extends Fragment {
         return true;
     }
 
-    private boolean fieldsOK(String currentPass, String newPass, String confirmPass) {
+    private boolean fieldsChangePassOK(String currentPass, String newPass, String confirmPass) {
         boolean valid = true;
 
         if (currentPass.isEmpty()) {
@@ -557,8 +578,14 @@ public class ProfileFragment extends Fragment {
         String type = typeUserTextView.getText().toString();
 
         /*Si el usuario quiere hacer el email o el phone no visible*/
-        if (email.isEmpty()) email = "No e-mail";
-        if (phone.isEmpty()) phone = "No phone";
+        if (email.isEmpty()) {
+            email = "No e-mail";
+            emailTextView.setText("No e-mail");
+        }
+        if (phone.isEmpty()) {
+            phone = "No phone";
+            phoneTextView.setText("No phone");
+        }
 
         editor.putString("username", username);
         editor.putString("name", name);
@@ -598,8 +625,8 @@ public class ProfileFragment extends Fragment {
             oJSON.put("username", username);
             oJSON.put("password", password);
             oJSON.put("name", name);
-            if (!email.isEmpty()) oJSON.put("email", email);
-            if (!phone.isEmpty()) oJSON.put("phone", phone);
+            if (!email.isEmpty() && !Objects.equals(email, "No e-mail")) oJSON.put("email", email);
+            if (!phone.isEmpty() && !Objects.equals(phone, "No phone")) oJSON.put("phone", phone);
             oJSON.put("type", type);
 
             return oJSON.toString(1);
