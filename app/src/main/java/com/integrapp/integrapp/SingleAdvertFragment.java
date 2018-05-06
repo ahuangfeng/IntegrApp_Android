@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,6 +41,10 @@ public class SingleAdvertFragment extends Fragment {
     private int image;
     private String type_advert;
     private String idAdvert;
+
+    private Button inscriptionButton;
+    private String personalUserId;
+
     private EditText textViewTitle;
     private EditText textViewDescription;
     private EditText textViewPlaces;
@@ -48,9 +54,6 @@ public class SingleAdvertFragment extends Fragment {
     private View viewPlaces;
     private View viewDate;
     private TextView textViewState;
-
-    private Button button;
-
 
     UserDataAdvertiser userData;
     private Server server;
@@ -72,7 +75,7 @@ public class SingleAdvertFragment extends Fragment {
         idAdvert = dataAdvert.getId();
         this.userData = userData;
 
-        System.out.println("Parametros: " + title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId);
+        System.out.println("Parametros: " +title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId + " " + idAdvert);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -83,6 +86,52 @@ public class SingleAdvertFragment extends Fragment {
         server = Server.getInstance();
         View view = inflater.inflate(R.layout.single_advert_fragment, container, false);
 
+        loadAdvertData(view);
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String usernamePreferences = preferences.getString("username", "username");
+        personalUserId = preferences.getString("idUser", "null");
+
+        inscriptionButton = view.findViewById(R.id.inscriptionButton);
+
+        final String advertStatus;
+
+        if (userData.getUsername().equals(usernamePreferences)) {
+            type_advert = "owner";
+            inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
+            advertStatus = "owner";
+        }
+        else {
+            type_advert = "other";
+            String userInscriptions = preferences.getString("inscriptions", "[]");
+            advertStatus = checkAdvertStatus(userInscriptions);
+            checkInscriptionStatus(advertStatus);
+        }
+
+        inscriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (advertStatus.equals("owner")) {
+                    // TODO: Manage inscriptions
+                    Toast.makeText(getActivity().getApplicationContext(), "Manage inscriptions", Toast.LENGTH_SHORT).show();
+                } else if (advertStatus.equals("canEnroll")) {
+                    doServerCallForCreateInscription();
+                }
+            }
+        });
+
+        Button profileButton = view.findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getInfoUser(userData.getUsername());
+            }
+        });
+
+        return view;
+    }
+
+    private void loadAdvertData(View view) {
         TextView textViewUsername = view.findViewById(R.id.textView_username);
         textViewTitle = view.findViewById(R.id.textView_title);
         textViewDescription = view.findViewById(R.id.textView_description);
@@ -99,31 +148,57 @@ public class SingleAdvertFragment extends Fragment {
         textViewState = view.findViewById(R.id.textViewState);
         textViewState.setText(state.toUpperCase());
 
-        button = view.findViewById(R.id.wantitButton);
-
         ImageView imageView = view.findViewById(R.id.image_view_anunci);
         imageView.setImageResource(image);
+    }
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-        String usernamePreferences = preferences.getString("username", "username");
-
-        if (userData.getUsername().equals(usernamePreferences)) {
-            type_advert = "owner";
-            button.setText(R.string.wantItButton_advertOwner);
+    private void checkInscriptionStatus(String advertStatus) {
+        inscriptionButton.setClickable(false);
+        switch (advertStatus) {
+            case "pending":
+                inscriptionButton.setText(getString(R.string.pendingButton_advert));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+                break;
+            case "canEnroll":
+                inscriptionButton.setText(getString(R.string.wantItButton_advert));
+                inscriptionButton.setClickable(true);
+                break;
+            case "refused":
+                inscriptionButton.setText(getString(R.string.refusedButton_advert));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_refused_button));
+                break;
+            case "completed":
+                inscriptionButton.setText(getString(R.string.completedButton_advert));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_completed_button));
+                break;
+            case "accepted":
+                inscriptionButton.setText(getString(R.string.acceptedButton_advert));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_accepted_button));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+                break;
+            default:
         }
-        else type_advert = "other";
+    }
 
-        /*TODO: Implementar "I want it!"*/
-
-        Button profileButton = view.findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getInfoUser(userData.getUsername());
+    private String checkAdvertStatus(String userInscriptions) {
+        try {
+            JSONArray myJSONArray = new JSONArray(userInscriptions);
+            System.out.println("QUE HAY AQUI COÑO ---- " + myJSONArray);
+            String advertId;
+            for (int i = 0; i < myJSONArray.length(); ++i) {
+                advertId = myJSONArray.getJSONObject(i).getString("advertId");
+                if (advertId.equals(idAdvert)) {
+                    return myJSONArray.getJSONObject(i).getString("status");
+                }
             }
-        });
 
-        return view;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+  
+        return "canEnroll";
+
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -224,7 +299,7 @@ public class SingleAdvertFragment extends Fragment {
 
         } else if (id == R.id.action_edit) {
             setVisibility(true, View.VISIBLE);
-            button.setOnClickListener(new View.OnClickListener() {
+            inscriptionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -271,10 +346,12 @@ public class SingleAdvertFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setEditableTexts() {
+    private void setEditableTexts() {   
         textViewTitle.setText(title);
         textViewDescription.setText(description);
+        String textPlaces = getString(R.string.places_advert) + ": " + places;
         textViewPlaces.setText(places);
+        String textDate = getString(R.string.expectedDate_advert) + ": " + date;
         textViewDate.setText(date);
     }
 
@@ -322,7 +399,7 @@ public class SingleAdvertFragment extends Fragment {
         viewPlaces.setVisibility(visibility);
         viewDate.setVisibility(visibility);
 
-        button.setText(R.string.wantItButton_editadvert);
+        inscriptionButton.setText(R.string.wantItButton_editadvert);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -400,11 +477,9 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             protected String doInBackground(Void... voids) {
                 System.out.print("myadvertid:"+id);
-
-
                 return server.modifyStateAdvertById(id, json);
             }
-
+          
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR CHANGE ADVERT STATE")) {
@@ -418,7 +493,7 @@ public class SingleAdvertFragment extends Fragment {
             }
         }.execute();
     }
-
+  
     public String generateRequestModifyStateAdvert() {
         String state_to;
         if (state == "opened") state_to = "closed";
@@ -439,6 +514,80 @@ public class SingleAdvertFragment extends Fragment {
         else state = "opened";
         textViewState.setText(state.toUpperCase());
         System.out.print("mystate "+state);
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void doServerCallForCreateInscription() {
+        try {
+            final String json = generateRequestInscription();
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.createInscriptionAdvert(json);
+                }
+              
+                @Override
+                protected void onPostExecute(String s) {
+                    System.out.println("SERVER RESPONSE: " + s);
+                    updateInscriptions(s);
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+  
+    private void updateInscriptions(String s) {
+        if(!s.equals("ERROR CREATING INSCRIPTION")) {
+            inscriptionButton.setText(getString(R.string.pendingButton_advert));
+            inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
+            inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+            doServerCallForSaveInscriptions(personalUserId);
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+  
+    @SuppressLint("StaticFieldLeak")
+    public void doServerCallForSaveInscriptions(String userId) {
+        final String idUser = userId;
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getInscriptionsByUserId(idUser);
+            }
+            
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
+                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
+                    saveInscriptions(s);
+                }
+            }
+        }.execute();
+    }
+
+    private void saveInscriptions(String inscriptions) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("inscriptions", inscriptions);
+        editor.apply();
+    }
+
+    private String generateRequestInscription() throws JSONException {
+        System.out.println("WHAAAAAAAAAAAAAAAAT: " + personalUserId + " " + idAdvert + " " + userId);
+        JSONObject oJSON = new JSONObject();
+
+        oJSON.put("userId", personalUserId);
+        oJSON.put("advertId", idAdvert);
+
+        return oJSON.toString(1);
     }
 
     @Override
