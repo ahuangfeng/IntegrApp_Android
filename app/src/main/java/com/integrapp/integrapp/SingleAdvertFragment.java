@@ -379,7 +379,7 @@ public class SingleAdvertFragment extends Fragment {
                     SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     int ads = preferences.getInt("ads", 0);
-                    editor.putInt("ads", ads+1);
+                    editor.putInt("ads", ads-1);
                     editor.apply();
 
                     Intent i = new Intent(SingleAdvertFragment.this.getActivity(), MainActivity.class);
