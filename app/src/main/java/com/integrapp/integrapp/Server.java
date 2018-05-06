@@ -245,6 +245,38 @@ class Server {
         return "ERROR IN DISLIKE VOTE";
     }
 
+
+    public String createInscriptionAdvert(String json) {
+        HttpPost post = new HttpPost(API_URI+"/inscription");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+          
+          } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR CREATING INSCRIPTION";
+    }
+  
+    public String getInscriptionsByUserId(String userId) {
+        HttpGet get = new HttpGet(API_URI+"/inscriptionsUser/"+userId);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+          
+          } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING INSCRIPTIONS";
+    }
   
   public String getForumDocu() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=documentation");
@@ -253,12 +285,12 @@ class Server {
             DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
-
-        } catch (IOException e) {
+          
+          } catch (IOException e) {
             e.printStackTrace();
         }
         return "ERROR IN GETTING FORUM(DOCUMENTATION)";
-    }
+  }
   
   public String getForumEntre() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=entertainment");
@@ -276,6 +308,7 @@ class Server {
   
   public String getForumLang() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=language");
+
         try {
             get.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
@@ -285,6 +318,7 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "ERROR IN GETTING FORUM(LANGUAGE)";
     }
   
@@ -302,4 +336,5 @@ class Server {
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
   
+
 }
