@@ -70,9 +70,12 @@ public class DocuFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 Toast.makeText(getActivity(), "Elemento "+ position+ " clickado", Toast.LENGTH_SHORT).show();
+
+                                ForumItem forumItem = threads.get(position);
+                                Fragment fragment = new SingleForumFragment(forumItem);
                                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                                ft.replace(R.id.screen_area, new SingleForumFragment());
+                                ft.replace(R.id.screen_area, fragment);
                                 ft.addToBackStack(null);
                                 ft.commit();
                             }
