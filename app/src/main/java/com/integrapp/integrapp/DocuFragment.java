@@ -1,13 +1,17 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -61,6 +65,18 @@ public class DocuFragment extends Fragment {
                         forumsAdapter = new ForumsAdapter(getContext(), threads);
                         llista.setAdapter(forumsAdapter);
                         forumsAdapter.notifyDataSetChanged();
+
+                        llista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Toast.makeText(getActivity(), "Elemento "+ position+ " clickado", Toast.LENGTH_SHORT).show();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction ft = fragmentManager.beginTransaction();
+                                ft.replace(R.id.screen_area, new SingleForumFragment());
+                                ft.addToBackStack(null);
+                                ft.commit();
+                            }
+                        });
 
                     } catch (JSONException e) {
                         e.printStackTrace();
