@@ -4,12 +4,86 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewProba"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="NUEVO FRAGMENT PARA UNA ENTRADA"
-        android:gravity="center"/>
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewUsernameForum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username"/>
+                    <Button
+                        android:id="@+id/profileButton"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_signup_button"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@string/profileButton_advert"
+                        android:textAllCaps="false"
+                        android:textColor="@color/whiteLetter"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewTitleForum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Este es el titulo del foro"/>
+
+                    <TextView
+                        android:id="@+id/textViewCreatedAtForum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2018-4-26 10:58:39"/>
+
+                    <TextView
+                        android:id="@+id/textViewDescriptionForum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lo mejor del caso es que hace un tiempo, en una mesa redonda de postín, se me ocurrió decir que eso de que el papel es para el análisis e internet para la digestión rápida de titulares era una convención sin fundamento, seguramente esgrimida por los ‘papeleros’ para defender su negociado. Claro, se me echaron encima. Pero, ¿cómo no va a servir internet para el análisis y la profundidad si, precisamente, no tiene límite? En internet uno puede acabar escribiendo todo lo largo que quiera. Como yo aquí, a pesar de los consejos de mis colegas."/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/commentButton"
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_signup_button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Comment"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteLetter"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
 
 </FrameLayout>

@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SingleForumFragment extends Fragment {
 
@@ -35,10 +37,32 @@ public class SingleForumFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.single_forum_fragment, container, false);
+        final View view = inflater.inflate(R.layout.single_forum_fragment, container, false);
 
-        TextView textView = view.findViewById(R.id.textViewProba);
-        textView.setText("Parametros pasados: "+id+" "+type+" "+title+" "+description+" "+createdAt+" "+userId+" "+rate);
+        Button profileButton = view.findViewById(R.id.profileButton);
+        Button commentButton = view.findViewById(R.id.commentButton);
+
+        TextView title = view.findViewById(R.id.textViewTitleForum);
+        TextView createdAt = view.findViewById(R.id.textViewCreatedAtForum);
+        TextView description = view.findViewById(R.id.textViewDescriptionForum);
+
+        title.setText(this.title);
+        createdAt.setText(this.createdAt);
+        description.setText(this.description);
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Boton perfil clickado", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Boton comment clickado", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }

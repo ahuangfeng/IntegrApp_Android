@@ -100,14 +100,13 @@ public class DocuFragment extends Fragment {
             JSONObject forum = new JSONObject(llistaForums.getString(i));
             String id = forum.getString("_id");
             String type = forum.getString("type");
-            String titol = forum.getString("title");
+            String title = forum.getString("title");
             String description = forum.getString("description");
             String createdAt = forum.getString("createdAt");
             String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
 
-            System.out.println("ID FORUM: " + id + " userId Forum: "+userId);
-            ForumItem item = new ForumItem(id, type, titol, description, createdAt, userId, rate);
+            ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate);
             threads.add(item);
         }
     }
