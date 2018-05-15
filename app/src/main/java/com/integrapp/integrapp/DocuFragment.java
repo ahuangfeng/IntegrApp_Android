@@ -94,16 +94,13 @@ public class DocuFragment extends Fragment {
 
         for (int i=0; i<llistaForums.length(); ++i) {
             JSONObject forum = new JSONObject(llistaForums.getString(i));
-            //Long id = forum.getLong("_id");
+            String id = forum.getString("_id");
             String type = forum.getString("type");
             String titol = forum.getString("title");
             String description = forum.getString("description");
             String createdAt = forum.getString("createdAt");
-            //Long userId = forum.getLong("userId");
+            String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
-
-            Long id = 0L;
-            Long userId = 1L;
 
             ForumItem item = new ForumItem(id, type, titol, description, createdAt, userId, rate);
             threads.add(item);

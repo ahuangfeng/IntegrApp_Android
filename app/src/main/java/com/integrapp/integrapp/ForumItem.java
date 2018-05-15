@@ -2,15 +2,15 @@ package com.integrapp.integrapp;
 
 public class ForumItem {
 
-    private long id;
+    private String id;
     private String type;
     private String title;
     private String description;
     private String createdAt;
-    private long userId;
+    private String userId;
     private float rate;
 
-    public ForumItem (long id, String type, String title, String description, String createdAt, long userId, float rate) {
+    public ForumItem (String id, String type, String title, String description, String createdAt, String userId, float rate) {
         this.id = id;
         this.type = type;
         this.title = title;
@@ -24,7 +24,7 @@ public class ForumItem {
         return type;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -40,7 +40,7 @@ public class ForumItem {
         return createdAt;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
