@@ -53,7 +53,7 @@ public class ForumFragment extends Fragment {
         adapter.addFragment(docu, "DOCUMENTATION");
         adapter.addFragment(lang, "LANGUAGES");
         adapter.addFragment(entre, "ENTERTAINMENT");
-        adapter.addFragment(other, "OTHER");
+        adapter.addFragment(other, "VARIOUS");
         viewPager.setAdapter(adapter);
         System.out.print("NOMBRE DE FRAGMENTS: ");
         System.out.println(adapter.getCount());
