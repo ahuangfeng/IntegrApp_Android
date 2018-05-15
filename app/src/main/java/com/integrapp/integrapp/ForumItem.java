@@ -9,6 +9,7 @@ public class ForumItem {
     private String createdAt;
     private long userId;
     private float rate;
+    private int total;
 
     public ForumItem (long id, String type, String title, String description, String createdAt, long userId, float rate) {
         this.id = id;
@@ -17,7 +18,7 @@ public class ForumItem {
         this.description = description;
         this.createdAt = createdAt;
         this.userId = userId;
-        this.rate = rate;
+        this.rate = 4.5f;
     }
 
     public String getType() {
@@ -42,6 +43,11 @@ public class ForumItem {
 
     public long getUserId() {
         return userId;
+    }
+
+    public void vote(int rate) {
+        total = total+1;
+        this.rate = (this.rate + rate)/total;
     }
 
     public float getRate() {

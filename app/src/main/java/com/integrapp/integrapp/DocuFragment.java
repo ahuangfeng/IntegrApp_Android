@@ -4,11 +4,15 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -23,6 +27,7 @@ public class DocuFragment extends Fragment {
     private ArrayList<ForumItem> threads = new ArrayList<>();
     private ListView llista;
     private ForumsAdapter forumsAdapter;
+    private FloatingActionButton fab;
 
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +37,20 @@ public class DocuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forum_docu, container, false);
+        fab = view.findViewById(R.id.fab);
         this.server = Server.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.screen_area, new NewForumFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
         return view;
     }
 
@@ -94,4 +109,5 @@ public class DocuFragment extends Fragment {
             threads.add(item);
         }
     }
+
 }
