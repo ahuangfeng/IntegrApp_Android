@@ -104,8 +104,9 @@ public class LangFragment extends android.support.v4.app.Fragment {
             String createdAt = forum.getString("createdAt");
             String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
+            String user = forum.getString("user");
 
-            ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate);
+            ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate, user);
             threads.add(item);
         }
     }

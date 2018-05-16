@@ -36,7 +36,7 @@ public class UserDataAdvertiser {
             this.idUser = myJsonjObject.getString("_id");
             this.username = myJsonjObject.getString("username");
             this.name = myJsonjObject.getString("name");
-            this.type = "voluntary";
+            this.type = myJsonjObject.getString("type");;
 
             if(myJsonjObject.has("email")) {
                 this.email = myJsonjObject.getString("email");

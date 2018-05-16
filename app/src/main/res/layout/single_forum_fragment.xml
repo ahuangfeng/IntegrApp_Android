@@ -41,10 +41,9 @@
                         tools:ignore="RtlSymmetry">
 
                         <TextView
-                            android:id="@+id/textView_username"
+                            android:id="@+id/textViewUsernameForum"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Username"
                             android:textSize="20sp"
                             android:textStyle="bold"/>
                         <Button
@@ -77,7 +76,6 @@
                         android:id="@+id/textViewTitleForum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Este es el titulo del foro"
                         android:textSize="20sp"
                         android:textStyle="bold"/>
 
@@ -85,7 +83,6 @@
                         android:id="@+id/textViewCreatedAtForum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2018-4-26 10:58:39"
                         android:textColor="#0014cc"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"/>
@@ -113,7 +110,7 @@
                     android:background="@drawable/background_signup_button"
                     android:clickable="true"
                     android:focusable="true"
-                    android:text="Comment"
+                    android:text="@string/commentButton_forum"
                     android:textAllCaps="false"
                     android:textColor="@color/whiteLetter"
                     android:layout_marginTop="10dp"

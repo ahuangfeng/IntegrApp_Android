@@ -134,6 +134,9 @@
     <string name="confirm_pass">Confirm new password</string>
     <string name="changePass_button">Change</string>
 
+    <!-- Strings of SingleForum fragment-->
+    <string name="commentButton_forum">Comment</string>
+
     <!-- Server errors-->
 
     <!-- Array for the spinner of user types-->
