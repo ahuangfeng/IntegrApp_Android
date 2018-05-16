@@ -1,13 +1,17 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -62,6 +66,21 @@ public class DocuFragment extends Fragment {
                         llista.setAdapter(forumsAdapter);
                         forumsAdapter.notifyDataSetChanged();
 
+                        llista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Toast.makeText(getActivity(), "Elemento "+ position+ " clickado", Toast.LENGTH_SHORT).show();
+
+                                ForumItem forumItem = threads.get(position);
+                                Fragment fragment = new SingleForumFragment(forumItem);
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction ft = fragmentManager.beginTransaction();
+                                ft.replace(R.id.screen_area, fragment);
+                                ft.addToBackStack(null);
+                                ft.commit();
+                            }
+                        });
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -79,18 +98,16 @@ public class DocuFragment extends Fragment {
 
         for (int i=0; i<llistaForums.length(); ++i) {
             JSONObject forum = new JSONObject(llistaForums.getString(i));
-            //Long id = forum.getLong("_id");
+            String id = forum.getString("_id");
             String type = forum.getString("type");
-            String titol = forum.getString("title");
+            String title = forum.getString("title");
             String description = forum.getString("description");
             String createdAt = forum.getString("createdAt");
-            //Long userId = forum.getLong("userId");
+            String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
+            String user = forum.getString("user");
 
-            Long id = 0L;
-            Long userId = 1L;
-
-            ForumItem item = new ForumItem(id, type, titol, description, createdAt, userId, rate);
+            ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate, user);
             threads.add(item);
         }
     }
