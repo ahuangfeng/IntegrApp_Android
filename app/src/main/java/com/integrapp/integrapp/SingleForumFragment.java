@@ -3,6 +3,8 @@ package com.integrapp.integrapp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class SingleForumFragment extends Fragment {
 
@@ -30,11 +35,12 @@ public class SingleForumFragment extends Fragment {
     private float rate;
     UserDataAdvertiser user;
     private Server server;
+    private List<DataComment> comments;
 
     public SingleForumFragment () {}
 
     @SuppressLint("ValidFragment")
-    public SingleForumFragment(ForumItem forumItem) {
+    public SingleForumFragment(ForumItem forumItem, List<DataComment> comments) {
         this.id = forumItem.getId();
         this.type = forumItem.getType();
         this.title = forumItem.getTitle();
@@ -43,6 +49,7 @@ public class SingleForumFragment extends Fragment {
         this.userId = forumItem.getUserId();
         this.rate = forumItem.getRate();
         this.user = forumItem.getUser();
+        this.comments = comments;
     }
 
     @Nullable
@@ -64,6 +71,8 @@ public class SingleForumFragment extends Fragment {
         createdAt.setText(this.createdAt);
         description.setText(this.description);
 
+        showComments(view);
+
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +88,42 @@ public class SingleForumFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void showComments(View view) {
+        LinearLayout commentLayout = view.findViewById(R.id.layoutComments);
+        commentLayout.removeAllViews();
+
+        for (int i = 0; i < comments.size(); ++i) {
+            LinearLayout commentItem = new LinearLayout(getActivity());
+            commentItem.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0,0, 0, 20);
+            commentItem.setLayoutParams(layoutParams);
+
+            TextView commentUsername = new TextView(getActivity());
+            commentUsername.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            commentUsername.setText(comments.get(i).getUsername());
+            commentUsername.setTextSize(15);
+            commentUsername.setTypeface(commentUsername.getTypeface(), Typeface.BOLD);
+            commentItem.addView(commentUsername);
+
+            TextView commentDate = new TextView(getActivity());
+            commentDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            commentDate.setText(comments.get(i).getCreatedAt());
+            commentDate.setTextSize(12);
+            commentDate.setTextColor(Color.BLUE);
+            commentItem.addView(commentDate);
+
+            TextView commentContent = new TextView(getActivity());
+            commentContent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            commentContent.setText(comments.get(i).getContent());
+            commentContent.setTextSize(15);
+            commentItem.addView(commentContent);
+
+
+            commentLayout.addView(commentItem);
+        }
     }
 
     @SuppressLint("StaticFieldLeak")

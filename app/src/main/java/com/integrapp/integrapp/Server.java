@@ -363,6 +363,19 @@ class Server {
         }
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
-  
 
+
+    public String getCommentsForum(String id) {
+        HttpGet get = new HttpGet(API_URI+"/fullForum/"+id);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING COMMENTS FORUM";
+    }
 }
