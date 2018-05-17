@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_forum) {
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
-            Toast.makeText(getApplicationContext(), "Function Chats not implemented", Toast.LENGTH_SHORT).show();
+            fragment = new MainChatsFragment();
         } else if (id == R.id.nav_settings) {
             Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_aboutUs) {

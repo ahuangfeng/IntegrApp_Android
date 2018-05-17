@@ -365,7 +365,6 @@ class Server {
     }
 
     public String PostNewForum(String json) {
-        System.out.println(json);
         HttpPost post = new HttpPost(API_URI+"/forum");
         try {
             StringEntity entity = new StringEntity(json);
@@ -382,4 +381,19 @@ class Server {
         }
         return "ERROR CREATING FORUM";
     }
+
+    public String getUsers() {
+        HttpGet get = new HttpGet(API_URI+"/users");
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING ALL USERS";
+    }
+
 }
