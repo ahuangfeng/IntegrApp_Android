@@ -363,6 +363,38 @@ class Server {
         }
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
+  
+    public String getCommentsForum(String id) {
+      HttpGet get = new HttpGet(API_URI+"/fullForum/"+id);
+      try {
+          get.setHeader("x-access-token", token);
+          DefaultHttpClient client = new DefaultHttpClient();
+          BasicResponseHandler handler = new BasicResponseHandler();
+          return client.execute(get, handler);
+
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+      return "ERROR IN GETTING COMMENTS FORUM";
+  }
+  
+      public String createCommentForum(String json) {
+        HttpPost post = new HttpPost(API_URI+"/commentForum");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN COMMENTING FORUM";
+    }
 
     public String PostNewForum(String json) {
         System.out.println(json);
@@ -372,7 +404,7 @@ class Server {
             post.setEntity(entity);
             post.setHeader("x-access-token", token);
             post.setHeader("Content-Type", "application/json");
-
+          
             DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
@@ -380,6 +412,21 @@ class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR CREATING FORUM";
+      return "ERROR CREATING FORUM";
+    }
+
+    public String deleteCommentById(String id) {
+        HttpDelete delete = new HttpDelete(API_URI+"/commentForum/"+id);
+        try {
+            delete.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(delete, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "ERROR IN DELETING COMMENT";
     }
 }
