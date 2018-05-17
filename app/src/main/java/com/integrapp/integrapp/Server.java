@@ -378,4 +378,22 @@ class Server {
         }
         return "ERROR IN GETTING COMMENTS FORUM";
     }
+
+    public String createCommentForum(String json) {
+        HttpPost post = new HttpPost(API_URI+"/commentForum");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN COMMENTING FORUM";
+    }
 }

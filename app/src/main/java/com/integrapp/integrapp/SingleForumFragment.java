@@ -30,7 +30,7 @@ import java.util.Objects;
 
 public class SingleForumFragment extends Fragment {
 
-    private String id;
+    private String idForum;
     private String type;
     private String title;
     private String description;
@@ -41,11 +41,15 @@ public class SingleForumFragment extends Fragment {
     private Server server;
     private List<DataComment> comments;
 
+    private TextView commentTextView;
+    private TextInputLayout textInputLayout;
+    private Button commentButton;
+
     public SingleForumFragment () {}
 
     @SuppressLint("ValidFragment")
     public SingleForumFragment(ForumItem forumItem, List<DataComment> comments) {
-        this.id = forumItem.getId();
+        this.idForum = forumItem.getId();
         this.type = forumItem.getType();
         this.title = forumItem.getTitle();
         this.description = forumItem.getDescription();
@@ -63,7 +67,7 @@ public class SingleForumFragment extends Fragment {
         server = Server.getInstance();
 
         Button profileButton = view.findViewById(R.id.profileButton);
-        final Button commentButton = view.findViewById(R.id.commentButton);
+        commentButton = view.findViewById(R.id.commentButton);
 
         TextView username = view.findViewById(R.id.textViewUsernameForum);
         TextView title = view.findViewById(R.id.textViewTitleForum);
@@ -88,27 +92,106 @@ public class SingleForumFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                TextInputLayout textInputLayout = view.findViewById(R.id.textInputLayoutComment);
+                textInputLayout = view.findViewById(R.id.textInputLayoutComment);
                 if (Objects.equals(commentButton.getText().toString(), getString(R.string.commentButton_forum))) {
                     textInputLayout.setVisibility(View.VISIBLE);
-                    final ScrollView scrollView = view.findViewById(R.id.scrollViewComment);
                     commentButton.setText(getString(R.string.postCommentButton_forum));
-
-                    scrollView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                        }
-                    });
+                    scrollView(view, ScrollView.FOCUS_DOWN);
                 }
                 else {
-                    textInputLayout.setVisibility(View.GONE);
-                    commentButton.setText(getString(R.string.commentButton_forum));
+                    commentTextView = view.findViewById(R.id.contentCommentEditText);
+                    String comment = commentTextView.getText().toString();
+                    if (checkContentCommentField(comment)) {
+                        createComment(comment);
+                    }
                 }
             }
         });
 
         return view;
+    }
+
+    private void scrollView(View view, final int focus) {
+        final ScrollView scrollView = view.findViewById(R.id.scrollViewComment);
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(focus);
+            }
+        });
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void createComment(String comment) {
+        final String json = generateRequestCreateComment(comment);
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.createCommentForum(json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN COMMENTING FORUM")) {
+                    System.out.println("COMMENT FORUM " +s);
+                    showNewComment(s);
+                    Toast.makeText(getContext(), "Comment created correctly", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private void showNewComment(String s) {
+        try {
+            JSONObject myJsonObject = new JSONObject(s);
+            String idComment = myJsonObject.getString("_id");
+            String userId = myJsonObject.getString("userId");
+            String username = myJsonObject.getString("username");
+            String createdAt = myJsonObject.getString("createdAt");
+            String content = myJsonObject.getString("content");
+            String forumId = myJsonObject.getString("forumId");
+
+            DataComment newComment = new DataComment(idComment, userId, username, createdAt, content, forumId);
+            comments.add(0, newComment);
+
+            commentButton.setText(getString(R.string.commentButton_forum));
+            textInputLayout.setVisibility(View.GONE);
+            commentTextView.setText("");
+
+            showComments(getView());
+            scrollView(getView(), ScrollView.FOCUS_UP);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateRequestCreateComment(String comment) {
+
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("forumId", this.idForum);
+            oJSON.put("content", comment);
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean checkContentCommentField(String comment) {
+        boolean valid = true;
+
+        if (comment.isEmpty()) {
+            commentTextView.setError(getString(R.string.error_changePassField_empty));
+            valid = false;
+        }
+
+        return valid;
     }
 
     private void showComments(View view) {
