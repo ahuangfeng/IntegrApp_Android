@@ -10,7 +10,7 @@ public class ForumItem {
     private String userId;
     private float rate;
 
-    public ForumItem (String id, String type, String title, String description, String createdAt, String userId, float rate) {
+    public ForumItem(String id, String type, String title, String description, String createdAt, String userId, float rate) {
         this.id = id;
         this.type = type;
         this.title = title;
