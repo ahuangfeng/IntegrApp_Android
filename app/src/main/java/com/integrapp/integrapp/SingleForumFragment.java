@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SingleForumFragment extends Fragment {
 
@@ -95,34 +97,56 @@ public class SingleForumFragment extends Fragment {
         commentLayout.removeAllViews();
 
         for (int i = 0; i < comments.size(); ++i) {
-            LinearLayout commentItem = new LinearLayout(getActivity());
-            commentItem.setOrientation(LinearLayout.VERTICAL);
+
+            LinearLayout horizontalLayout = new LinearLayout(getActivity());
+            horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0,0, 0, 20);
-            commentItem.setLayoutParams(layoutParams);
+            horizontalLayout.setLayoutParams(layoutParams);
+
+            LinearLayout commentItemVertical = new LinearLayout(getActivity());
+            commentItemVertical.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(575, LinearLayout.LayoutParams.WRAP_CONTENT);
+            commentItemVertical.setLayoutParams(layoutParams2);
 
             TextView commentUsername = new TextView(getActivity());
             commentUsername.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             commentUsername.setText(comments.get(i).getUsername());
             commentUsername.setTextSize(15);
             commentUsername.setTypeface(commentUsername.getTypeface(), Typeface.BOLD);
-            commentItem.addView(commentUsername);
+            commentItemVertical.addView(commentUsername);
 
             TextView commentDate = new TextView(getActivity());
             commentDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             commentDate.setText(comments.get(i).getCreatedAt());
             commentDate.setTextSize(12);
             commentDate.setTextColor(Color.BLUE);
-            commentItem.addView(commentDate);
+            commentItemVertical.addView(commentDate);
 
             TextView commentContent = new TextView(getActivity());
             commentContent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             commentContent.setText(comments.get(i).getContent());
             commentContent.setTextSize(15);
-            commentItem.addView(commentContent);
+            commentItemVertical.addView(commentContent);
 
 
-            commentLayout.addView(commentItem);
+            horizontalLayout.addView(commentItemVertical);
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            String userPref = preferences.getString("username", "username");
+
+            /*Solo mostramos la opcion de eliminar un comentario si:
+            *   - El usuario logueado es el mismo usuario que ha comentado*/
+            if (Objects.equals(userPref, comments.get(i).getUsername())) {
+                ImageButton imageButton = new ImageButton(getActivity());
+                imageButton.setBackground(getResources().getDrawable(R.drawable.baseline_remove_circle_black_18));
+                LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams3.setMargins(0,20, 0, 0);
+                imageButton.setLayoutParams(layoutParams3);
+
+                horizontalLayout.addView(imageButton);
+            }
+            commentLayout.addView(horizontalLayout);
         }
     }
 
