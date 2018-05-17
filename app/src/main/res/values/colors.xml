@@ -3,7 +3,7 @@
     <color name="colorPrimaryAux">#666565</color>
     <color name="colorPrimary">#273238</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ff4081</color>
     <color name="whiteLetter">#ffffff</color>
     <color name="colorLikes">#1ee168</color>
     <color name="colorDisLikes">#f22734</color>
