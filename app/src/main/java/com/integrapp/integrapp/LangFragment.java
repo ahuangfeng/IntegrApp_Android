@@ -38,7 +38,6 @@ public class LangFragment extends android.support.v4.app.Fragment {
         this.server = Server.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
-
         return view;
     }
 
@@ -105,6 +104,10 @@ public class LangFragment extends android.support.v4.app.Fragment {
             String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
             String user = forum.getString("user");
+
+            if (description.length()> 48) {
+                description = description.substring(0,48) + "...";
+            }
 
             ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate, user);
             threads.add(item);

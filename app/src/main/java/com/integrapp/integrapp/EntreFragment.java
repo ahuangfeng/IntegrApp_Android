@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -38,7 +39,6 @@ public class EntreFragment extends android.support.v4.app.Fragment {
         this.server = Server.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
-
         return view;
     }
 
@@ -106,7 +106,12 @@ public class EntreFragment extends android.support.v4.app.Fragment {
             float rate = (float) forum.getDouble("rate");
             String user = forum.getString("user");
 
+            if (description.length()> 48) {
+                description = description.substring(0,48) + "...";
+            }
+
             ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate, user);
+
             threads.add(item);
         }
     }

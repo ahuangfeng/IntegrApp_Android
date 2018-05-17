@@ -9,7 +9,6 @@ public class ForumItem {
     private String createdAt;
     private String userId;
     private float rate;
-
     private UserDataAdvertiser user;
 
     public ForumItem (String id, String type, String title, String description, String createdAt, String userId, float rate, String userObject) {

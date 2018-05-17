@@ -20,9 +20,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by Laura on 26/04/2018.
- */
 
 public class OtherFragment extends android.support.v4.app.Fragment {
 
@@ -42,7 +39,6 @@ public class OtherFragment extends android.support.v4.app.Fragment {
         this.server = Server.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
-
         return view;
     }
 
@@ -109,6 +105,11 @@ public class OtherFragment extends android.support.v4.app.Fragment {
             String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
             String user = forum.getString("user");
+
+
+            if (description.length()> 48) {
+                description = description.substring(0,48) + "...";
+            }
 
             ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate, user);
             threads.add(item);

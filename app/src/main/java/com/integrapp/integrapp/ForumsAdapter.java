@@ -65,7 +65,6 @@ public class ForumsAdapter extends BaseAdapter{
         description.setText(threads.get(position).getDescription());
         createdAt.setText(threads.get(position).getCreatedAt());
         rate.setRating(threads.get(position).getRate());
-
         return vista;
     }
 }
