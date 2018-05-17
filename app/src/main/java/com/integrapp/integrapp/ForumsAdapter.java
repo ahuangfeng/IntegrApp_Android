@@ -62,7 +62,13 @@ public class ForumsAdapter extends BaseAdapter{
         RatingBar rate = vista.findViewById(R.id.thread_rating);
 
         title.setText(threads.get(position).getTitle());
-        description.setText(threads.get(position).getDescription());
+
+        if (threads.get(position).getMiniDescription().length()>0) {
+            description.setText(threads.get(position).getMiniDescription());
+        }
+        else {
+            description.setText(threads.get(position).getDescription());
+        }
         createdAt.setText(threads.get(position).getCreatedAt());
         rate.setRating(threads.get(position).getRate());
         return vista;

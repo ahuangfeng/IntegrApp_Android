@@ -105,11 +105,13 @@ public class LangFragment extends android.support.v4.app.Fragment {
             float rate = (float) forum.getDouble("rate");
             String user = forum.getString("user");
 
-            if (description.length()> 48) {
-                description = description.substring(0,48) + "...";
-            }
+            String miniDescription = "";
 
-            ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate, user);
+            if (description.length()> 48) {
+                miniDescription = description.substring(0,48) + "...";
+            }
+            ForumItem item = new ForumItem(id, type, title, description, miniDescription, createdAt, userId, rate, user);
+
             threads.add(item);
         }
     }
