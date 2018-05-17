@@ -306,7 +306,7 @@ class Server {
         return "ERROR IN GETTING INSCRIPTIONS";
     }
   
-  public String getForumDocu() {
+    public String getForumDocu() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=documentation");
         try {
             get.setHeader("x-access-token", token);
@@ -318,9 +318,9 @@ class Server {
             e.printStackTrace();
         }
         return "ERROR IN GETTING FORUM(DOCUMENTATION)";
-  }
+    }
   
-  public String getForumEntre() {
+    public String getForumEntre() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=entertainment");
         try {
             get.setHeader("x-access-token", token);
@@ -334,7 +334,7 @@ class Server {
         return "ERROR IN GETTING FORUM(ENTERTAINMENT)";
     }
   
-  public String getForumLang() {
+    public String getForumLang() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=language");
 
         try {
@@ -350,7 +350,7 @@ class Server {
         return "ERROR IN GETTING FORUM(LANGUAGE)";
     }
   
-  public String getForumOther() {
+    public String getForumOther() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=various");
         try {
             get.setHeader("x-access-token", token);
@@ -363,22 +363,22 @@ class Server {
         }
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
-  
-    public String getCommentsForum(String id) {
-      HttpGet get = new HttpGet(API_URI+"/fullForum/"+id);
-      try {
-          get.setHeader("x-access-token", token);
-          DefaultHttpClient client = new DefaultHttpClient();
-          BasicResponseHandler handler = new BasicResponseHandler();
-          return client.execute(get, handler);
 
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      return "ERROR IN GETTING COMMENTS FORUM";
-  }
+    public String getCommentsForum(String id) {
+        HttpGet get = new HttpGet(API_URI+"/fullForum/"+id);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING COMMENTS FORUM";
+    }
   
-      public String createCommentForum(String json) {
+    public String createCommentForum(String json) {
         HttpPost post = new HttpPost(API_URI+"/commentForum");
         try {
             StringEntity entity = new StringEntity(json);

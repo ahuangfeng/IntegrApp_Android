@@ -46,6 +46,7 @@ public class SingleForumFragment extends Fragment {
     private TextView commentTextView;
     private TextInputLayout textInputLayout;
     private Button commentButton;
+    private View viewFinishComments;
 
     public SingleForumFragment () {}
 
@@ -199,6 +200,10 @@ public class SingleForumFragment extends Fragment {
     private void showComments(View view) {
         LinearLayout commentLayout = view.findViewById(R.id.layoutComments);
         commentLayout.removeAllViews();
+
+        viewFinishComments = view.findViewById(R.id.viewFinishComments);
+        if (comments.isEmpty()) viewFinishComments.setVisibility(View.GONE);
+        else viewFinishComments.setVisibility(View.VISIBLE);
 
         for (int i = 0; i < comments.size(); ++i) {
 
