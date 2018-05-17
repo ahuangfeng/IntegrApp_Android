@@ -45,7 +45,8 @@ public class ForumsAdapter extends BaseAdapter{
 
     @Override
     public long getItemId(int position) {
-        return threads.get(position).getId();
+        //return threads.get(position).getId();
+        return 0;
     }
 
     @SuppressLint("ViewHolder")

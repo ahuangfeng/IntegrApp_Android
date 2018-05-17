@@ -29,7 +29,6 @@ public class OtherFragment extends android.support.v4.app.Fragment {
     private ArrayList<ForumItem> threads = new ArrayList<>();
     private ListView llista;
     private ForumsAdapter forumsAdapter;
-    private FloatingActionButton fab;
 
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +39,8 @@ public class OtherFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forum_other, container, false);
         this.server = Server.getInstance();
-        fab = view.findViewById(R.id.fab);
         llista = view.findViewById(R.id.llista);
         setInfoForum();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.screen_area, new NewForumFragment());
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
         return view;
     }
 
