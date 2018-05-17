@@ -70,7 +70,5 @@ public class ForumFragment extends Fragment {
         adapter.addFragment(entre, "ENTERTAINMENT");
         adapter.addFragment(other, "VARIOUS");
         viewPager.setAdapter(adapter);
-        System.out.print("NOMBRE DE FRAGMENTS: ");
-        System.out.println(adapter.getCount());
     }
 }

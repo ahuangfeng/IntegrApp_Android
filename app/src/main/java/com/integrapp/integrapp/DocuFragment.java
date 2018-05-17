@@ -90,6 +90,10 @@ public class DocuFragment extends Fragment {
             String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
 
+            if (description.length()> 48) {
+                description = description.substring(0,48) + "...";
+            }
+
             ForumItem item = new ForumItem(id, type, titol, description, createdAt, userId, rate);
             threads.add(item);
         }
