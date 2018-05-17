@@ -6,16 +6,18 @@ public class ForumItem {
     private String type;
     private String title;
     private String description;
+    private String miniDescription;
     private String createdAt;
     private String userId;
     private float rate;
     private UserDataAdvertiser user;
 
-    public ForumItem (String id, String type, String title, String description, String createdAt, String userId, float rate, String userObject) {
+    public ForumItem (String id, String type, String title, String description, String miniDescription, String createdAt, String userId, float rate, String userObject) {
         this.id = id;
         this.type = type;
         this.title = title;
         this.description = description;
+        this.miniDescription = miniDescription;
         this.createdAt = createdAt;
         this.userId = userId;
         this.rate = rate;
@@ -37,6 +39,8 @@ public class ForumItem {
     public String getDescription() {
         return description;
     }
+
+    public String getMiniDescription() { return miniDescription; }
 
     public String getCreatedAt() {
         return createdAt;
