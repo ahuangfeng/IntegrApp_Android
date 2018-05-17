@@ -137,6 +137,8 @@
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comment</string>
     <string name="postCommentButton_forum">Post</string>
+    <string name="dialog_delete_comment">Are you sure you want to delete the comment?</string>
+    <string name="tittle_dialogDeleteComment">Comment will be deleted</string>
 
     <!-- Server errors-->
 

@@ -396,4 +396,19 @@ class Server {
         }
         return "ERROR IN COMMENTING FORUM";
     }
+
+    public String deleteCommentById(String id) {
+        HttpDelete delete = new HttpDelete(API_URI+"/commentForum/"+id);
+        try {
+            delete.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(delete, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "ERROR IN DELETING COMMENT";
+    }
 }

@@ -2,6 +2,7 @@ package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,10 +248,61 @@ public class SingleForumFragment extends Fragment {
                 layoutParams3.setMargins(0,20, 0, 0);
                 imageButton.setLayoutParams(layoutParams3);
 
+                final int finalI = i;
+                imageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                        builder.setMessage(R.string.dialog_delete_comment).setTitle(R.string.tittle_dialogDeleteComment);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteCommentById(comments.get(finalI).getId(), finalI);
+                            }
+                        });
+
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
+
                 horizontalLayout.addView(imageButton);
             }
             commentLayout.addView(horizontalLayout);
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void deleteCommentById(final String id, final int index) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.deleteCommentById(id);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN DELETING COMMENT")) {
+                    System.out.println("DELETE COMMENT RESPONSE: " +s);
+                    comments.remove(index);
+                    showComments(getView());
+                    Toast.makeText(getContext(), "Comment deleted successfully", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
