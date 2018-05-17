@@ -9,8 +9,9 @@ public class ForumItem {
     private String createdAt;
     private String userId;
     private float rate;
+    private UserDataAdvertiser user;
 
-    public ForumItem(String id, String type, String title, String description, String createdAt, String userId, float rate) {
+    public ForumItem (String id, String type, String title, String description, String createdAt, String userId, float rate, String userObject) {
         this.id = id;
         this.type = type;
         this.title = title;
@@ -18,6 +19,7 @@ public class ForumItem {
         this.createdAt = createdAt;
         this.userId = userId;
         this.rate = rate;
+        this.user = new UserDataAdvertiser(userObject);
     }
 
     public String getType() {
@@ -46,5 +48,13 @@ public class ForumItem {
 
     public float getRate() {
         return rate;
+    }
+
+    public UserDataAdvertiser getUser() {
+        return user;
+    }
+
+    public void setUser(UserDataAdvertiser user) {
+        this.user = user;
     }
 }

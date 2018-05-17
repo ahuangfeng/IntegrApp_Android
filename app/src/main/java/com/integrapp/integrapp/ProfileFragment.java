@@ -133,6 +133,7 @@ public class ProfileFragment extends Fragment {
         else {
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
             final String username = preferences.getString("username", "username");
+            final String idUser = preferences.getString("idUser", "idUser");
             String name = preferences.getString("name", "name");
             String type = preferences.getString("type", "type");
             String email = preferences.getString("email", "email");
@@ -149,43 +150,11 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
-                    getIdByUsername(username);
+                    showUserAdverts(idUser);
                 }
             });
         }
       return view;
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void getIdByUsername(final String username) {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                return server.getUserInfoByUsername(username);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
-                    getIdUser(s);
-                }
-                else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-       }.execute();
-    }
-
-    private void getIdUser(String s) {
-        try {
-            JSONObject myJsonjObject = new JSONObject(s);
-            String id = myJsonjObject.getString("_id");
-            System.out.print("myuserid"+id);
-            showUserAdverts(id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void showUserAdverts(final String idUser) {
