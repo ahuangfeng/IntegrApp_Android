@@ -136,6 +136,7 @@
 
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comment</string>
+    <string name="postCommentButton_forum">Post</string>
 
     <!-- Server errors-->
 

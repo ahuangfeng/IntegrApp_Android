@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +63,7 @@ public class SingleForumFragment extends Fragment {
         server = Server.getInstance();
 
         Button profileButton = view.findViewById(R.id.profileButton);
-        Button commentButton = view.findViewById(R.id.commentButton);
+        final Button commentButton = view.findViewById(R.id.commentButton);
 
         TextView username = view.findViewById(R.id.textViewUsernameForum);
         TextView title = view.findViewById(R.id.textViewTitleForum);
@@ -85,7 +87,24 @@ public class SingleForumFragment extends Fragment {
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Boton comment clickado", Toast.LENGTH_SHORT).show();
+
+                TextInputLayout textInputLayout = view.findViewById(R.id.textInputLayoutComment);
+                if (Objects.equals(commentButton.getText().toString(), getString(R.string.commentButton_forum))) {
+                    textInputLayout.setVisibility(View.VISIBLE);
+                    final ScrollView scrollView = view.findViewById(R.id.scrollViewComment);
+                    commentButton.setText(getString(R.string.postCommentButton_forum));
+
+                    scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    });
+                }
+                else {
+                    textInputLayout.setVisibility(View.GONE);
+                    commentButton.setText(getString(R.string.commentButton_forum));
+                }
             }
         });
 
