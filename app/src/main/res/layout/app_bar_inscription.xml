@@ -7,7 +7,7 @@
     tools:context="com.integrapp.integrapp.MainActivity">
 
     <include
-        android:id="@+id/includeContentAdvert"
+        android:id="@+id/includeContentInscription"
         layout="@layout/content_advert" />
 
 </android.support.design.widget.CoordinatorLayout>

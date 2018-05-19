@@ -187,6 +187,8 @@ public class SingleAdvertFragment extends Fragment {
                 break;
             case "canEnroll":
                 inscriptionButton.setText(getString(R.string.wantItButton_advert));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
                 inscriptionButton.setClickable(true);
                 break;
             case "refused":
@@ -561,7 +563,12 @@ public class SingleAdvertFragment extends Fragment {
                 @Override
                 protected void onPostExecute(String s) {
                     System.out.println("SERVER RESPONSE: " + s);
-                    updateInscriptions(s, "pending");
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        updateInscriptions(s, "pending");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }.execute();
 
@@ -577,7 +584,8 @@ public class SingleAdvertFragment extends Fragment {
                 protected String doInBackground(Void... voids) {
                     SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
-                    return server.deleteInscriptionAdvert();
+                    String idInscription = getIdInscriptionToDelete(preferences.getString("inscriptions", "[]"));
+                    return server.deleteInscriptionAdvert(idInscription);
                 }
 
                 @Override
@@ -587,10 +595,28 @@ public class SingleAdvertFragment extends Fragment {
                 }
             }.execute();
     }
+
+    private String getIdInscriptionToDelete(String s) {
+        try {
+            JSONArray myJSONArray = new JSONArray(s);
+            String advertId;
+            for (int i = 0; i < myJSONArray.length(); ++i) {
+                advertId = myJSONArray.getJSONObject(i).getString("advertId");
+                if (advertId.equals(idAdvert)) {
+                    return myJSONArray.getJSONObject(i).getString("_id");
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return "error";
+    }
   
     private void updateInscriptions(String s, String state) {
         if(!s.equals("ERROR DELETING INSCRIPTION")) {
-            if (state == "pending") {
+            /*if (state == "pending") {
                 inscriptionButton.setText(getString(R.string.pendingButton_advert));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
@@ -598,7 +624,7 @@ public class SingleAdvertFragment extends Fragment {
                 inscriptionButton.setText(getString(R.string.wantItButton_advertOther));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            }
+            }*/
             doServerCallForSaveInscriptions(personalUserId);
         } else {
             Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
@@ -631,6 +657,45 @@ public class SingleAdvertFragment extends Fragment {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("inscriptions", inscriptions);
         editor.apply();
+        final String advertStatus = checkAdvertStatus(inscriptions);
+        checkInscriptionStatus(advertStatus);
+
+        inscriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (advertStatus.equals("owner")) {
+                    Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    Toast.makeText(getActivity().getApplicationContext(), "Manage inscriptions", Toast.LENGTH_SHORT).show();
+                } else if (advertStatus.equals("canEnroll")) {
+                    doServerCallForCreateInscription();
+                } else if (advertStatus.equals("pending")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
+                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            doServerCallForDeleteInscription();
+                        }
+                    });
+
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
+
     }
 
     private String generateRequestInscription() throws JSONException {
