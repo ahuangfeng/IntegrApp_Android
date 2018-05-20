@@ -1,6 +1,8 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,16 +22,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by Laura on 26/04/2018.
- */
-
 public class OtherFragment extends android.support.v4.app.Fragment {
 
     private Server server;
     private ArrayList<ForumItem> threads = new ArrayList<>();
+    private ArrayList<DataComment> comments = new ArrayList<>();
     private ListView llista;
     private ForumsAdapter forumsAdapter;
+    private ForumItem forumItem;
 
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,6 @@ public class OtherFragment extends android.support.v4.app.Fragment {
         this.server = Server.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
-
         return view;
     }
 
@@ -74,13 +73,8 @@ public class OtherFragment extends android.support.v4.app.Fragment {
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 Toast.makeText(getActivity(), "Elemento "+ position+ " clickado", Toast.LENGTH_SHORT).show();
 
-                                ForumItem forumItem = threads.get(position);
-                                Fragment fragment = new SingleForumFragment(forumItem);
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                FragmentTransaction ft = fragmentManager.beginTransaction();
-                                ft.replace(R.id.screen_area, fragment);
-                                ft.addToBackStack(null);
-                                ft.commit();
+                                forumItem = threads.get(position);
+                                getCommentsForum(forumItem.getId());
                             }
                         });
 
@@ -94,6 +88,61 @@ public class OtherFragment extends android.support.v4.app.Fragment {
             }
 
         }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getCommentsForum(final String id) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                System.out.println("TOKEN :" + server.token); //correcto (es nulo cuando entras la primera vez)
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                String token = preferences.getString("user_token", "user_token");
+                server.token = token; //por eso lo volemos a guardar en el server
+                System.out.println("TOKEN PREFERENCES: " + token);
+                return server.getCommentsForum(id);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                System.out.println("FORUM WITH COMMENTS : " +s);
+                if (!s.equals("ERROR IN GETTING COMMENTS FORUM")) {
+                    getInfoComments(s);
+                    Fragment fragment = new SingleForumFragment(forumItem, comments);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error getting full forum", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private void getInfoComments(String s) {
+        try {
+            JSONObject fullForum = new JSONObject(s);
+            JSONArray comments = fullForum.getJSONArray("entries");
+            this.comments.clear(); //para que no se acumulen los comentarios de diferentes foros
+
+            for (int i = 0; i < comments.length(); ++i) {
+                JSONObject comment = new JSONObject(comments.getString(i));
+                String id = comment.getString("_id");
+                String userId = comment.getString("userId");
+                String username = comment.getString("username");
+                String createdAt = comment.getString("createdAt");
+                String content = comment.getString("content");
+                String forumId = comment.getString("forumId");
+
+                DataComment dataComment = new DataComment(id, userId, username, createdAt, content, forumId);
+                this.comments.add(dataComment);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getInfoFromString(String s) throws JSONException {
@@ -110,7 +159,14 @@ public class OtherFragment extends android.support.v4.app.Fragment {
             float rate = (float) forum.getDouble("rate");
             String user = forum.getString("user");
 
-            ForumItem item = new ForumItem(id, type, title, description, createdAt, userId, rate, user);
+            String miniDescription = "";
+
+            if (description.length()> 48) {
+                miniDescription = description.substring(0,48) + "...";
+            }
+
+            ForumItem item = new ForumItem(id, type, title, description, miniDescription, createdAt, userId, rate, user);
+
             threads.add(item);
         }
     }
