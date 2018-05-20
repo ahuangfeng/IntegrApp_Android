@@ -27,6 +27,8 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
     private View view;
 
     public InscriptionsFragment() {
+        idAdvert = "inscriptions";
+        this.context = getContext();
     }
 
     @SuppressLint("ValidFragment")
@@ -41,8 +43,12 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.activity_inscription, container, false);
-
         this.server = Server.getInstance();
+
+        if (idAdvert.equals("inscriptions")) {
+            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            userId = preferences.getString("idUser", "null");
+        }
 
         getAllInscriptions(idAdvert, userId); //Show adverts
 
@@ -64,7 +70,11 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                 String token = preferences.getString("user_token", "user_token");
                 server.token = token; //por eso lo volemos a guardar en el server
                 System.out.println("TOKEN PREFERENCES: " + token);
-                return server.getAllInscriptions(idAdvert);
+                if (idAdvert.equals("inscriptions")) {
+                    return server.getAllUserInscriptions(userId);
+                } else {
+                    return server.getAllInscriptions(idAdvert);
+                }
             }
 
             @Override
@@ -76,8 +86,8 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                         ArrayList<DataInscription> attributes = getAttributesAllInscriptions(allInscriptions);
 
                         //Preparación del diseño
-                        LinearLayout contentInscription = view.findViewById(R.id.includeContentInscription);
                         ListView list;
+                        LinearLayout contentInscription = view.findViewById(R.id.includeContentInscription);
                         list = contentInscription.findViewById(R.id.sampleListView);
 
                         InscriptionsAdapter myadapter = new InscriptionsAdapter(view.getContext(), attributes, getActivity(), idAdvert);
@@ -100,10 +110,9 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
     private ArrayList<DataInscription> getAttributesAllInscriptions(JSONArray stringJson) {
         ArrayList<DataInscription> attributes = new ArrayList<>();
         try {
-            JSONArray myJsonjArray = stringJson;
-            for (int i = 0; i < myJsonjArray.length(); ++i) {
-                System.out.println("json: " + i + " "+ myJsonjArray.getString(i));
-                DataInscription attributesAdd = getAttributesInscription(myJsonjArray, i); //atributos de un anuncio
+            for (int i = 0; i < stringJson.length(); ++i) {
+                System.out.println("json: " + i + " "+ stringJson.getString(i));
+                DataInscription attributesAdd = getAttributesInscription(stringJson, i); //atributos de un anuncio
                 attributes.add(attributesAdd);
             }
             return attributes;
@@ -117,15 +126,22 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         String advertString = myJsonjArray.getString(index);
         JSONObject myJsonjObject = new JSONObject(advertString);
 
-        String id, usernameOwner, state, userId;
+        String id, info, state, userId, advertId;
         DataInscription dataInscription;
 
         id = myJsonjObject.getString("_id");
-        usernameOwner = myJsonjObject.getString("username");
+        /*if (idAdvert.equals("inscriptions")) {
+            info = myJsonjObject.getString("title");
+        } else {
+            info = myJsonjObject.getString("username");
+        }*/
+        info = myJsonjObject.getString("username");
         state = myJsonjObject.getString("status");
         userId = myJsonjObject.getString("userId");
+        advertId = myJsonjObject.getString("advertId");
 
-        dataInscription = new DataInscription(id, usernameOwner, state, userId);
+
+        dataInscription = new DataInscription(id, info, state, userId, advertId);
         return dataInscription;
     }
 

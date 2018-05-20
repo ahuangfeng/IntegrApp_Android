@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Fragment fragment = null;
         // Handle navigation view item clicks here.
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
             this.finish();
+        } else if (id == R.id.nav_inscriptions) {
+            fragment = new InscriptionsFragment();
         } else if (id == R.id.nav_forum) {
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
