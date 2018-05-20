@@ -1,17 +1,15 @@
 package com.integrapp.integrapp;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ForumFragment extends Fragment {
 
@@ -19,6 +17,7 @@ public class ForumFragment extends Fragment {
     private static Fragment lang;
     private static Fragment entre;
     private static Fragment other;
+    private FloatingActionButton fab;
 
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +35,18 @@ public class ForumFragment extends Fragment {
         lang = new LangFragment();
         entre = new EntreFragment();
         other = new OtherFragment();
+        fab = view.findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.screen_area, new NewForumFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         // Setting ViewPager for each Tabs
         ViewPager viewPager = view.findViewById(R.id.viewpager);
@@ -53,9 +64,7 @@ public class ForumFragment extends Fragment {
         adapter.addFragment(docu, "DOCUMENTATION");
         adapter.addFragment(lang, "LANGUAGES");
         adapter.addFragment(entre, "ENTERTAINMENT");
-        adapter.addFragment(other, "OTHER");
+        adapter.addFragment(other, "VARIOUS");
         viewPager.setAdapter(adapter);
-        System.out.print("NOMBRE DE FRAGMENTS: ");
-        System.out.println(adapter.getCount());
     }
 }

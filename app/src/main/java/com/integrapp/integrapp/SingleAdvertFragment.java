@@ -280,6 +280,7 @@ public class SingleAdvertFragment extends Fragment {
         ft.replace(R.id.screen_area, fragment);
         ft.addToBackStack(null);
         ft.commit();
+
     }
 
     @Override

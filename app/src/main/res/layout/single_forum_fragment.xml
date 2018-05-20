@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scrollViewComment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -83,7 +84,7 @@
                         android:id="@+id/textViewCreatedAtForum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#0014cc"
+                        android:textColor="@color/colorAds"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"/>
 
@@ -101,6 +102,40 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorPrimaryDark" />
+
+                <LinearLayout
+                    android:id="@+id/layoutComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/viewFinishComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayoutComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/commentButton_forum"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/contentCommentEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:ems="10"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/colorPrimaryAux"/>
+
+                </android.support.design.widget.TextInputLayout>
 
                 <Button
                     android:id="@+id/commentButton"
