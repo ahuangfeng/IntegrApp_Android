@@ -1,45 +1,42 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 public class InscriptionsAdapter extends BaseAdapter {
 
-    Context contexto;
-    List<DataInscription> objectList;
+    private Context contexto;
+    private List<DataInscription> objectList;
     private Server server;
-    FragmentActivity activity;
-    private String idAdvert;
+    private FragmentActivity activity;
+    private String type;
 
-    public InscriptionsAdapter(Context contexto, List<DataInscription> objectList, FragmentActivity activity, String idAdvert) {
+    InscriptionsAdapter(Context contexto, List<DataInscription> objectList, FragmentActivity activity, String type) {
         this.contexto = contexto;
         this.objectList = objectList;
         this.activity = activity;
-        this.idAdvert = idAdvert;
+        this.type = type;
     }
 
     @Override
@@ -57,22 +54,29 @@ public class InscriptionsAdapter extends BaseAdapter {
         return Long.parseLong(objectList.get(position).getId());
     }
 
+    @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         server = Server.getInstance();
         final String idUser = objectList.get(i).getIdUser();
+        final String idAdvert = objectList.get(i).getIdAdvert();
         View vista;
         LayoutInflater inflate = LayoutInflater.from(contexto);
         vista = inflate.inflate(R.layout.activity_item_inscription, null);
 
-        final TextView usernameTextView = vista.findViewById(R.id.textViewUsername);
-        final String username = objectList.get(i).getUsernameOwner();
-        usernameTextView.setText(objectList.get(i).getUsernameOwner());
-        usernameTextView.setClickable(true);
-        usernameTextView.setOnClickListener(new View.OnClickListener() {
+        final TextView objectTextView = vista.findViewById(R.id.textViewObject);
+        final String info = objectList.get(i).getInfo();
+        objectTextView.setText(objectList.get(i).getInfo());
+        objectTextView.setClickable(true);
+        objectTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getInfoUser(username, idUser);
+                if (type.equals("inscriptions")) {
+                    System.out.println("Funcio get info advert no implementada");
+                    //getInfoAdvert(idAdvert);
+                } else {
+                    getInfoUser(info, idUser);
+                }
             }
         });
 
@@ -85,12 +89,34 @@ public class InscriptionsAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (status.equals("pending")) {
-                    Fragment fragment = new SingleInscriptionFragment(idAdvert, idUser);
-                    android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.screen_area, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    if (type.equals("inscriptions")) {
+                        //hacer funcion para alert dialog eliminar inscription
+                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+                        builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                doServerCallForDeleteInscription(idAdvert, idUser);
+                            }
+                        });
+
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else {
+                        Fragment fragment = new SingleInscriptionFragment(idAdvert, idUser);
+                        android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                        ft.replace(R.id.screen_area, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
                 }
             }
         });
@@ -150,6 +176,126 @@ public class InscriptionsAdapter extends BaseAdapter {
 
         fragment.setArguments(args);
 
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.screen_area, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getInfoAdvert(final String idAdvert) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = contexto.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                //return server.getUserInfoByUsername(username);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO USER")) {
+                    System.out.println("INFO ADVERT RESPONSE: " +s);
+                    //sendInfoAdvert(s, idAdvert);
+                }
+            }
+        }.execute();
+    }
+
+    /*private void sendInfoAdvert(String s, String idAdvert) {
+        DataAdvert dataAdvert = adverts.get(position);
+        UserDataAdvertiser userData = usersData.get(position);
+        Fragment fragment = new SingleAdvertFragment(dataAdvert, userData);
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.screen_area, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }*/
+
+    @SuppressLint("StaticFieldLeak")
+    private void doServerCallForDeleteInscription(final String idAdvert, final String idUser) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = activity.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                String idInscription = getIdInscriptionToDelete(preferences.getString("inscriptions", "[]"), idAdvert);
+                return server.deleteInscriptionAdvert(idInscription);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                System.out.println("SERVER RESPONSE: " + s);
+                updateInscriptions(s, idUser);
+            }
+        }.execute();
+    }
+
+    private String getIdInscriptionToDelete(String s, String idAdvert) {
+        try {
+            JSONArray myJSONArray = new JSONArray(s);
+            String advertId;
+            for (int i = 0; i < myJSONArray.length(); ++i) {
+                advertId = myJSONArray.getJSONObject(i).getString("advertId");
+                if (advertId.equals(idAdvert)) {
+                    return myJSONArray.getJSONObject(i).getString("_id");
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return "error";
+    }
+
+    private void updateInscriptions(String s, String idUser) {
+        if(!s.equals("ERROR DELETING INSCRIPTION")) {
+            /*if (state == "pending") {
+                inscriptionButton.setText(getString(R.string.pendingButton_advert));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+            } else {
+                inscriptionButton.setText(getString(R.string.wantItButton_advertOther));
+                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            }*/
+            doServerCallForSaveInscriptions(idUser);
+        } else {
+            Toast.makeText(activity, contexto.getResources().getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void doServerCallForSaveInscriptions(String userId) {
+        final String idUser = userId;
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = activity.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getInscriptionsByUserId(idUser);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
+                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
+                    saveInscriptions(s);
+                }
+            }
+        }.execute();
+    }
+
+    private void saveInscriptions(String inscriptions) {
+        SharedPreferences preferences = activity.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("inscriptions", inscriptions);
+        editor.apply();
+        Fragment fragment = new InscriptionsFragment();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.screen_area, fragment);
         ft.addToBackStack(null);

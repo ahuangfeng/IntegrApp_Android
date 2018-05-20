@@ -445,4 +445,18 @@ class Server {
         }
         return "ERROR IN DELETING COMMENT";
     }
+
+    public String getAllUserInscriptions(String userId) {
+        HttpGet get = new HttpGet(API_URI+"/inscriptionsUser/"+userId);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING ALL INSCRIPTIONS";
+    }
 }
