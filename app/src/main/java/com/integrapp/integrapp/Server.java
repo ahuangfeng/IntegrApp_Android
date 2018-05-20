@@ -278,8 +278,8 @@ class Server {
         return "ERROR CREATING INSCRIPTION";
     }
 
-    public String deleteInscriptionAdvert() {
-        HttpDelete delete = new HttpDelete(API_URI+"/inscription");
+    public String deleteInscriptionAdvert(String idInscription) {
+        HttpDelete delete = new HttpDelete(API_URI+"/inscription/"+idInscription);
         try {
             delete.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
@@ -364,6 +364,24 @@ class Server {
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
 
+    public String setInscriptionStatus(String idAdvert, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/inscription/"+idAdvert);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+          
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+         return "ERROR IN SET STATUS INSCRIPTION";
+    }
+  
     public String getCommentsForum(String id) {
         HttpGet get = new HttpGet(API_URI+"/fullForum/"+id);
         try {
@@ -422,11 +440,9 @@ class Server {
             DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(delete, handler);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return "ERROR IN DELETING COMMENT";
     }
 }

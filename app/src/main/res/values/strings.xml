@@ -133,6 +133,10 @@
     <string name="new_pass">New password</string>
     <string name="confirm_pass">Confirm new password</string>
     <string name="changePass_button">Change</string>
+    
+    <!-- Strings of Inscriptions Fragment -->
+    <string name="acceptInscription">Accept inscription</string>
+    <string name="refuseInscription">Refuse inscription</string>
 
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comment</string>

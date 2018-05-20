@@ -2,15 +2,15 @@ package com.integrapp.integrapp;
 
 public class DataInscription {
     private String id;
-    private String advertTitle;
     private String usernameOwner;
+    private String idUser;
     private String state;
 
-    public DataInscription(String id, String advertTitle, String usernameOwner, String state) {
+    public DataInscription(String id, String usernameOwner, String state, String idUser) {
         this.id = id;
-        this.advertTitle = advertTitle;
         this.usernameOwner = usernameOwner;
         this.state = state;
+        this.idUser = idUser;
     }
 
     public String getId() {
@@ -19,14 +19,6 @@ public class DataInscription {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getAdvertTitle() {
-        return advertTitle;
-    }
-
-    public void setAdvertTitle(String advertTitle) {
-        this.advertTitle = advertTitle;
     }
 
     public String getUsernameOwner() {
@@ -43,5 +35,13 @@ public class DataInscription {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 }
