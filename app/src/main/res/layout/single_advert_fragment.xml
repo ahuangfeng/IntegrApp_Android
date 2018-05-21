@@ -136,13 +136,13 @@
 
                 <TextView
                     android:id="@+id/textView3"
-                    android:layout_width="112dp"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@android:color/transparent"
                     android:layout_weight="1"
-                    android:textColor="#0014cc"
-                    android:text="Places:" />
+                    android:background="@android:color/transparent"
+                    android:text="@string/available_places"
+                    android:textColor="#0014cc" />
 
                 <EditText
                     android:id="@+id/textView_places"
@@ -152,7 +152,6 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:enabled="false"
-                    android:hint="@string/places_advert"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="#0014cc"
@@ -187,7 +186,7 @@
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:textColor="#0014cc"
-                    android:text="Expected date:" />
+                    android:text="@string/expectedDate_advert" />
 
                 <EditText
                     android:id="@+id/textView_date"
@@ -252,6 +251,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/background_signup_button"
             android:clickable="true"
+            android:visibility="invisible"
             android:focusable="true"
             android:padding="16dp"
             android:text="@string/wantItButton_advertOther"

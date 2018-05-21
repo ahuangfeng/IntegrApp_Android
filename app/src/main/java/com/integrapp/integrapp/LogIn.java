@@ -121,34 +121,6 @@ public class LogIn extends AppCompatActivity {
         }.execute();
     }
 
-    @SuppressLint("StaticFieldLeak")
-    public void doServerCallForSaveInscriptions(String userId) {
-        final String idUser = userId;
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                server.token = preferences.getString("user_token", "user_token");
-                return server.getInscriptionsByUserId(idUser);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
-                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
-                    saveInscriptions(s);
-                }
-            }
-        }.execute();
-    }
-
-    private void saveInscriptions(String inscriptions) {
-        SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("inscriptions", inscriptions);
-        editor.apply();
-    }
-
     private void saveInfoUser(String s) {
         try {
             JSONObject myJsonjObject = new JSONObject(s);
@@ -184,9 +156,6 @@ public class LogIn extends AppCompatActivity {
             editor.putInt("dislikes", dislikes);
             editor.putInt("ads", myJsonArrayAds.length());
             editor.apply();
-
-            doServerCallForSaveInscriptions(userId);
-
 
             Intent i = new Intent(LogIn.this, MainActivity.class);
             startActivity(i);

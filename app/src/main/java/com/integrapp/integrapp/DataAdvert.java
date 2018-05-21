@@ -13,8 +13,9 @@ public class DataAdvert {
     private String userId;
     private int image;
     private String id;
+    private String registered;
 
-    DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image, String id) {
+    DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image, String id, String registered) {
         this.date = date;
         this.title = title;
         this.description = description;
@@ -24,6 +25,7 @@ public class DataAdvert {
         this.image = image;
         this.userId = userId;
         this.id = id;
+        this.registered = registered;
     }
 
     public DataAdvert(JSONObject userInfo, int image) {
@@ -41,6 +43,7 @@ public class DataAdvert {
             this.type = "voluntary";
             this.state = userInfo.getString("state");
             this.id = userInfo.getString("_id");
+            this.registered = userInfo.getString("registered");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -118,5 +121,7 @@ public class DataAdvert {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getRegistered() {return registered;}
 
 }

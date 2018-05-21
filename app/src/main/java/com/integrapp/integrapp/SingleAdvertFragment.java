@@ -41,6 +41,7 @@ public class SingleAdvertFragment extends Fragment {
     private int image;
     private String type_advert;
     private String idAdvert;
+    private String registered;
 
     private Button inscriptionButton;
     private String personalUserId;
@@ -54,6 +55,7 @@ public class SingleAdvertFragment extends Fragment {
     private View viewPlaces;
     private View viewDate;
     private TextView textViewState;
+    private String advertStatus;
 
     UserDataAdvertiser userData;
     private Server server;
@@ -71,11 +73,11 @@ public class SingleAdvertFragment extends Fragment {
         description = dataAdvert.getDescription();
         userId = dataAdvert.getUserId();
         image = dataAdvert.getImage();
-
+        registered = dataAdvert.getRegistered();
         idAdvert = dataAdvert.getId();
         this.userData = userData;
 
-        System.out.println("Parametros: " +title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId + " " + idAdvert);
+        System.out.println("Parametros: " +title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId + " " + idAdvert + " " + registered);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -87,14 +89,11 @@ public class SingleAdvertFragment extends Fragment {
         View view = inflater.inflate(R.layout.single_advert_fragment, container, false);
 
         loadAdvertData(view);
-
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String usernamePreferences = preferences.getString("username", "username");
         personalUserId = preferences.getString("idUser", "null");
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
-
-        final String advertStatus;
 
         if (userData.getUsername().equals(usernamePreferences)) {
             type_advert = "owner";
@@ -103,9 +102,7 @@ public class SingleAdvertFragment extends Fragment {
         }
         else {
             type_advert = "other";
-            String userInscriptions = preferences.getString("inscriptions", "[]");
-            advertStatus = checkAdvertStatus(userInscriptions);
-            checkInscriptionStatus(advertStatus);
+            updatePlacesAndStatus();
         }
 
         inscriptionButton.setOnClickListener(new View.OnClickListener() {
@@ -177,13 +174,15 @@ public class SingleAdvertFragment extends Fragment {
         imageView.setImageResource(image);
     }
 
-    private void checkInscriptionStatus(String advertStatus) {
+    private void checkInscriptionStatus() {
+        inscriptionButton.setVisibility(View.VISIBLE);
         inscriptionButton.setClickable(false);
         switch (advertStatus) {
             case "pending":
                 inscriptionButton.setText(getString(R.string.pendingButton_advert));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+                inscriptionButton.setClickable(true);
                 break;
             case "canEnroll":
                 inscriptionButton.setText(getString(R.string.wantItButton_advert));
@@ -204,26 +203,6 @@ public class SingleAdvertFragment extends Fragment {
                 break;
             default:
         }
-    }
-
-    private String checkAdvertStatus(String userInscriptions) {
-        try {
-            JSONArray myJSONArray = new JSONArray(userInscriptions);
-            System.out.println("QUE HAY AQUI COÑO ---- " + myJSONArray);
-            String advertId;
-            for (int i = 0; i < myJSONArray.length(); ++i) {
-                advertId = myJSONArray.getJSONObject(i).getString("advertId");
-                if (advertId.equals(idAdvert)) {
-                    return myJSONArray.getJSONObject(i).getString("status");
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-  
-        return "canEnroll";
-
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -374,7 +353,6 @@ public class SingleAdvertFragment extends Fragment {
     private void setEditableTexts() {   
         textViewTitle.setText(title);
         textViewDescription.setText(description);
-        textViewPlaces.setText(places);
         textViewDate.setText(date);
     }
 
@@ -515,8 +493,7 @@ public class SingleAdvertFragment extends Fragment {
                     changeState();
                     System.out.println("CHANGE ADVERT STATE SUCCESSFULL RESPONSE: " +s);
                     Toast.makeText(getActivity().getApplicationContext(), "Advert State changed successfully", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -525,7 +502,7 @@ public class SingleAdvertFragment extends Fragment {
   
     public String generateRequestModifyStateAdvert() {
         String state_to;
-        if (state == "opened") state_to = "closed";
+        if (state.equals("opened")) state_to = "closed";
         else state_to = "opened";
         try {
             JSONObject oJSON = new JSONObject();
@@ -539,7 +516,7 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     public void changeState() {
-        if (state == "opened") state = "closed";
+        if (state.equals("opened")) state = "closed";
         else state = "opened";
         textViewState.setText(state.toUpperCase());
         System.out.print("mystate "+state);
@@ -560,8 +537,12 @@ public class SingleAdvertFragment extends Fragment {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
-                    updateInscriptions(s, "pending");
+                    if (!s.equals("ERROR CREATING INSCRIPTION")) {
+                        System.out.println("SERVER RESPONSE: " + s);
+                        updateInscriptions(s, "pending");
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_noPlaces), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }.execute();
 
@@ -572,75 +553,70 @@ public class SingleAdvertFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void doServerCallForDeleteInscription() {
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... voids) {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                    server.token = preferences.getString("user_token", "user_token");
-                    return server.deleteInscriptionAdvert();
-                }
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.deleteInscriptionAdvert();
+            }
 
-                @Override
-                protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
-                    updateInscriptions(s, "canEnroll");
-                }
-            }.execute();
+            @Override
+            protected void onPostExecute(String s) {
+                System.out.println("SERVER RESPONSE: " + s);
+                updateInscriptions(s, "canEnroll");
+            }
+        }.execute();
     }
   
     private void updateInscriptions(String s, String state) {
         if(!s.equals("ERROR DELETING INSCRIPTION")) {
-            if (state == "pending") {
+            if (state.equals("pending")) {
                 inscriptionButton.setText(getString(R.string.pendingButton_advert));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
             } else {
                 inscriptionButton.setText(getString(R.string.wantItButton_advertOther));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
-                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.whiteLetter));
             }
-            doServerCallForSaveInscriptions(personalUserId);
         } else {
             Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
         }
     }
   
-    @SuppressLint("StaticFieldLeak")
-    public void doServerCallForSaveInscriptions(String userId) {
-        final String idUser = userId;
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                server.token = preferences.getString("user_token", "user_token");
-                return server.getInscriptionsByUserId(idUser);
-            }
-            
-            @Override
-            protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
-                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
-                    saveInscriptions(s);
-                }
-            }
-        }.execute();
-    }
-
-    private void saveInscriptions(String inscriptions) {
-        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("inscriptions", inscriptions);
-        editor.apply();
-    }
-
     private String generateRequestInscription() throws JSONException {
-        System.out.println("WHAAAAAAAAAAAAAAAAT: " + personalUserId + " " + idAdvert + " " + userId);
         JSONObject oJSON = new JSONObject();
 
         oJSON.put("userId", personalUserId);
         oJSON.put("advertId", idAdvert);
 
         return oJSON.toString(1);
+    }
+
+    private void updatePlacesAndStatus() {
+        try {
+            JSONArray myJSONArray = new JSONArray(registered);
+            String status;
+            String id;
+            advertStatus = "canEnroll";
+            int count = 0;
+            for (int i = 0; i < myJSONArray.length(); ++i) {
+                status = myJSONArray.getJSONObject(i).getString("status");
+                id = myJSONArray.getJSONObject(i).getString("userId");
+                if (status.equals("accepted")) {
+                    ++count;
+                }
+                if (personalUserId.equals(id)) {
+                    advertStatus = myJSONArray.getJSONObject(i).getString("status");
+                }
+            }
+            String emptyPlaces = Integer.parseInt(places) - count + " / " + places + "";
+            textViewPlaces.setText(emptyPlaces);
+            checkInscriptionStatus();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
