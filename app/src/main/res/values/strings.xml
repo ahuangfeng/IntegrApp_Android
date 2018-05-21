@@ -11,6 +11,7 @@
     <string name="action_lookfor">Look for ads</string>
     <string name="action_offer">Offer ads</string>
     <string name="action_all">All ads</string>
+    <string name="action_reportAdvert">Report advert</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -129,6 +130,10 @@
     <string name="dialog_delete_inscription">Are you sure you want to cancel your request?</string>
     <string name="tittle_dialogDeleteInscription">Your inscription will be deleted</string>
     <string name="error_noPlaces">You can not enroll to this advert</string>
+    <string name="dialog_report">Enter the reason of the report</string>
+    <string name="title_dialogReportAdvert">Reporting advert</string>
+    <string name="advertReport_ok">Advert reported correctly</string>
+    <string name="error_reportAdvert">Error reporting advert</string>
 
     <!-- Strings of ChangePassword Dialog -->
     <string name="changePass_tittle">Change password</string>

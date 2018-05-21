@@ -350,4 +350,22 @@ class Server {
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
 
+    public String report(String json) {
+        HttpPost post = new HttpPost(API_URI+"/report");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR CREATING REPORT";
+    }
+
 }

@@ -269,6 +269,8 @@ public class SingleAdvertFragment extends Fragment {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
             menu.findItem(R.id.action_modifyAdvertState).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_reportAdvert).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -335,6 +337,27 @@ public class SingleAdvertFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     modifyStateAdvertById(idAdvert);
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else if (id == R.id.action_reportAdvert) {
+            final EditText editText = new EditText(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_report).setTitle(R.string.title_dialogReportAdvert);
+            builder.setView(editText);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    reportAdvert(editText.getText().toString());
                 }
             });
 
@@ -617,6 +640,44 @@ public class SingleAdvertFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void reportAdvert(String reason) {
+        try {
+            final String json = generateReportData(reason);
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.report(json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    if (!s.equals("ERROR CREATING REPORT")) {
+                        System.out.println("SERVER RESPONSE: " + s);
+                        Toast.makeText(getActivity(), getString(R.string.advertReport_ok), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_reportAdvert), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateReportData(String reason) throws JSONException {
+        JSONObject oJSON = new JSONObject();
+
+        oJSON.put("description", reason);
+        oJSON.put("type", "advert");
+        oJSON.put("typeId", idAdvert);
+
+        return oJSON.toString(1);
     }
 
     @Override
