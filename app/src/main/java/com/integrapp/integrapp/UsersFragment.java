@@ -17,7 +17,6 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class UsersFragment extends android.support.v4.app.Fragment {
@@ -27,6 +26,7 @@ public class UsersFragment extends android.support.v4.app.Fragment {
     private ListView view_users;
     private UsersAdapter usersAdapter;
 
+    @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
@@ -101,4 +101,7 @@ public class UsersFragment extends android.support.v4.app.Fragment {
             users.add(user);
         }
     }
+
+
+
 }

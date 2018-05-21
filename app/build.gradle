@@ -31,4 +31,5 @@ dependencies {
     //Circle ImageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:cardview-v7:26.1.0'
+    compile 'com.github.nkzawa:socket.io-client:0.3.0'
 }
