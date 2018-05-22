@@ -24,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -207,6 +208,8 @@ public class SingleForumFragment extends Fragment {
 
         for (int i = 0; i < comments.size(); ++i) {
 
+            final int finalI = i;
+
             LinearLayout horizontalLayout = new LinearLayout(getActivity());
             horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -223,6 +226,13 @@ public class SingleForumFragment extends Fragment {
             commentUsername.setText(comments.get(i).getUsername());
             commentUsername.setTextSize(15);
             commentUsername.setTypeface(commentUsername.getTypeface(), Typeface.BOLD);
+            
+            commentUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getInfoUserComment(comments.get(finalI).getUsername());
+                }
+            });
             commentItemVertical.addView(commentUsername);
 
             TextView commentDate = new TextView(getActivity());
@@ -253,7 +263,7 @@ public class SingleForumFragment extends Fragment {
                 layoutParams3.setMargins(0,20, 0, 0);
                 imageButton.setLayoutParams(layoutParams3);
 
-                final int finalI = i;
+                //final int finalI = i;
                 imageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -283,6 +293,77 @@ public class SingleForumFragment extends Fragment {
             }
             commentLayout.addView(horizontalLayout);
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getInfoUserComment(final String username) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getUserInfoByUsername(username);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO USER")) {
+                    System.out.println("INFO USUARI RESPONSE: " +s);
+                    sendInfoUserCommentToProfile(s);
+                }
+            }
+        }.execute();
+    }
+
+    private void sendInfoUserCommentToProfile(String s) {
+
+        try {
+            //para saber que viene de aqui y no del perfil del navigation
+            Fragment fragment = new ProfileFragment("advertiserUser");
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+            JSONObject myJsonObject = new JSONObject(s);
+            String userId = myJsonObject.getString("_id");
+            String username = myJsonObject.getString("username");
+            String type = myJsonObject.getString("type");
+            String name = myJsonObject.getString("name");
+            String email = "No e-mail";
+            String phone = "No phone";
+            if (myJsonObject.has("email")) {
+                email = myJsonObject.getString("email");
+            }
+            if (myJsonObject.has("phone")) {
+                phone = myJsonObject.getString("phone");
+            }
+
+            String rate = myJsonObject.getString("rate");
+            JSONObject myJsonRate = new JSONObject(rate);
+            int likes = myJsonRate.getInt("likes");
+            int dislikes = myJsonRate.getInt("dislikes");
+            int ads = myJsonObject.getJSONArray("adverts").length();
+
+            Bundle args = new Bundle();
+            args.putString("idUser", userId);
+            args.putString("username", username);
+            args.putString("name", name);
+            args.putString("type", type);
+            args.putString("email", email);
+            args.putString("phone", phone);
+            args.putInt("likes", likes);
+            args.putInt("dislikes", dislikes);
+            args.putInt("ads", ads);
+
+            fragment.setArguments(args);
+
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.screen_area, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @SuppressLint("StaticFieldLeak")
