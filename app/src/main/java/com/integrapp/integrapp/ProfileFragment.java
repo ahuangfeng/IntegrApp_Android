@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment {
     private TextView dislikesTextView;
     private TextView adsTextView;
     private Server server;
+    private String idUser;
 
     public ProfileFragment() {
     }
@@ -84,7 +85,7 @@ public class ProfileFragment extends Fragment {
         adsTextView = view.findViewById(R.id.adsTextView);
 
         if (Objects.equals(typeProfile, "advertiserUser")) {
-            final String idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
+            idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
             String username = getArguments() != null ? getArguments().getString("username") : "username";
             String type = getArguments() != null ? getArguments().getString("type") : "type";
             String name = getArguments() != null ? getArguments().getString("name") : "name";
@@ -94,7 +95,7 @@ public class ProfileFragment extends Fragment {
             int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
 
-            System.out.println("COSIKAAS: "+idUser + " " + username + " " + type + " " + name+ " "+ email+ " "+ phone+ " "+likes+ " "+dislikes+ " "+ ads);
+            System.out.println("COSIKAAS: "+ idUser + " " + username + " " + type + " " + name+ " "+ email+ " "+ phone+ " "+likes+ " "+dislikes+ " "+ ads);
 
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes,dislikes,ads);
@@ -118,13 +119,13 @@ public class ProfileFragment extends Fragment {
                 likesLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        voteLike(idUser);
+                        voteLike();
                     }
                 });
                 dislikesLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        voteDislike(idUser);
+                        voteDislike();
                     }
                 });
             }
@@ -188,9 +189,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void showUserAdverts(final String idUser) {
+    private void showUserAdverts(final String userId) {
         Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
-        Fragment fragment = new AdvertsFragment(idUser);
+        Fragment fragment = new AdvertsFragment(userId);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.screen_area, fragment);
@@ -199,7 +200,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void voteDislike(final String idUser) {
+    private void voteDislike() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -219,7 +220,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void voteLike(final String idUser) {
+    private void voteLike() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -294,7 +295,7 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING USER")) {
-                    System.out.println("DELETE USER SUCCESSFULL RESPONSE: " +s);
+                    System.out.println("DELETE USER SUCCESSFULLY RESPONSE: " +s);
                     Toast.makeText(getActivity().getApplicationContext(), "User deleted successfully", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
                     startActivity(i);
@@ -331,6 +332,8 @@ public class ProfileFragment extends Fragment {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
             menu.findItem(R.id.action_changePass).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_reportUser).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -344,7 +347,7 @@ public class ProfileFragment extends Fragment {
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         server.token = preferences.getString("user_token", "user_token");
-        final String idUser = preferences.getString("idUser", "idUser");
+        final String userId = preferences.getString("idUser", "idUser");
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
@@ -354,7 +357,7 @@ public class ProfileFragment extends Fragment {
             builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    deleteUserById(idUser);
+                    deleteUserById(userId);
                 }
             });
 
@@ -384,7 +387,7 @@ public class ProfileFragment extends Fragment {
                         builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                saveChanges(idUser);
+                                saveChanges(userId);
                             }
                         });
 
@@ -424,11 +427,32 @@ public class ProfileFragment extends Fragment {
 
                     if (fieldsChangePassOK(currentPass, newPass, confirmPass)) {
                         if (passwordsOk(currentPass, newPass, confirmPass)) {
-                            saveChangePassword(idUser, newPass, dialog);
+                            saveChangePassword(userId, newPass, dialog);
                         }
                     }
                 }
             });
+        } else if (id == R.id.action_reportUser) {
+            final EditText editText = new EditText(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_report).setTitle(R.string.title_dialogReportUser);
+            builder.setView(editText);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    reportUser(editText.getText().toString());
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -450,7 +474,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void saveChangePassword(final String idUser, String newPass, final AlertDialog dialog) {
+    private void saveChangePassword(final String userId, String newPass, final AlertDialog dialog) {
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("password", newPass);
@@ -460,7 +484,7 @@ public class ProfileFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                return server.modifyProfileById(idUser, json);
+                return server.modifyProfileById(userId, json);
             }
 
             @Override
@@ -501,7 +525,7 @@ public class ProfileFragment extends Fragment {
         if (newPass.isEmpty()) {
             newPassEditText.setError(getString(R.string.error_changePassField_empty));
             valid = false;
-        }else if (checkInputText(newPass, 6, 128)) {
+        }else if (checkInputText(newPass)) {
             newPassEditText.setError(getString(R.string.error_password_length));
             valid = false;
         }
@@ -509,15 +533,15 @@ public class ProfileFragment extends Fragment {
         if (confirmPass.isEmpty()) {
             confirmNewPassEditText.setError(getString(R.string.error_changePassField_empty));
             valid = false;
-        }else if (checkInputText(confirmPass, 6, 128)){
+        }else if (checkInputText(confirmPass)){
             confirmNewPassEditText.setError(getString(R.string.error_password_length));
             valid = false;
         }
         return valid;
     }
 
-    private boolean checkInputText(String text, int min, int max) {
-        return text.isEmpty() || text.length() < min || text.length() > max;
+    private boolean checkInputText(String text) {
+        return text.isEmpty() || text.length() < 6 || text.length() > 128;
     }
 
     private void setVisibility(boolean b, int visibility) {
@@ -547,12 +571,12 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void saveChanges(final String idUser) {
+    private void saveChanges(final String userId) {
         final String json = generateRequestModifyProfile();
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                return server.modifyProfileById(idUser, json);
+                return server.modifyProfileById(userId, json);
             }
 
             @Override
@@ -579,12 +603,12 @@ public class ProfileFragment extends Fragment {
 
         /*Si el usuario quiere hacer el email o el phone no visible*/
         if (email.isEmpty()) {
-            email = "No e-mail";
-            emailTextView.setText("No e-mail");
+            email = getString(R.string.user_noEmail);
+            emailTextView.setText(email);
         }
         if (phone.isEmpty()) {
-            phone = "No phone";
-            phoneTextView.setText("No phone");
+            phone = getString(R.string.user_noPhone);
+            phoneTextView.setText(phone);
         }
 
         editor.putString("username", username);
@@ -635,6 +659,44 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void reportUser(String reason) {
+        try {
+            final String json = generateReportData(reason);
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.report(json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    if (!s.equals("ERROR CREATING REPORT")) {
+                        System.out.println("SERVER RESPONSE: " + s);
+                        Toast.makeText(getActivity(), getString(R.string.userReport_ok), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_reportUser), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateReportData(String reason) throws JSONException {
+        JSONObject oJSON = new JSONObject();
+
+        oJSON.put("description", reason);
+        oJSON.put("type", "user");
+        oJSON.put("typeId", idUser);
+
+        return oJSON.toString(1);
     }
 
     @Override

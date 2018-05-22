@@ -16,4 +16,9 @@
         android:orderInCategory="100"
         android:title="@string/action_changePass"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_reportUser"
+        android:orderInCategory="100"
+        android:title="@string/action_reportUser"
+        app:showAsAction="never" />
 </menu>

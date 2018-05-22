@@ -12,6 +12,7 @@
     <string name="action_offer">Offer ads</string>
     <string name="action_all">All ads</string>
     <string name="action_reportAdvert">Report advert</string>
+    <string name="action_reportUser">Report user</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -65,6 +66,11 @@
     <string name="cancel">Cancel</string>
     <string name="dialog_delete_user">Are you sure you want to delete the user?</string>
     <string name="tittle_dialogDeleteUser">User will be deleted</string>
+    <string name="title_dialogReportUser">Reporting user</string>
+    <string name="userReport_ok">User reported correctly</string>
+    <string name="error_reportUser">Error reporting user</string>
+    <string name="user_noPhone">No phone</string>
+    <string name="user_noEmail">No e-mail</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Title</string>
