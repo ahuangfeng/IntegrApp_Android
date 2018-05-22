@@ -66,14 +66,13 @@ public class InscriptionsAdapter extends BaseAdapter {
 
         final TextView objectTextView = vista.findViewById(R.id.textViewObject);
         final String info = objectList.get(i).getInfo();
-        objectTextView.setText(objectList.get(i).getInfo());
+        objectTextView.setText(info);
         objectTextView.setClickable(true);
         objectTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (type.equals("inscriptions")) {
-                    System.out.println("Funcio get info advert no implementada");
-                    //getInfoAdvert(idAdvert);
+                    getInfoAdvert(idAdvert);
                 } else {
                     getInfoUser(info, idUser);
                 }
@@ -189,30 +188,45 @@ public class InscriptionsAdapter extends BaseAdapter {
             protected String doInBackground(Void... voids) {
                 SharedPreferences preferences = contexto.getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
-                //return server.getUserInfoByUsername(username);
-                return null;
-            }
+                return server.getAdvertInfoById(idAdvert);
+        }
 
             @Override
             protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GET INFO USER")) {
+                if (!s.equals("ERROR IN GET INFO ADVERT")) {
                     System.out.println("INFO ADVERT RESPONSE: " +s);
-                    //sendInfoAdvert(s, idAdvert);
+                    sendInfoAdvert(s, idAdvert);
                 }
             }
         }.execute();
     }
 
-    /*private void sendInfoAdvert(String s, String idAdvert) {
-        DataAdvert dataAdvert = adverts.get(position);
-        UserDataAdvertiser userData = usersData.get(position);
-        Fragment fragment = new SingleAdvertFragment(dataAdvert, userData);
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.screen_area, fragment);
-        ft.addToBackStack(null);
-        ft.commit();
-    }*/
+    private void sendInfoAdvert(String s, String idAdvert) {
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            String date, title, description, places, typeAdvert, state, userId, id;
+            date = jsonObject.getString("date");
+            title = jsonObject.getString("title");
+            description = jsonObject.getString("description");
+            places = jsonObject.getString("places");
+            typeAdvert = jsonObject.getString("typeAdvert");
+            state = jsonObject.getString("state");
+            userId = jsonObject.getString("userId");
+            id = jsonObject.getString("_id");
+            int image = R.drawable.project_preview_large_2;
+            DataAdvert dataAdvert = new DataAdvert(date, title, description, places, typeAdvert, state, userId, image, id);
+            UserDataAdvertiser userDataAdvertiser = new UserDataAdvertiser(jsonObject.getString("user"));
+            Fragment fragment = new SingleAdvertFragment(dataAdvert, userDataAdvertiser);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.screen_area, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     @SuppressLint("StaticFieldLeak")
     private void doServerCallForDeleteInscription(final String idAdvert, final String idUser) {

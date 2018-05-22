@@ -137,8 +137,6 @@
     <!-- Strings of Inscriptions Fragment -->
     <string name="acceptInscription">Accept inscription</string>
     <string name="refuseInscription">Refuse inscription</string>
-    <string name="acceptInscription">Accept inscription</string>
-    <string name="refuseInscription">Refuse inscription</string>
     <string name="menu_inscriptions">Inscriptions</string>
 
     <!-- Strings of SingleForum fragment-->

@@ -128,6 +128,20 @@ class Server {
         return "ERROR IN GET INFO USER";
     }
 
+    public String getAdvertInfoById(String id) {
+        HttpGet get = new HttpGet(API_URI+"/advert/"+id);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GET INFO ADVERT";
+    }
+
     public String setNewAdvert(String json) {
         HttpPost post = new HttpPost(API_URI+"/advert");
         try {

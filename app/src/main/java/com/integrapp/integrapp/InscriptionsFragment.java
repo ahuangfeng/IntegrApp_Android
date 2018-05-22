@@ -130,12 +130,11 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         DataInscription dataInscription;
 
         id = myJsonjObject.getString("_id");
-        /*if (idAdvert.equals("inscriptions")) {
-            info = myJsonjObject.getString("title");
+        if (idAdvert.equals("inscriptions")) {
+            info = myJsonjObject.getString("titleAdvert");
         } else {
             info = myJsonjObject.getString("username");
-        }*/
-        info = myJsonjObject.getString("username");
+        }
         state = myJsonjObject.getString("status");
         userId = myJsonjObject.getString("userId");
         advertId = myJsonjObject.getString("advertId");
