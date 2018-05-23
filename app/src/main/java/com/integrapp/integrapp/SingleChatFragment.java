@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,9 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -124,7 +125,24 @@ public class SingleChatFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         personalUserId = preferences.getString("idUser", "null");
 
-        mSocket.emit("new user", personalUserId, toUser.getId());
+        mSocket.emit("new user", personalUserId, toUser.getId(),new Ack() {
+            @Override
+            public void call(Object... args) {
+                Log.i("callback","test");
+                System.out.println("RETURNING EVENT CALLBACK " + args[0]);
+                try {
+                    JSONObject myJsonjObject = new JSONObject(args[0].toString());
+                    System.out.println("CHATS: " + myJsonjObject.getString("chats"));
+                    JSONArray chats = myJsonjObject.getJSONArray("chats");
+                    for (int i = 0; i < chats.length(); i++) {
+                        System.out.println("Chat numero " + i+" : "+ chats.get(i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
         return view;
     }
