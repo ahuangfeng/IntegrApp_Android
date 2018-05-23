@@ -135,9 +135,9 @@ public class SingleChatFragment extends Fragment {
                 Log.i("callback","test");
                 System.out.println("RETURNING EVENT CALLBACK " + args[0]);
                 try {
-                    JSONObject myJsonjObject = new JSONObject(args[0].toString());
-                    System.out.println("CHATS: " + myJsonjObject.getString("chats"));
-                    JSONArray chats = myJsonjObject.getJSONArray("chats");
+                    JSONObject myJsonObject = new JSONObject(args[0].toString());
+                    System.out.println("CHATS: " + myJsonObject.getString("chats"));
+                    JSONArray chats = myJsonObject.getJSONArray("chats");
                     for (int i = 0; i < chats.length(); i++) {
                         System.out.println("Chat numero " + i+" : "+ chats.get(i));
                     }
