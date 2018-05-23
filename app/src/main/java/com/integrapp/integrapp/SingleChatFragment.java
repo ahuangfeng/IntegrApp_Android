@@ -82,8 +82,6 @@ public class SingleChatFragment extends Fragment {
         msgRecyclerView.setLayoutManager(linearLayoutManager);
         //Create the initial data list/////////////////////////////////////////////////////
         msgDtoList = new ArrayList<>();
-        ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, "hello");
-        msgDtoList.add(msgDto);
         //Create the data adapter with the above data list
         chatAppMsgAdapter  = new ChatAppMsgAdapter(msgDtoList);
         //Set data adapter to the RecycleView
