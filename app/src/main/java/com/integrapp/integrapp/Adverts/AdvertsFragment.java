@@ -21,10 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.integrapp.integrapp.NewAdvertFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.SingleAdvertFragment;
 import com.integrapp.integrapp.UserDataAdvertiser;
 
 import org.json.JSONArray;

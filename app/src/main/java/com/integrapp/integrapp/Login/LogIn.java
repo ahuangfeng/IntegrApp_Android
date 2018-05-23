@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Login;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,11 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.MainActivity;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
+import com.integrapp.integrapp.SignUp.SignUp;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class LogIn extends AppCompatActivity {
     

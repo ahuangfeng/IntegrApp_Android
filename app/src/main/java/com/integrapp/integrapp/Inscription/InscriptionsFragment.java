@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Inscription;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.Adverts.DataAdvert;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
+import com.integrapp.integrapp.UserDataAdvertiser;
 
 import org.json.JSONArray;
 import org.json.JSONException;

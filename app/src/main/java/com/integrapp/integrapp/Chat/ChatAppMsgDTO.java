@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Chat;
 
 
 public class ChatAppMsgDTO {

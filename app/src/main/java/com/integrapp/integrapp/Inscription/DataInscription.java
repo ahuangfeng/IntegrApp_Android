@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Inscription;
 
 public class DataInscription {
     private String id;

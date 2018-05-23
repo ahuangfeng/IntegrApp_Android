@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Forum;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -14,8 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.integrapp.integrapp.Forum.ForumItem;
-import com.integrapp.integrapp.Forum.ForumsAdapter;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,8 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class OtherFragment extends android.support.v4.app.Fragment {
-
+public class EntreFragment extends android.support.v4.app.Fragment {
     private Server server;
     private ArrayList<ForumItem> threads = new ArrayList<>();
     private ListView llista;
@@ -38,7 +37,7 @@ public class OtherFragment extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_forum_other, container, false);
+        View view = inflater.inflate(R.layout.fragment_forum_entre, container, false);
         this.server = Server.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
@@ -57,11 +56,11 @@ public class OtherFragment extends android.support.v4.app.Fragment {
 
             @Override
             protected String doInBackground(Void... voids) {
-                return server.getForumOther();
+                return server.getForumEntre();
             }
 
             protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GETTING FORUM(OTHER)")) {
+                if (!s.equals("ERROR IN GETTING FORUM(ENTERTAINMENT)")) {
                     try {
                         getInfoFromString(s);
                         forumsAdapter = new ForumsAdapter(getContext(), threads);

@@ -11,11 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.integrapp.integrapp.DocuFragment;
-import com.integrapp.integrapp.EntreFragment;
 import com.integrapp.integrapp.FragmentAdapter;
-import com.integrapp.integrapp.LangFragment;
-import com.integrapp.integrapp.OtherFragment;
 import com.integrapp.integrapp.R;
 
 public class ForumFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Forum;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -14,8 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.integrapp.integrapp.Forum.ForumItem;
-import com.integrapp.integrapp.Forum.ForumsAdapter;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
 
 import org.json.JSONArray;
 import org.json.JSONException;

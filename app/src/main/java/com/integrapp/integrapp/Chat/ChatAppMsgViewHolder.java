@@ -1,9 +1,11 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Chat;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.integrapp.integrapp.R;
 
 public class ChatAppMsgViewHolder extends RecyclerView.ViewHolder {
 

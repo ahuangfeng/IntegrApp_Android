@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.SignUp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,8 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.integrapp.integrapp.Login.LogIn;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

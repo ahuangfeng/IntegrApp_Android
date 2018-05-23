@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Forum;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,7 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.integrapp.integrapp.Forum.ForumItem;
+import com.integrapp.integrapp.Profile.ProfileFragment;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
+import com.integrapp.integrapp.UserDataAdvertiser;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -20,7 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.Adverts.AdvertsFragment;
+import com.integrapp.integrapp.Chat.MainChatsFragment;
 import com.integrapp.integrapp.Forum.ForumFragment;
+import com.integrapp.integrapp.Login.LogIn;
+import com.integrapp.integrapp.Profile.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

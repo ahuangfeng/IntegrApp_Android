@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Chat;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
 
 
 public class ChatsFragment extends android.support.v4.app.Fragment {

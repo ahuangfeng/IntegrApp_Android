@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Adverts;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -10,8 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +21,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.integrapp.integrapp.MainActivity;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Calendar;
 
 public class NewAdvertFragment extends Fragment {

@@ -1,8 +1,7 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Chat;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.TabLayout.Tab;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -29,7 +28,7 @@ public class MainChatsFragment extends Fragment{
 
         //Create fragments inside tabs
         users = new com.integrapp.integrapp.UsersFragment();
-        chats = new com.integrapp.integrapp.ChatsFragment();
+        chats = new ChatsFragment();
 
         // Setting ViewPager for each Tabs
         ViewPager viewPager = view.findViewById(R.id.viewpager);

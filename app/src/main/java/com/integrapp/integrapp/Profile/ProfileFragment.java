@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Profile;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -26,6 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.Adverts.AdvertsFragment;
+import com.integrapp.integrapp.Login.LogIn;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
 
 import org.json.JSONException;
 import org.json.JSONObject;
