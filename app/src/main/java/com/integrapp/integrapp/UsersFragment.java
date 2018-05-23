@@ -1,6 +1,8 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.github.nkzawa.socketio.client.Socket;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +26,7 @@ public class UsersFragment extends android.support.v4.app.Fragment {
     private ArrayList<User> users = new ArrayList<>();
     private ListView view_users;
     private UsersAdapter usersAdapter;
+    private String personalUserId;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -34,11 +34,19 @@ public class UsersFragment extends android.support.v4.app.Fragment {
         setRetainInstance(true);
     }
 
+    //reset fragment (solve duplicate content)
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        users = new ArrayList<>();
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        users = new ArrayList<>();
         View view = inflater.inflate(R.layout.fragment_chats_users, container, false);
         this.server = Server.getInstance();
         view_users = view.findViewById(R.id.list_users);
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        personalUserId = preferences.getString("idUser", "null");
         setInfoUsers();
         return view;
     }
@@ -58,7 +66,6 @@ public class UsersFragment extends android.support.v4.app.Fragment {
                         getInfoFromString(s);
                         usersAdapter = new UsersAdapter(getContext(), users);
                         view_users.setAdapter(usersAdapter);
-                        //usersAdapter.notifyDataSetChanged();
 
                         view_users.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -98,11 +105,9 @@ public class UsersFragment extends android.support.v4.app.Fragment {
             String type = userjson.getString("type");
 
             User user = new User(id, username, name, type);
-
-            users.add(user);
+            if (!user.getId().equals(personalUserId)) {
+                users.add(user);
+            }
         }
     }
-
-
-
 }

@@ -22,7 +22,6 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,11 +33,38 @@ public class SingleChatFragment extends Fragment {
 
     private User toUser;
     private String personalUserId;
-    private Server server;
     private EditText msgBox;
     private RecyclerView msgRecyclerView;
     private List<ChatAppMsgDTO> msgDtoList;
     private ChatAppMsgAdapter chatAppMsgAdapter ;
+
+    private Emitter.Listener handleIncomingMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    System.out.println(data);
+
+                    try {
+                        String from = data.getString("from");
+                        if (!from.equals(personalUserId)) {
+                            String message = data.getString("content");
+                            ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, message);
+                            msgDtoList.add(msgDto);
+                            int newMsgPosition = msgDtoList.size() - 1;
+                            chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
+                            msgRecyclerView.scrollToPosition(newMsgPosition);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    };
+
     private Socket mSocket;
     {
         try {
@@ -60,6 +86,9 @@ public class SingleChatFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //mSocket.on("new message", handleIncomingMessage);
+        mSocket.on("new message", handleIncomingMessage);
         mSocket.connect();
     }
 
@@ -67,8 +96,6 @@ public class SingleChatFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //setHasOptionsMenu(true);
-        server = Server.getInstance();
 
         View view = inflater.inflate(R.layout.single_chat_fragment, container, false);
         msgBox = view.findViewById(R.id.write_message);
@@ -80,7 +107,7 @@ public class SingleChatFragment extends Fragment {
         //Set recyclerView layout manager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
         msgRecyclerView.setLayoutManager(linearLayoutManager);
-        //Create the initial data list/////////////////////////////////////////////////////
+        //Create the initial data list
         msgDtoList = new ArrayList<>();
         //Create the data adapter with the above data list
         chatAppMsgAdapter  = new ChatAppMsgAdapter(msgDtoList);
@@ -93,8 +120,7 @@ public class SingleChatFragment extends Fragment {
                 sendMessage();
             }
         });
-        //loadChatData(view);
-        mSocket.on("new message", onNewMessage);
+
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         personalUserId = preferences.getString("idUser", "null");
 
@@ -102,26 +128,6 @@ public class SingleChatFragment extends Fragment {
 
         return view;
     }
-
-    public Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    System.out.println(data);
-//                    try {
-//                        message = data.getString("message");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, message);
-//                    msgDtoList.add(msgDto);
-                }
-            });
-        }
-    };
 
 
     private void sendMessage() {
@@ -140,8 +146,8 @@ public class SingleChatFragment extends Fragment {
             msgBox.setText("");
             mSocket.emit("send message", msgContent, toUser.getId());
         }
-
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
