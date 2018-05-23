@@ -44,27 +44,29 @@ public class SingleChatFragment extends Fragment {
     private Emitter.Listener handleIncomingMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject)args[0];
-                    System.out.println(data);
+            if (isAdded()) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject data = (JSONObject) args[0];
+                        System.out.println(data);
 
-                    try {
-                        String from = data.getString("from");
-                        if (!from.equals(personalUserId)) {
-                            String message = data.getString("content");
-                            ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, message);
-                            msgDtoList.add(msgDto);
-                            int newMsgPosition = msgDtoList.size() - 1;
-                            chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
-                            msgRecyclerView.scrollToPosition(newMsgPosition);
+                        try {
+                            String from = data.getString("from");
+                            if (!from.equals(personalUserId)) {
+                                String message = data.getString("content");
+                                ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, message);
+                                msgDtoList.add(msgDto);
+                                int newMsgPosition = msgDtoList.size() - 1;
+                                chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
+                                msgRecyclerView.scrollToPosition(newMsgPosition);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            });
+                });
+            }
         }
     };
 
@@ -142,7 +144,6 @@ public class SingleChatFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
 
