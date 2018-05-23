@@ -1,4 +1,6 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Forum;
+
+import com.integrapp.integrapp.UserDataAdvertiser;
 
 public class ForumItem {
 

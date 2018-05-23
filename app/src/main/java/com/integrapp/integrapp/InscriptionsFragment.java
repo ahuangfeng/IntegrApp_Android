@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Adverts.DataAdvert;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

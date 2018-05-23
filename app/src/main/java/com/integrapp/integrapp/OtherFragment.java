@@ -14,6 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Forum.ForumItem;
+import com.integrapp.integrapp.Forum.ForumsAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

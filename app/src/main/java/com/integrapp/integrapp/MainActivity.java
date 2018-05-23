@@ -19,6 +19,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Adverts.AdvertsFragment;
+import com.integrapp.integrapp.Forum.ForumFragment;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

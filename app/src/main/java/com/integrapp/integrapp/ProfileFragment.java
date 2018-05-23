@@ -24,6 +24,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.integrapp.integrapp.Adverts.AdvertsFragment;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

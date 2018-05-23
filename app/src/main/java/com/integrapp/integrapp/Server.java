@@ -1,6 +1,5 @@
 package com.integrapp.integrapp;
 
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -8,16 +7,16 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import java.io.IOException;
-import java.net.HttpURLConnection;
 
-class Server {
+import java.io.IOException;
+
+public class Server {
     private static final Server serverInstance = new Server();
     private static final String API_URI = "https://integrappbackend.herokuapp.com/api";
 
     public String token; //NO privado porque no podemos acceder a el desde los metodos doInBackground y onPostExecute de las AsynTasck
 
-    static Server getInstance() {
+    public static Server getInstance() {
         return serverInstance;
     }
 

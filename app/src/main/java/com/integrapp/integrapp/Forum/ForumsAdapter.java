@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Forum;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.integrapp.integrapp.R;
+
 import java.util.ArrayList;
 
 
