@@ -97,14 +97,14 @@ public class UsersFragment extends android.support.v4.app.Fragment {
     }
 
     private void getInfoFromString(String s) throws JSONException {
-        JSONArray llistaUsers = new JSONArray(s);
+        JSONArray usersList = new JSONArray(s);
 
-        for (int i=0; i<llistaUsers.length(); ++i) {
-            JSONObject userjson = new JSONObject(llistaUsers.getString(i));
-            String id = userjson.getString("_id");
-            String username = userjson.getString("username");
-            String name = userjson.getString("name");
-            String type = userjson.getString("type");
+        for (int i=0; i<usersList.length(); ++i) {
+            JSONObject userJson = new JSONObject(usersList.getString(i));
+            String id = userJson.getString("_id");
+            String username = userJson.getString("username");
+            String name = userJson.getString("name");
+            String type = userJson.getString("type");
 
             User user = new User(id, username, name, type);
             if (!user.getId().equals(personalUserId)) {

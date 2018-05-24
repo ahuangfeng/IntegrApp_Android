@@ -44,7 +44,7 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         chats = new ArrayList<>();
         View view = inflater.inflate(R.layout.fragment_chats_chats, container, false);
-        this.chatServer = ChatServer.getInstance();
+        chatServer = ChatServer.getInstance();
         listViewChats = view.findViewById(R.id.list_chats);
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         personalId = preferences.getString("idUser", "null");
@@ -99,14 +99,14 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
     }
 
     private void getInfoFromString(String s) throws JSONException {
-        JSONArray llistaChats = new JSONArray(s);
+        JSONArray chatsList = new JSONArray(s);
 
-        for (int i=0; i<llistaChats.length(); ++i) {
-            JSONObject chatjson = new JSONObject(llistaChats.getString(i));
-            String id = chatjson.getString("_id");
-            String username = chatjson.getString("username");
-            String name = chatjson.getString("name");
-            String type = chatjson.getString("type");
+        for (int i=0; i<chatsList.length(); ++i) {
+            JSONObject chatJson = new JSONObject(chatsList.getString(i));
+            String id = chatJson.getString("_id");
+            String username = chatJson.getString("username");
+            String name = chatJson.getString("name");
+            String type = chatJson.getString("type");
 
             User user = new User(id, username, name, type);
 

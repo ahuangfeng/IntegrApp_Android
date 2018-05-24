@@ -47,5 +47,4 @@ public class MainChatsFragment extends Fragment{
         adapter.addFragment(users, "USERS");
         viewPager.setAdapter(adapter);
     }
-
 }

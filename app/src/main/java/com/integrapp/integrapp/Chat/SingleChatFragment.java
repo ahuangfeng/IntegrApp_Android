@@ -133,11 +133,9 @@ public class SingleChatFragment extends Fragment {
             @Override
             public void call(Object... args) {
                 Log.i("callback", "test");
-                System.out.println("RETURNING EVENT CALLBACK " + args[0]);
                 if (!args[0].toString().equals("false")) {
                     try {
                         JSONObject myJsonObject = new JSONObject(args[0].toString());
-                        System.out.println("CHATS: " + myJsonObject.getString("chats"));
                         final JSONArray chats = myJsonObject.getJSONArray("chats");
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -149,7 +147,6 @@ public class SingleChatFragment extends Fragment {
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("Error on callback");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
