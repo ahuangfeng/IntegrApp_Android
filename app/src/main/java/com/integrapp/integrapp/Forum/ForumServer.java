@@ -5,16 +5,12 @@ import android.os.AsyncTask;
 
 import com.integrapp.integrapp.Server;
 
-/**
- * Created by alexhuang05 on 24/05/18.
- */
-
 class ForumServer {
     private Server server;
     private static final ForumServer ourInstance = new ForumServer();
 
-    private String RAWForumDocu = "";
-    private String RAWForumEntre = "";
+    private String RAWForumDoc = "";
+    private String RAWForumEnter = "";
     private String RAWForumLang = "";
     private String RAWForumOther = "";
 
@@ -76,18 +72,18 @@ class ForumServer {
         }.execute();
     }
 
-    public String getForumDocu(){
-        if(this.RAWForumDocu.isEmpty()){
-            this.RAWForumDocu = this.server.getForumDocu();
-            return this.RAWForumDocu;
+    public String getForumDoc(){
+        if(this.RAWForumDoc.isEmpty()){
+            this.RAWForumDoc = this.server.getForumDocu();
+            return this.RAWForumDoc;
         }else{
-            updateForumDocu();
-            return this.RAWForumDocu;
+            updateForumDoc();
+            return this.RAWForumDoc;
         }
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void updateForumDocu(){
+    private void updateForumDoc(){
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -95,25 +91,25 @@ class ForumServer {
             }
 
             protected void onPostExecute(String s) {
-                RAWForumDocu = s;
+                RAWForumDoc = s;
             }
 
         }.execute();
     }
 
 
-    public String getForumEntre(){
-        if(this.RAWForumEntre.isEmpty()){
-            this.RAWForumEntre = this.server.getForumEntre();
-            return this.RAWForumEntre;
+    public String getForumEnter(){
+        if(this.RAWForumEnter.isEmpty()){
+            this.RAWForumEnter = this.server.getForumEntre();
+            return this.RAWForumEnter;
         }else{
-            updateForumEntre();
-            return this.RAWForumEntre;
+            updateForumEnter();
+            return this.RAWForumEnter;
         }
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void updateForumEntre(){
+    private void updateForumEnter(){
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -121,7 +117,7 @@ class ForumServer {
             }
 
             protected void onPostExecute(String s) {
-                RAWForumEntre = s;
+                RAWForumEnter = s;
             }
 
         }.execute();

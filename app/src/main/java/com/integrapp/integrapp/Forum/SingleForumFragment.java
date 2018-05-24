@@ -146,9 +146,11 @@ public class SingleForumFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN COMMENTING FORUM")) {
-                    System.out.println("COMMENT FORUM " +s);
                     showNewComment(s);
                     Toast.makeText(getContext(), "Comment created correctly", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getContext(), "Error posting the comment", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -269,7 +271,6 @@ public class SingleForumFragment extends Fragment {
                 layoutParams3.setMargins(0,20, 0, 0);
                 imageButton.setLayoutParams(layoutParams3);
 
-                //final int finalI = i;
                 imageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -314,8 +315,10 @@ public class SingleForumFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
                     sendInfoUserCommentToProfile(s);
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -385,13 +388,12 @@ public class SingleForumFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING COMMENT")) {
-                    System.out.println("DELETE COMMENT RESPONSE: " +s);
                     comments.remove(index);
                     showComments(getView());
                     Toast.makeText(getContext(), "Comment deleted successfully", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error deleting the comment", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -410,8 +412,10 @@ public class SingleForumFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
                     sendInfoUserToProfile(s);
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

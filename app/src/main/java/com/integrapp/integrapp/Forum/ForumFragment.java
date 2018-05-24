@@ -16,9 +16,9 @@ import com.integrapp.integrapp.Adapters.FragmentAdapter;
 
 public class ForumFragment extends Fragment {
 
-    private static Fragment docu;
+    private static Fragment doc;
     private static Fragment lang;
-    private static Fragment entre;
+    private static Fragment enter;
     private static Fragment other;
     private FloatingActionButton fab;
 
@@ -34,9 +34,9 @@ public class ForumFragment extends Fragment {
         View view = inflater.inflate(R.layout.tabs_fragment_forum, container, false);
 
         //Create fragments inside tabs
-        docu = new DocuFragment();
-        lang = new LangFragment();
-        entre = new EntreFragment();
+        doc = new DocumentationFragment();
+        lang = new LanguageFragment();
+        enter = new EntertainmentFragment();
         other = new OtherFragment();
         fab = view.findViewById(R.id.fab);
 
@@ -64,9 +64,9 @@ public class ForumFragment extends Fragment {
     //ADD FRAGMENTS TO TABS
     private void setupViewPager (ViewPager viewPager) {
         FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager());
-        adapter.addFragment(docu, "DOCUMENTATION");
+        adapter.addFragment(doc, "DOCUMENTATION");
         adapter.addFragment(lang, "LANGUAGES");
-        adapter.addFragment(entre, "ENTERTAINMENT");
+        adapter.addFragment(enter, "ENTERTAINMENT");
         adapter.addFragment(other, "VARIOUS");
         viewPager.setAdapter(adapter);
     }

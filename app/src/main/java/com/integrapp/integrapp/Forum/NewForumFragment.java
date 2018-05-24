@@ -99,7 +99,6 @@ public class NewForumFragment extends Fragment {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
                     checkNewForum(s);
                 }
             }.execute();
