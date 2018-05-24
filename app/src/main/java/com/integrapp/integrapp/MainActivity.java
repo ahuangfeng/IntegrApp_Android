@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_profile) {
             fragment = new ProfileFragment();
         } else if (id == R.id.nav_adverts) {
-            //fragment = new AdvertsFragment();
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
             this.finish();

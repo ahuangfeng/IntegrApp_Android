@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 
@@ -87,8 +88,6 @@ public class SingleInscriptionFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                System.out.print("myjson: "+json);
-                System.out.println(" "+idAdvert);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.setInscriptionStatus(idAdvert, json);
             }
@@ -96,13 +95,15 @@ public class SingleInscriptionFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN SET STATUS INSCRIPTION")) {
-                    System.out.println("nohayerror");
                     Fragment fragment = new InscriptionsFragment(idAdvert, idUser, getContext());
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction ft = fragmentManager.beginTransaction();
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error setting inscription status", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
