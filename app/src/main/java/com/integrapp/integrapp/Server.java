@@ -486,4 +486,17 @@ public class Server {
         return "ERROR IN GETTING ALL USERS";
     }
 
+    public String getChats(String userId) {
+        HttpGet get = new HttpGet(API_URI+"/chat/"+userId);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING CHATS";
+    }
 }
