@@ -141,8 +141,13 @@ public class SingleChatFragment extends Fragment {
                     try {
                         JSONObject myJsonObject = new JSONObject(args[0].toString());
                         System.out.println("CHATS: " + myJsonObject.getString("chats"));
-                        JSONArray chats = myJsonObject.getJSONArray("chats");
-                        addHistory(chats);
+                        final JSONArray chats = myJsonObject.getJSONArray("chats");
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                addHistory(chats);
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -156,7 +161,7 @@ public class SingleChatFragment extends Fragment {
         return view;
     }
 
-    public void addHistory(JSONArray chats){
+    private void addHistory(JSONArray chats){
         System.out.println("HOLAAAA!:");
         try {
             for (int i = 0; i < chats.length(); i++) {
@@ -172,14 +177,13 @@ public class SingleChatFragment extends Fragment {
                     historial.add(msgDto);
                 }
             }
+            int newMsgPosition = 0;
             for(int i=0; i<historial.size(); ++i) {
                 msgDtoList.add(historial.get(i));
-                int newMsgPosition = msgDtoList.size() - 1;
-                // Notify recycler view insert one new data.
-                //chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
-                // Scroll RecyclerView to the last message.
-                //msgRecyclerView.scrollToPosition(newMsgPosition);
+                newMsgPosition = msgDtoList.size() - 1;
             }
+            chatAppMsgAdapter.notifyDataSetChanged();
+            msgRecyclerView.scrollToPosition(newMsgPosition);
         } catch (JSONException e) {
             e.printStackTrace();
         }
