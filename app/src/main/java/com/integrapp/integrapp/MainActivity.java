@@ -20,6 +20,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Adverts.AdvertsFragment;
+import com.integrapp.integrapp.Chat.MainChatsFragment;
+import com.integrapp.integrapp.Forum.ForumFragment;
+import com.integrapp.integrapp.Inscription.InscriptionsFragment;
+import com.integrapp.integrapp.Login.LogIn;
+import com.integrapp.integrapp.Profile.ProfileFragment;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_forum) {
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
-            Toast.makeText(getApplicationContext(), "Function Chats not implemented", Toast.LENGTH_SHORT).show();
+            fragment = new MainChatsFragment();
         } else if (id == R.id.nav_settings) {
             Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_aboutUs) {
