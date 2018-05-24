@@ -16,8 +16,6 @@ import android.widget.Toast;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 import com.integrapp.integrapp.apapters.InscriptionsAdapter;
-import com.integrapp.integrapp.model.DataAdvert;
-import com.integrapp.integrapp.model.UserDataAdvertiser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +25,7 @@ import java.util.ArrayList;
 
 public class InscriptionsFragment extends android.support.v4.app.Fragment {
     private Server server;
+    private InscriptionServer inscriptionServer;
     private String idAdvert;
     private String userId;
     private Context context;
@@ -50,7 +49,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.activity_inscription, container, false);
         this.server = Server.getInstance();
-
+        this.inscriptionServer = InscriptionServer.getInstance();
         if (idAdvert.equals("inscriptions")) {
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
             userId = preferences.getString("idUser", "null");
@@ -77,9 +76,9 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                 server.token = token; //por eso lo volemos a guardar en el server
                 System.out.println("TOKEN PREFERENCES: " + token);
                 if (idAdvert.equals("inscriptions")) {
-                    return server.getAllUserInscriptions(userId);
+                    return inscriptionServer.getAllUserInscriptions(userId);
                 } else {
-                    return server.getAllInscriptions(idAdvert);
+                    return inscriptionServer.getAllInscriptions(idAdvert);
                 }
             }
 
