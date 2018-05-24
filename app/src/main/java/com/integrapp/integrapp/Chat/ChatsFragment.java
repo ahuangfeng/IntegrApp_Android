@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class ChatsFragment extends android.support.v4.app.Fragment {
 
-    private static Server server;
+    private static ChatServer chatServer;
     private ArrayList<Chat> chats = new ArrayList<>();
     private ListView listViewChats;
     private ChatsAdapter chatsAdapter;
@@ -45,7 +45,7 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         chats = new ArrayList<>();
         View view = inflater.inflate(R.layout.fragment_chats_chats, container, false);
-        server = Server.getInstance();
+        this.chatServer = ChatServer.getInstance();
         listViewChats = view.findViewById(R.id.list_chats);
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         personalId = preferences.getString("idUser", "null");
@@ -60,7 +60,7 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
 
             @Override
             protected String doInBackground(Void... voids) {
-                return server.getChats(personalId);
+                return chatServer.getChats(personalId);
             }
 
             protected void onPostExecute(String s) {

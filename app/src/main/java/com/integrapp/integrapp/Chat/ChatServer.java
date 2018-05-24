@@ -5,15 +5,12 @@ import android.os.AsyncTask;
 
 import com.integrapp.integrapp.Server;
 
-/**
- * Created by alexhuang05 on 24/05/18.
- */
-
 class ChatServer {
     private static final ChatServer ourInstance = new ChatServer();
 
     private Server server;
     private String RAWUsers = "";
+    private String RAWChats = "";
     public static ChatServer getInstance() {
         return ourInstance;
     }
@@ -30,6 +27,31 @@ class ChatServer {
             this.updateUsers();
             return this.RAWUsers;
         }
+    }
+
+    public String getChats(String personalId){
+        if(this.RAWChats.isEmpty()){
+            this.RAWChats = this.server.getChats(personalId);
+            return this.RAWChats;
+        }else{
+            this.updateChats(personalId);
+            return this.RAWChats;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void updateChats(final String personalId){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.getChats(personalId);
+            }
+
+            protected void onPostExecute(String s) {
+                RAWChats = s;
+            }
+
+        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
