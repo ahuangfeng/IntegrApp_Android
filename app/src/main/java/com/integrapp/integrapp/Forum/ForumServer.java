@@ -14,6 +14,7 @@ class ForumServer {
     private static final ForumServer ourInstance = new ForumServer();
 
     private String RAWForumDocu = "";
+    private String RAWForumEntre = "";
 
     static ForumServer getInstance() {
         return ourInstance;
@@ -43,6 +44,32 @@ class ForumServer {
 
             protected void onPostExecute(String s) {
                 RAWForumDocu = s;
+            }
+
+        }.execute();
+    }
+
+
+    public String getForumEntre(){
+        if(this.RAWForumEntre.isEmpty()){
+            this.RAWForumEntre = this.server.getForumEntre();
+            return this.RAWForumEntre;
+        }else{
+            updateForumEntre();
+            return this.RAWForumEntre;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void updateForumEntre(){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.getForumEntre();
+            }
+
+            protected void onPostExecute(String s) {
+                RAWForumEntre = s;
             }
 
         }.execute();
