@@ -100,8 +100,6 @@ public class ProfileFragment extends Fragment {
             int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
 
-            System.out.println("COSIKAAS: "+idUser + " " + username + " " + type + " " + name+ " "+ email+ " "+ phone+ " "+likes+ " "+dislikes+ " "+ ads);
-
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes,dislikes,ads);
 
@@ -155,7 +153,6 @@ public class ProfileFragment extends Fragment {
             adsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
                     showUserAdverts(idUser);
                 }
             });
@@ -186,8 +183,10 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DISLIKE VOTE")) {
-                    System.out.println("DISLIKE VOTE RESPONSE: " +s);
                     saveVote(s, "dislike");
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error voting dislike", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -206,8 +205,10 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN LIKE VOTE")) {
-                    System.out.println("LIKE VOTE RESPONSE: " +s);
                     saveVote(s, "like");
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error voting like", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -269,7 +270,6 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING USER")) {
-                    System.out.println("DELETE USER SUCCESSFULL RESPONSE: " +s);
                     Toast.makeText(getActivity().getApplicationContext(), "User deleted successfully", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
                     startActivity(i);
@@ -282,7 +282,7 @@ public class ProfileFragment extends Fragment {
                     editor.apply();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error deleting user", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -441,9 +441,11 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR MODIFY PROFILE")) {
-                    System.out.println("MODIFY RESPONSE " +s);
                     Toast.makeText(getActivity(), "Password changed correctly", Toast.LENGTH_SHORT).show();
                     dialog.cancel();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error changing the password", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -533,10 +535,12 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR MODIFY PROFILE")) {
-                    System.out.println("MODIFY RESPONSE " +s);
                     setVisibility(false, View.INVISIBLE);
                     setNewPreferences();
                     Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Error modifying the profile", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
