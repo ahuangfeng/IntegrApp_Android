@@ -70,11 +70,9 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                System.out.println("TOKEN :" + server.token); //correcto (es nulo cuando entras la primera vez)
                 SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                String token = preferences.getString("user_token", "user_token");
-                server.token = token; //por eso lo volemos a guardar en el server
-                System.out.println("TOKEN PREFERENCES: " + token);
+                server.token = preferences.getString("user_token", "user_token");
+
                 if (idAdvert.equals("inscriptions")) {
                     return inscriptionServer.getAllUserInscriptions(userId);
                 } else {
@@ -84,7 +82,6 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
 
             @Override
             protected void onPostExecute(String s) {
-                System.out.println("INSCRIPTIONS : " +s);
                 if (!s.equals("ERROR IN GETTING ALL INSCRIPTIONS")) {
                     try {
                         JSONArray allInscriptions = new JSONArray(s);
@@ -95,9 +92,9 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                         LinearLayout contentInscription = view.findViewById(R.id.includeContentInscription);
                         list = contentInscription.findViewById(R.id.sampleListView);
 
-                        InscriptionsAdapter myadapter = new InscriptionsAdapter(view.getContext(), attributes, getActivity(), idAdvert);
-                        list.setAdapter(myadapter);
-                        myadapter.notifyDataSetChanged();
+                        InscriptionsAdapter myAdapter = new InscriptionsAdapter(view.getContext(), attributes, getActivity(), idAdvert);
+                        list.setAdapter(myAdapter);
+                        myAdapter.notifyDataSetChanged();
 
                         list.setClickable(false);
                     } catch (JSONException e) {
@@ -106,7 +103,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
 
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error loading ads", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error loading inscriptions", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -116,8 +113,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         ArrayList<DataInscription> attributes = new ArrayList<>();
         try {
             for (int i = 0; i < stringJson.length(); ++i) {
-                System.out.println("json: " + i + " "+ stringJson.getString(i));
-                DataInscription attributesAdd = getAttributesInscription(stringJson, i); //atributos de un anuncio
+                DataInscription attributesAdd = getAttributesInscription(stringJson, i);
                 attributes.add(attributesAdd);
             }
             return attributes;
@@ -129,20 +125,20 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
 
     private DataInscription getAttributesInscription(JSONArray myJsonjArray, int index) throws JSONException {
         String advertString = myJsonjArray.getString(index);
-        JSONObject myJsonjObject = new JSONObject(advertString);
+        JSONObject myJsonObject = new JSONObject(advertString);
 
         String id, info, state, userId, advertId;
         DataInscription dataInscription;
 
-        id = myJsonjObject.getString("_id");
+        id = myJsonObject.getString("_id");
         if (idAdvert.equals("inscriptions")) {
-            info = myJsonjObject.getString("titleAdvert");
+            info = myJsonObject.getString("titleAdvert");
         } else {
-            info = myJsonjObject.getString("username");
+            info = myJsonObject.getString("username");
         }
-        state = myJsonjObject.getString("status");
-        userId = myJsonjObject.getString("userId");
-        advertId = myJsonjObject.getString("advertId");
+        state = myJsonObject.getString("status");
+        userId = myJsonObject.getString("userId");
+        advertId = myJsonObject.getString("advertId");
 
 
         dataInscription = new DataInscription(id, info, state, userId, advertId);

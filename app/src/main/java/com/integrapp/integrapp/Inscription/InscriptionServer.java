@@ -5,10 +5,6 @@ import android.os.AsyncTask;
 
 import com.integrapp.integrapp.Server;
 
-/**
- * Created by alexhuang05 on 24/05/18.
- */
-
 class InscriptionServer {
     private Server server;
     private static final InscriptionServer ourInstance = new InscriptionServer();
