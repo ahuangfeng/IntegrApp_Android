@@ -66,6 +66,7 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GETTING CHATS")) {
                     try {
+                        Toast.makeText(getActivity(), "Go to users tab to open a new chat!", Toast.LENGTH_LONG).show();
                         getInfoFromString(s);
                         chatsAdapter = new ChatsAdapter(getContext(), chats);
                         listViewChats.setAdapter(chatsAdapter);
