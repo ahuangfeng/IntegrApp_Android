@@ -15,6 +15,7 @@ class ForumServer {
 
     private String RAWForumDocu = "";
     private String RAWForumEntre = "";
+    private String RAWForumLang = "";
 
     static ForumServer getInstance() {
         return ourInstance;
@@ -22,6 +23,31 @@ class ForumServer {
 
     private ForumServer() {
         this.server = Server.getInstance();
+    }
+
+    public String getForumLang(){
+        if(this.RAWForumLang.isEmpty()){
+            this.RAWForumLang = this.server.getForumLang();
+            return this.RAWForumLang;
+        }else{
+            updateForumLang();
+            return this.RAWForumLang;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void updateForumLang(){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.getForumLang();
+            }
+
+            protected void onPostExecute(String s) {
+                RAWForumLang = s;
+            }
+
+        }.execute();
     }
 
     public String getForumDocu(){
