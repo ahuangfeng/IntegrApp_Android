@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.Adverts;
+package com.integrapp.integrapp.apapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.model.DataAdvert;
 
 import java.util.List;
 

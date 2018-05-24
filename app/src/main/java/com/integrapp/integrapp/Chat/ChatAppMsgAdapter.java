@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.model.ChatAppMsgDTO;
 
 import java.util.ArrayList;
 import java.util.List;

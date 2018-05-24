@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Chat;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,7 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.integrapp.integrapp.Chat.SingleChatFragment;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
+import com.integrapp.integrapp.apapters.UsersAdapter;
+import com.integrapp.integrapp.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;

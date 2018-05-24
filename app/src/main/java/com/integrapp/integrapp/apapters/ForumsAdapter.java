@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.Forum;
+package com.integrapp.integrapp.apapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.model.ForumItem;
 
 import java.util.ArrayList;
 

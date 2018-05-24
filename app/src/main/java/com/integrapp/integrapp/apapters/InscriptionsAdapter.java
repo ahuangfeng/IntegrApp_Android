@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.Inscription;
+package com.integrapp.integrapp.apapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.integrapp.integrapp.Inscription.DataInscription;
 import com.integrapp.integrapp.R;
 
 import java.util.List;

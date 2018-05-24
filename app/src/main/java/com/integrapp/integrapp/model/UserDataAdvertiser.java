@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

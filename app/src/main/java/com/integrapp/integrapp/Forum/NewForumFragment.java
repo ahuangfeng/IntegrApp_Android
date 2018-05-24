@@ -94,7 +94,7 @@ public class NewForumFragment extends Fragment {
                 protected String doInBackground(Void... voids) {
                     SharedPreferences preferences = activity.getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
-                    return server.PostNewForum(json);
+                    return server.postNewForum(json);
                 }
 
                 @Override

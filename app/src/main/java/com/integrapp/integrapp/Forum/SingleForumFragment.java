@@ -19,7 +19,8 @@ import android.widget.Toast;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.UserDataAdvertiser;
+import com.integrapp.integrapp.model.ForumItem;
+import com.integrapp.integrapp.model.UserDataAdvertiser;
 
 import org.json.JSONException;
 import org.json.JSONObject;

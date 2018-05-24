@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.integrapp.integrapp.R;
 
 public class ChatAppMsgViewHolder extends RecyclerView.ViewHolder {
-
+// TODO: refactor amb getters
     LinearLayout leftMsgLayout;
 
     LinearLayout rightMsgLayout;

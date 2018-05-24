@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.Adverts;
+package com.integrapp.integrapp.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +14,7 @@ public class DataAdvert {
     private int image;
     private String id;
 
-    DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image, String id) {
+    public DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image, String id) {
         this.date = date;
         this.title = title;
         this.description = description;

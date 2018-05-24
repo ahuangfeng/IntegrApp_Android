@@ -363,7 +363,7 @@ public class Server {
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
 
-    public String PostNewForum(String json) {
+    public String postNewForum(String json) {
         HttpPost post = new HttpPost(API_URI+"/forum");
         try {
             StringEntity entity = new StringEntity(json);

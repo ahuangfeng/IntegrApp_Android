@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.integrapp.integrapp.FragmentAdapter;
 import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.apapters.FragmentAdapter;
 
 public class MainChatsFragment extends Fragment{
     private static Fragment users;
@@ -27,7 +27,7 @@ public class MainChatsFragment extends Fragment{
         View view = inflater.inflate(R.layout.main_chats, container, false);
 
         //Create fragments inside tabs
-        users = new com.integrapp.integrapp.UsersFragment();
+        users = new UsersFragment();
         chats = new ChatsFragment();
 
         // Setting ViewPager for each Tabs

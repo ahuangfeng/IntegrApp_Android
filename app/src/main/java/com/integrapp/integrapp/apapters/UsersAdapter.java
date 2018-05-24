@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.apapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.integrapp.integrapp.Forum.ForumItem;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.model.ForumItem;
+import com.integrapp.integrapp.model.User;
 
 import java.util.ArrayList;
 
 
-class UsersAdapter extends BaseAdapter {
+public class UsersAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<User> users = new ArrayList<>();
 

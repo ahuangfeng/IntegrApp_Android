@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.integrapp.integrapp.FragmentAdapter;
 import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.apapters.FragmentAdapter;
 
 public class ForumFragment extends Fragment {
 
