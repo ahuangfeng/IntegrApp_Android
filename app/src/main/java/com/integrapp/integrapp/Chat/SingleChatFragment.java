@@ -23,8 +23,8 @@ import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.ChatAppMsgDTO;
-import com.integrapp.integrapp.model.User;
+import com.integrapp.integrapp.Model.ChatAppMsgDTO;
+import com.integrapp.integrapp.Model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;

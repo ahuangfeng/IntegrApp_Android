@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.DataAdvert;
+import com.integrapp.integrapp.Model.DataAdvert;
 
 import java.util.List;
 

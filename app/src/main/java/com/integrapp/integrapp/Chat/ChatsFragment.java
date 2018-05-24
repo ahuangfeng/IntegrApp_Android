@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Adapters.ChatsAdapter;
-import com.integrapp.integrapp.model.User;
+import com.integrapp.integrapp.Model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;

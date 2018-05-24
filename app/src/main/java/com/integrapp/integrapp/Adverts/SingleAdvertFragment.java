@@ -30,8 +30,8 @@ import com.integrapp.integrapp.MainActivity;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.model.DataAdvert;
-import com.integrapp.integrapp.model.UserDataAdvertiser;
+import com.integrapp.integrapp.Model.DataAdvert;
+import com.integrapp.integrapp.Model.UserDataAdvertiser;
 
 import org.json.JSONArray;
 import org.json.JSONException;

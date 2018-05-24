@@ -20,7 +20,7 @@ import com.integrapp.integrapp.DataComment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 import com.integrapp.integrapp.Adapters.ForumsAdapter;
-import com.integrapp.integrapp.model.ForumItem;
+import com.integrapp.integrapp.Model.ForumItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

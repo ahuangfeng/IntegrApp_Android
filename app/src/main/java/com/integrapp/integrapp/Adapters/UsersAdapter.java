@@ -9,8 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.ForumItem;
-import com.integrapp.integrapp.model.User;
+import com.integrapp.integrapp.Model.ForumItem;
+import com.integrapp.integrapp.Model.User;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.model;
+package com.integrapp.integrapp.Model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,18 +31,18 @@ public class UserDataAdvertiser {
 
     private void decryptJson(String userInfo) {
         try {
-            JSONObject myJsonjObject = new JSONObject(userInfo);
+            JSONObject myJsonObject = new JSONObject(userInfo);
 
-            this.idUser = myJsonjObject.getString("_id");
-            this.username = myJsonjObject.getString("username");
-            this.name = myJsonjObject.getString("name");
-            this.type = myJsonjObject.getString("type");;
+            this.idUser = myJsonObject.getString("_id");
+            this.username = myJsonObject.getString("username");
+            this.name = myJsonObject.getString("name");
+            this.type = myJsonObject.getString("type");
 
-            if(myJsonjObject.has("email")) {
-                this.email = myJsonjObject.getString("email");
+            if(myJsonObject.has("email")) {
+                this.email = myJsonObject.getString("email");
             }
-            if(myJsonjObject.has("phone")) {
-                this.phone = myJsonjObject.getString("phone");
+            if(myJsonObject.has("phone")) {
+                this.phone = myJsonObject.getString("phone");
             }
 
         } catch (JSONException e) {
@@ -52,18 +52,18 @@ public class UserDataAdvertiser {
 
     private void decryptJson2(String id, String userInfo) {
         try {
-            JSONObject myJsonjObject = new JSONObject(userInfo);
+            JSONObject myJsonObject = new JSONObject(userInfo);
 
             this.idUser = id;
-            this.username = myJsonjObject.getString("username");
-            this.name = myJsonjObject.getString("name");
-            this.type = myJsonjObject.getString("type");
+            this.username = myJsonObject.getString("username");
+            this.name = myJsonObject.getString("name");
+            this.type = myJsonObject.getString("type");
 
-            if(myJsonjObject.has("email")) {
-                this.email = myJsonjObject.getString("email");
+            if(myJsonObject.has("email")) {
+                this.email = myJsonObject.getString("email");
             }
-            if(myJsonjObject.has("phone")) {
-                this.phone = myJsonjObject.getString("phone");
+            if(myJsonObject.has("phone")) {
+                this.phone = myJsonObject.getString("phone");
             }
 
         } catch (JSONException e) {

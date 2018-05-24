@@ -1,7 +1,7 @@
 package com.integrapp.integrapp.Chat;
 
 
-import com.integrapp.integrapp.model.User;
+import com.integrapp.integrapp.Model.User;
 
 public class Chat {
 

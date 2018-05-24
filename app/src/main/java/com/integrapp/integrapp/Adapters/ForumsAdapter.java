@@ -10,7 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.ForumItem;
+import com.integrapp.integrapp.Model.ForumItem;
 
 import java.util.ArrayList;
 

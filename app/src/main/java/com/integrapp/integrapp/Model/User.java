@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.model;
+package com.integrapp.integrapp.Model;
 
 public class User {
     private String id;
