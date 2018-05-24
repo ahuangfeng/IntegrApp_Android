@@ -14,6 +14,10 @@
             android:title="@string/menu_adverts"
             android:checked="true"/>
         <item
+            android:id="@+id/nav_inscriptions"
+            android:icon="@drawable/sign"
+            android:title="@string/menu_inscriptions"/>
+        <item
             android:id="@+id/nav_forum"
             android:icon="@drawable/ic_forum_black_48dp"
             android:title="@string/menu_forum" />

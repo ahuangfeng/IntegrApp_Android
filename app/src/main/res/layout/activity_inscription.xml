@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/includeAppBarInscription"
-        layout="@layout/app_bar_advert"
+        layout="@layout/app_bar_inscription"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

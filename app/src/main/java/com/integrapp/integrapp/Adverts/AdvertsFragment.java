@@ -37,6 +37,7 @@ public class AdvertsFragment extends Fragment {
 
     private Server server;
     private String SearchType;
+    private View view;
 
     public AdvertsFragment() {
         SearchType = "all";
@@ -54,7 +55,7 @@ public class AdvertsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.activity_advert, container, false);
+        view = inflater.inflate(R.layout.activity_advert, container, false);
 
         this.server = Server.getInstance();
 
@@ -106,7 +107,7 @@ public class AdvertsFragment extends Fragment {
                     ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s, getType);
 
                     //Preparación del diseño
-                    LinearLayout contentAdvert = getView().findViewById(R.id.includeContentAdvert);
+                    LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
                     ListView list;
                     list = contentAdvert.findViewById(R.id.sampleListView);
                     final ArrayList<DataAdvert> adverts = new ArrayList<>();
@@ -204,24 +205,14 @@ public class AdvertsFragment extends Fragment {
     }
 
     private void getInfoUser(String s, String id, String arguments) {
-        //try {
-            /*JSONObject myJsonjObject = new JSONObject(s);
-            String username = myJsonjObject.getString("username");
-            String name = myJsonjObject.getString("name");
-            String type = myJsonjObject.getString("type");
-            String email = myJsonjObject.getString("email");
-            String phone = myJsonjObject.getString("phone");*/
-            UserDataAdvertiser uda = new UserDataAdvertiser(id, s);
-            setViewAdvertsofUser(arguments, uda, id);
-        //} catch (JSONException e) {
-            //e.printStackTrace();
-        //}
+         UserDataAdvertiser uda = new UserDataAdvertiser(id, s);
+         setViewAdvertsofUser(arguments, uda, id);
     }
 
     private void setViewAdvertsofUser(String s, UserDataAdvertiser uda, String id) {
         ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s, id);
         //Preparación del diseño
-        LinearLayout contentAdvert = getView().findViewById(R.id.includeContentAdvert);
+        LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
         ListView list;
         list = contentAdvert.findViewById(R.id.sampleListView);
         final ArrayList<DataAdvert> adverts = new ArrayList<>();
@@ -241,7 +232,7 @@ public class AdvertsFragment extends Fragment {
             usersData.add(uda);
         }
 
-        AdvertsAdapter myadapter = new AdvertsAdapter(getView().getContext(), adverts);
+        AdvertsAdapter myadapter = new AdvertsAdapter(view.getContext(), adverts);
         list.setAdapter(myadapter);
         myadapter.notifyDataSetChanged();
 

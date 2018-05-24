@@ -2,15 +2,17 @@ package com.integrapp.integrapp.Inscription;
 
 public class DataInscription {
     private String id;
-    private String advertTitle;
-    private String usernameOwner;
+    private String info;
+    private String idUser;
+    private String idAdvert;
     private String state;
 
-    public DataInscription(String id, String advertTitle, String usernameOwner, String state) {
+    DataInscription(String id, String info, String state, String idUser, String idAdvert) {
         this.id = id;
-        this.advertTitle = advertTitle;
-        this.usernameOwner = usernameOwner;
+        this.info = info;
         this.state = state;
+        this.idUser = idUser;
+        this.idAdvert = idAdvert;
     }
 
     public String getId() {
@@ -21,20 +23,12 @@ public class DataInscription {
         this.id = id;
     }
 
-    public String getAdvertTitle() {
-        return advertTitle;
+    public String getInfo() {
+        return info;
     }
 
-    public void setAdvertTitle(String advertTitle) {
-        this.advertTitle = advertTitle;
-    }
-
-    public String getUsernameOwner() {
-        return usernameOwner;
-    }
-
-    public void setUsernameOwner(String usernameOwner) {
-        this.usernameOwner = usernameOwner;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public String getState() {
@@ -43,5 +37,21 @@ public class DataInscription {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getIdAdvert() {
+        return idAdvert;
+    }
+
+    public void setIdAdvert(String idAdvert) {
+        this.idAdvert = idAdvert;
     }
 }

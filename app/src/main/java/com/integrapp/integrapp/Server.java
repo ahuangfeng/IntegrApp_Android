@@ -127,6 +127,20 @@ public class Server {
         return "ERROR IN GET INFO USER";
     }
 
+    public String getAdvertInfoById(String id) {
+        HttpGet get = new HttpGet(API_URI+"/advert/"+id);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GET INFO ADVERT";
+    }
+
     public String setNewAdvert(String json) {
         HttpPost post = new HttpPost(API_URI+"/advert");
         try {
@@ -277,8 +291,8 @@ public class Server {
         return "ERROR CREATING INSCRIPTION";
     }
 
-    public String deleteInscriptionAdvert() {
-        HttpDelete delete = new HttpDelete(API_URI+"/inscription");
+    public String deleteInscriptionAdvert(String idInscription) {
+        HttpDelete delete = new HttpDelete(API_URI+"/inscription/"+idInscription);
         try {
             delete.setHeader("x-access-token", token);
             DefaultHttpClient client = new DefaultHttpClient();
@@ -305,7 +319,7 @@ public class Server {
         return "ERROR IN GETTING INSCRIPTIONS";
     }
   
-  public String getForumDocu() {
+    public String getForumDocu() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=documentation");
         try {
             get.setHeader("x-access-token", token);
@@ -317,9 +331,9 @@ public class Server {
             e.printStackTrace();
         }
         return "ERROR IN GETTING FORUM(DOCUMENTATION)";
-  }
+    }
   
-  public String getForumEntre() {
+    public String getForumEntre() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=entertainment");
         try {
             get.setHeader("x-access-token", token);
@@ -333,7 +347,7 @@ public class Server {
         return "ERROR IN GETTING FORUM(ENTERTAINMENT)";
     }
   
-  public String getForumLang() {
+    public String getForumLang() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=language");
 
         try {
@@ -349,7 +363,7 @@ public class Server {
         return "ERROR IN GETTING FORUM(LANGUAGE)";
     }
   
-  public String getForumOther() {
+    public String getForumOther() {
         HttpGet get = new HttpGet(API_URI+"/forums?type=various");
         try {
             get.setHeader("x-access-token", token);
@@ -363,13 +377,45 @@ public class Server {
         return "ERROR IN GETTING FORUM(VARIOUS)";
     }
 
-    public String postNewForum(String json) {
-        HttpPost post = new HttpPost(API_URI+"/forum");
+    public String setInscriptionStatus(String idAdvert, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/inscription/"+idAdvert);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+          
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+         return "ERROR IN SET STATUS INSCRIPTION";
+    }
+  
+    public String getCommentsForum(String id) {
+        HttpGet get = new HttpGet(API_URI+"/fullForum/"+id);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING COMMENTS FORUM";
+    }
+  
+    public String createCommentForum(String json) {
+        HttpPost post = new HttpPost(API_URI+"/commentForum");
         try {
             StringEntity entity = new StringEntity(json);
             post.setEntity(entity);
             post.setHeader("x-access-token", token);
-            post.setHeader("Content-Type", "application/json");
+            post.setHeader("Content-type", "application/json");
 
             DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
@@ -378,7 +424,52 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "ERROR CREATING FORUM";
+        return "ERROR IN COMMENTING FORUM";
+    }
+
+    public String postNewForum(String json) {
+        HttpPost post = new HttpPost(API_URI+"/forum");
+        try {
+            StringEntity entity = new StringEntity(json);
+            post.setEntity(entity);
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-Type", "application/json");
+          
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+      return "ERROR CREATING FORUM";
+    }
+
+    public String deleteCommentById(String id) {
+        HttpDelete delete = new HttpDelete(API_URI+"/commentForum/"+id);
+        try {
+            delete.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(delete, handler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN DELETING COMMENT";
+    }
+
+    public String getAllUserInscriptions(String userId) {
+        HttpGet get = new HttpGet(API_URI+"/inscriptionsUser/"+userId);
+        try {
+            get.setHeader("x-access-token", token);
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING ALL INSCRIPTIONS";
     }
 
     public String getUsers() {

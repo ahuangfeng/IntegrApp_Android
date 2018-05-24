@@ -7,7 +7,7 @@
     <color name="whiteLetter">#ffffff</color>
     <color name="colorLikes">#1ee168</color>
     <color name="colorDisLikes">#f22734</color>
-    <color name="colorAds">#1d2adc</color>
+    <color name="colorAds">#0000ff</color>
     <color name="colorPending">#e1e61d</color>
     <color name="colorAccepted">#12f052</color>
     <color name="colorRefused">#f11a1a</color>

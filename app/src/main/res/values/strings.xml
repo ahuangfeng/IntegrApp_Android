@@ -133,9 +133,17 @@
     <string name="new_pass">New password</string>
     <string name="confirm_pass">Confirm new password</string>
     <string name="changePass_button">Change</string>
+    
+    <!-- Strings of Inscriptions Fragment -->
+    <string name="acceptInscription">Accept inscription</string>
+    <string name="refuseInscription">Refuse inscription</string>
+    <string name="menu_inscriptions">Inscriptions</string>
 
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comment</string>
+    <string name="postCommentButton_forum">Post</string>
+    <string name="dialog_delete_comment">Are you sure you want to delete the comment?</string>
+    <string name="tittle_dialogDeleteComment">Comment will be deleted</string>
 
     <!-- Server errors-->
 

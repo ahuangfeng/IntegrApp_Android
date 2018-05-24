@@ -142,31 +142,50 @@ public class SingleChatFragment extends Fragment {
                         JSONObject myJsonObject = new JSONObject(args[0].toString());
                         System.out.println("CHATS: " + myJsonObject.getString("chats"));
                         JSONArray chats = myJsonObject.getJSONArray("chats");
-                        for (int i = 0; i < chats.length(); i++) {
-                            String from = chats.getJSONObject(i).getString("from");
-                            System.out.println("from: " + from);
-                            String content = chats.getJSONObject(i).getString("content");
-                            System.out.println("content: " + content);
-                            if (from.equals(personalUserId)) {
-                                ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_SENT, content);
-                                historial.add(msgDto);
-                            } else {
-                                ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, content);
-                                historial.add(msgDto);
-                            }
-                        }
+                        addHistory(chats);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                else {error = true;}
+                } else {error = true;}
                 callback = args[0].toString();
             }
         });
         if (error) showError();
-        while(callback == null || callback.equals("false")) {System.out.println("esperant");}
+        //TODO: ufff... espera activa? i... si callback es false que?
+        // while(callback == null || callback.equals("false")) {System.out.println("esperant");}
         return view;
     }
+
+    public void addHistory(JSONArray chats){
+        System.out.println("HOLAAAA!:");
+        try {
+            for (int i = 0; i < chats.length(); i++) {
+                String from = chats.getJSONObject(i).getString("from");
+                System.out.println("from: " + from);
+                String content = chats.getJSONObject(i).getString("content");
+                System.out.println("content: " + content);
+                if (from.equals(personalUserId)) {
+                    ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_SENT, content);
+                    historial.add(msgDto);
+                } else {
+                    ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, content);
+                    historial.add(msgDto);
+                }
+            }
+            for(int i=0; i<historial.size(); ++i) {
+                msgDtoList.add(historial.get(i));
+                int newMsgPosition = msgDtoList.size() - 1;
+                // Notify recycler view insert one new data.
+                //chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
+                // Scroll RecyclerView to the last message.
+                //msgRecyclerView.scrollToPosition(newMsgPosition);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         System.out.println("mida historial:" + historial.size());
