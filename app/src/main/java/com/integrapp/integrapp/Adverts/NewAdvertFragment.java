@@ -117,7 +117,6 @@ public class NewAdvertFragment extends Fragment {
         });
 
         setTime.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Calendar currentTime = Calendar.getInstance();
@@ -138,7 +137,6 @@ public class NewAdvertFragment extends Fragment {
                     }
                 }, cHour, cMinute, true);
                 TimePicker.show();
-
             }
         });
 
@@ -147,7 +145,6 @@ public class NewAdvertFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void sendDataToServer(String title, String description, String places) {
-
         try {
             final String json = generateRequestNewAdvert(title, description, places);
             new AsyncTask<Void, Void, String>() {
@@ -160,7 +157,6 @@ public class NewAdvertFragment extends Fragment {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
                     checkNewAdvert(s);
                 }
             }.execute();
@@ -185,11 +181,6 @@ public class NewAdvertFragment extends Fragment {
     private void checkNewAdvert(String s) {
         if (!s.equals("ERROR CREATING ADVERT")) {
             Toast.makeText(getActivity(), getString(R.string.newAdvert_success), Toast.LENGTH_SHORT).show();
-            /*FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.screen_area, new AdvertsFragment());
-            ft.commit();
-            fragmentManager.popBackStack();*/
 
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -232,7 +223,6 @@ public class NewAdvertFragment extends Fragment {
             timeText.setError(getString(R.string.error_time_not_selected));
             valid = false;
         }
-
         return valid;
     }
 

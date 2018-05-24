@@ -37,6 +37,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class SingleAdvertFragment extends Fragment {
 
     private String title;
@@ -69,7 +71,7 @@ public class SingleAdvertFragment extends Fragment {
     public SingleAdvertFragment() {
     }
 
-    @SuppressLint({"ValidFragment", "SetTextI18n"})
+    @SuppressLint("ValidFragment")
     public SingleAdvertFragment(DataAdvert dataAdvert, UserDataAdvertiser userData) {
         title = dataAdvert.getTitle();
         type = dataAdvert.getType();
@@ -82,8 +84,6 @@ public class SingleAdvertFragment extends Fragment {
 
         idAdvert = dataAdvert.getId();
         this.userData = userData;
-
-        System.out.println("Parametros: " +title + " " + type + " " + state + " " +places+ " "+ date+ " "+ description + " "+ userId + " " + idAdvert);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -126,7 +126,6 @@ public class SingleAdvertFragment extends Fragment {
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
-                    // TODO: Manage inscriptions
                     Toast.makeText(getActivity().getApplicationContext(), "Manage inscriptions", Toast.LENGTH_SHORT).show();
                 } else if (advertStatus.equals("canEnroll")) {
                     doServerCallForCreateInscription();
@@ -219,7 +218,6 @@ public class SingleAdvertFragment extends Fragment {
     private String checkAdvertStatus(String userInscriptions) {
         try {
             JSONArray myJSONArray = new JSONArray(userInscriptions);
-            System.out.println("QUE HAY AQUI COÑO ---- " + myJSONArray);
             String advertId;
             for (int i = 0; i < myJSONArray.length(); ++i) {
                 advertId = myJSONArray.getJSONObject(i).getString("advertId");
@@ -233,7 +231,6 @@ public class SingleAdvertFragment extends Fragment {
         }
   
         return "canEnroll";
-
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -249,7 +246,6 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
                     sendInfoUserToProfile(s);
                 }
             }
@@ -288,7 +284,6 @@ public class SingleAdvertFragment extends Fragment {
         ft.replace(R.id.screen_area, fragment);
         ft.addToBackStack(null);
         ft.commit();
-
     }
 
     @Override
@@ -401,14 +396,12 @@ public class SingleAdvertFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                System.out.print("myadvertid:"+id);
                 return server.deleteAdvertById(id);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING ADVERT")) {
-                    System.out.println("DELETE ADVERT SUCCESSFULL RESPONSE: " +s);
                     Toast.makeText(getActivity().getApplicationContext(), "Advert deleted successfully", Toast.LENGTH_SHORT).show();
                     SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
@@ -419,10 +412,9 @@ public class SingleAdvertFragment extends Fragment {
                     Intent i = new Intent(SingleAdvertFragment.this.getActivity(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
-
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error deleting advert", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -465,7 +457,6 @@ public class SingleAdvertFragment extends Fragment {
                 @Override
                 protected void onPostExecute(String s) {
                     if (!s.equals("ERROR MODIFY ADVERT")) {
-                        System.out.println("MODIFY RESPONSE " + s);
                         setVisibility(false, View.INVISIBLE);
                         setAttributes();
                         Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
@@ -516,7 +507,6 @@ public class SingleAdvertFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                System.out.print("myadvertid:"+id);
                 return server.modifyStateAdvertById(id, json);
             }
           
@@ -524,11 +514,10 @@ public class SingleAdvertFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR CHANGE ADVERT STATE")) {
                     changeState();
-                    System.out.println("CHANGE ADVERT STATE SUCCESSFULL RESPONSE: " +s);
                     Toast.makeText(getActivity().getApplicationContext(), "Advert State changed successfully", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error changing advert state", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -536,13 +525,12 @@ public class SingleAdvertFragment extends Fragment {
   
     public String generateRequestModifyStateAdvert() {
         String state_to;
-        if (state == "opened") state_to = "closed";
+        if (Objects.equals(state, "opened")) state_to = "closed";
         else state_to = "opened";
         try {
             JSONObject oJSON = new JSONObject();
             oJSON.put("state", state_to);
             return oJSON.toString(1);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -550,11 +538,9 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     public void changeState() {
-        if (state == "opened") state = "closed";
+        if (Objects.equals(state, "opened")) state = "closed";
         else state = "opened";
         textViewState.setText(state.toUpperCase());
-        System.out.print("mystate "+state);
-
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -571,13 +557,7 @@ public class SingleAdvertFragment extends Fragment {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
-                    try {
-                        JSONObject jsonObject = new JSONObject(s);
-                        updateInscriptions(s, "pending");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    updateInscriptions(s, "pending");
                 }
             }.execute();
 
@@ -599,7 +579,6 @@ public class SingleAdvertFragment extends Fragment {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
                     updateInscriptions(s, "canEnroll");
                 }
             }.execute();
@@ -654,7 +633,6 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
-                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
                     saveInscriptions(s);
                 }
             }
@@ -708,7 +686,6 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     private String generateRequestInscription() throws JSONException {
-        System.out.println("WHAAAAAAAAAAAAAAAAT: " + personalUserId + " " + idAdvert + " " + userId);
         JSONObject oJSON = new JSONObject();
 
         oJSON.put("userId", personalUserId);

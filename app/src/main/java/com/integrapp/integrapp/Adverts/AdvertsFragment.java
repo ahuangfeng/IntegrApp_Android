@@ -49,8 +49,6 @@ public class AdvertsFragment extends Fragment {
         SearchType = userId;
     }
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,13 +59,11 @@ public class AdvertsFragment extends Fragment {
         this.server = Server.getInstance();
         this.advertsServer = AdvertsServer.getInstance();
 
-        if (SearchType.equals("all")) getAllAdverts(""); //Show adverts
-        else getAllUserAdverts(SearchType); //Show user adverts
-        System.out.print("primer posible error ini");
+        if (SearchType.equals("all")) getAllAdverts("");
+        else getAllUserAdverts(SearchType);
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
 
-        System.out.print("primer posible error fin");
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,17 +89,13 @@ public class AdvertsFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                // System.out.println("TOKEN :" + server.token); //correcto (es nulo cuando entras la primera vez)
                 SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                String token = preferences.getString("user_token", "user_token");
-                server.token = token; //por eso lo volemos a guardar en el server
-                System.out.println("TOKEN PREFERENCES: " + token);
+                server.token = preferences.getString("user_token", "user_token");
                 return advertsServer.getAllAdverts(getType);
             }
 
             @Override
             protected void onPostExecute(String s) {
-                System.out.println("ADVERTS : " +s);
                 if (!s.equals("ERROR IN GETTING ALL ADVERTS")) {
 
                     ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s, getType);
@@ -149,7 +141,6 @@ public class AdvertsFragment extends Fragment {
                             ft.commit();
                         }
                     });
-
                 }
                 else {
                     Toast.makeText(getActivity(), "Error loading ads", Toast.LENGTH_SHORT).show();
@@ -164,17 +155,13 @@ public class AdvertsFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                System.out.println("TOKEN :" + server.token); //correcto (es nulo cuando entras la primera vez)
                 SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                String token = preferences.getString("user_token", "user_token");
-                server.token = token; //por eso lo volemos a guardar en el server
-                System.out.println("TOKEN PREFERENCES: " + token);
+                server.token = preferences.getString("user_token", "user_token");
                 return advertsServer.getAllUserAdverts(getType);
             }
 
             @Override
             protected void onPostExecute(String s) {
-                System.out.println("ADVERTS : " +s);
                 if (!s.equals("ERROR IN GETTING ALL ADVERTS")) {
                     getInfoUserById(getType, s);
                 }
@@ -196,11 +183,10 @@ public class AdvertsFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
                     getInfoUser(s, id, arguments);
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -208,10 +194,10 @@ public class AdvertsFragment extends Fragment {
 
     private void getInfoUser(String s, String id, String arguments) {
          UserDataAdvertiser uda = new UserDataAdvertiser(id, s);
-         setViewAdvertsofUser(arguments, uda, id);
+         setViewAdvertsOfUser(arguments, uda, id);
     }
 
-    private void setViewAdvertsofUser(String s, UserDataAdvertiser uda, String id) {
+    private void setViewAdvertsOfUser(String s, UserDataAdvertiser uda, String id) {
         ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s, id);
         //Preparación del diseño
         LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
@@ -257,10 +243,9 @@ public class AdvertsFragment extends Fragment {
     private ArrayList<ArrayList<String>> getAttributesAllAdverts(String stringJson, String getType) {
         ArrayList<ArrayList<String>> attributes = new ArrayList<>();
         try {
-            JSONArray myJsonjArray = new JSONArray(stringJson);
-            for (int i = 0; i < myJsonjArray.length(); ++i) {
-                System.out.println("json: " + i + " "+ myJsonjArray.getString(i));
-                ArrayList<String> attributesAdd = getAttributesAdvert(myJsonjArray, i, getType); //atributos de un anuncio
+            JSONArray myJsonArray = new JSONArray(stringJson);
+            for (int i = 0; i < myJsonArray.length(); ++i) {
+                ArrayList<String> attributesAdd = getAttributesAdvert(myJsonArray, i, getType); //atributos de un anuncio
                 attributes.add(attributesAdd);
             }
             return attributes;
@@ -270,26 +255,25 @@ public class AdvertsFragment extends Fragment {
         return null;
     }
 
-    private ArrayList<String> getAttributesAdvert(JSONArray myJsonjArray, int index, String getType) throws JSONException {
+    private ArrayList<String> getAttributesAdvert(JSONArray myJsonArray, int index, String getType) throws JSONException {
         ArrayList<String> attributesAdd = new ArrayList<>();
-        String advertString = myJsonjArray.getString(index);
-        JSONObject myJsonjObject = new JSONObject(advertString);
+        String advertString = myJsonArray.getString(index);
+        JSONObject myJsonObject = new JSONObject(advertString);
 
         /*Aqui puedes añadir otro atributo de la respuesta Json del servidor
         si es necesario para mostrarlo en el diseño. De momento solo estan estos
         5 atributos, (date, tittle, description, places, typeAdvert*/
-        attributesAdd.add(myJsonjObject.getString("date"));
-        attributesAdd.add(myJsonjObject.getString("title"));
-        attributesAdd.add(myJsonjObject.getString("description"));
-        attributesAdd.add(myJsonjObject.getString("places"));
-        attributesAdd.add(myJsonjObject.getString("typeAdvert"));
-        attributesAdd.add(myJsonjObject.getString("state"));
-        attributesAdd.add(myJsonjObject.getString("userId"));
+        attributesAdd.add(myJsonObject.getString("date"));
+        attributesAdd.add(myJsonObject.getString("title"));
+        attributesAdd.add(myJsonObject.getString("description"));
+        attributesAdd.add(myJsonObject.getString("places"));
+        attributesAdd.add(myJsonObject.getString("typeAdvert"));
+        attributesAdd.add(myJsonObject.getString("state"));
+        attributesAdd.add(myJsonObject.getString("userId"));
 
         if (getType.equals("") || getType.equals("offer") || getType.equals("lookFor"))
-        attributesAdd.add(myJsonjObject.getString("user")); //el Json en string de los datos del usuario
-        attributesAdd.add(myJsonjObject.getString("_id"));
-
+        attributesAdd.add(myJsonObject.getString("user")); //el Json en string de los datos del usuario
+        attributesAdd.add(myJsonObject.getString("_id"));
 
         return attributesAdd;
     }
