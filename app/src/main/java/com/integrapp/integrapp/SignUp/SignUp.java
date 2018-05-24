@@ -149,7 +149,6 @@ public class SignUp extends AppCompatActivity {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
                     checkSignUp(s);
                 }
             }.execute();
