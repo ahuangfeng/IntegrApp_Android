@@ -42,9 +42,6 @@ public class SingleChatFragment extends Fragment {
     private RecyclerView msgRecyclerView;
     private List<ChatAppMsgDTO> msgDtoList;
     private ChatAppMsgAdapter chatAppMsgAdapter ;
-    private List<ChatAppMsgDTO> historial = new ArrayList<>();
-    private boolean error = false;
-    private String callback = null;
     private Emitter.Listener handleIncomingMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -151,37 +148,34 @@ public class SingleChatFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else {error = true;}
-                callback = args[0].toString();
+                } else {
+                    System.out.println("Error on callback");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showError();
+                        }
+                    });
+                }
             }
         });
-        if (error) showError();
-        //TODO: ufff... espera activa? i... si callback es false que?
-        // while(callback == null || callback.equals("false")) {System.out.println("esperant");}
         return view;
     }
 
     private void addHistory(JSONArray chats){
-        System.out.println("HOLAAAA!:");
         try {
             for (int i = 0; i < chats.length(); i++) {
                 String from = chats.getJSONObject(i).getString("from");
-                System.out.println("from: " + from);
                 String content = chats.getJSONObject(i).getString("content");
-                System.out.println("content: " + content);
                 if (from.equals(personalUserId)) {
                     ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_SENT, content);
-                    historial.add(msgDto);
+                    msgDtoList.add(msgDto);
                 } else {
                     ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, content);
-                    historial.add(msgDto);
+                    msgDtoList.add(msgDto);
                 }
             }
-            int newMsgPosition = 0;
-            for(int i=0; i<historial.size(); ++i) {
-                msgDtoList.add(historial.get(i));
-                newMsgPosition = msgDtoList.size() - 1;
-            }
+            int newMsgPosition = msgDtoList.size() - 1;
             chatAppMsgAdapter.notifyDataSetChanged();
             msgRecyclerView.scrollToPosition(newMsgPosition);
         } catch (JSONException e) {
@@ -192,15 +186,7 @@ public class SingleChatFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        System.out.println("mida historial:" + historial.size());
-        for(int i=0; i<historial.size(); ++i) {
-            msgDtoList.add(historial.get(i));
-            int newMsgPosition = msgDtoList.size() - 1;
-            // Notify recycler view insert one new data.
-            chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
-            // Scroll RecyclerView to the last message.
-            msgRecyclerView.scrollToPosition(newMsgPosition);
-        }
+
     }
 
     private void showError() {
