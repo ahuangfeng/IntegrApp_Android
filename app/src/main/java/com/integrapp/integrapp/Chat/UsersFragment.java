@@ -17,7 +17,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.Server;
 import com.integrapp.integrapp.apapters.UsersAdapter;
 import com.integrapp.integrapp.model.User;
 
@@ -29,7 +28,8 @@ import java.util.ArrayList;
 
 public class UsersFragment extends android.support.v4.app.Fragment {
 
-    private Server server;
+
+    private ChatServer chatServer;
     private ArrayList<User> users = new ArrayList<>();
     private ListView view_users;
     private UsersAdapter usersAdapter;
@@ -41,16 +41,11 @@ public class UsersFragment extends android.support.v4.app.Fragment {
         setRetainInstance(true);
     }
 
-    //reset fragment (solve duplicate content)
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        users = new ArrayList<>();
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         users = new ArrayList<>();
         View view = inflater.inflate(R.layout.fragment_chats_users, container, false);
-        this.server = Server.getInstance();
+        this.chatServer = ChatServer.getInstance();
         view_users = view.findViewById(R.id.list_users);
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         personalUserId = preferences.getString("idUser", "null");
@@ -64,7 +59,7 @@ public class UsersFragment extends android.support.v4.app.Fragment {
 
             @Override
             protected String doInBackground(Void... voids) {
-                return server.getUsers();
+                return chatServer.getUsers();
             }
 
             protected void onPostExecute(String s) {

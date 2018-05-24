@@ -36,6 +36,7 @@ import java.util.ArrayList;
 public class AdvertsFragment extends Fragment {
 
     private Server server;
+    private AdvertsServer advertsServer;
     private String SearchType;
     private View view;
 
@@ -58,6 +59,7 @@ public class AdvertsFragment extends Fragment {
         view = inflater.inflate(R.layout.activity_advert, container, false);
 
         this.server = Server.getInstance();
+        this.advertsServer = AdvertsServer.getInstance();
 
         if (SearchType.equals("all")) getAllAdverts(""); //Show adverts
         else getAllUserAdverts(SearchType); //Show user adverts
@@ -91,12 +93,12 @@ public class AdvertsFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                System.out.println("TOKEN :" + server.token); //correcto (es nulo cuando entras la primera vez)
+                // System.out.println("TOKEN :" + server.token); //correcto (es nulo cuando entras la primera vez)
                 SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 String token = preferences.getString("user_token", "user_token");
                 server.token = token; //por eso lo volemos a guardar en el server
                 System.out.println("TOKEN PREFERENCES: " + token);
-                return server.getAllAdverts(getType);
+                return advertsServer.getAllAdverts(getType);
             }
 
             @Override
@@ -167,7 +169,7 @@ public class AdvertsFragment extends Fragment {
                 String token = preferences.getString("user_token", "user_token");
                 server.token = token; //por eso lo volemos a guardar en el server
                 System.out.println("TOKEN PREFERENCES: " + token);
-                return server.getAllUserAdverts(getType);
+                return advertsServer.getAllUserAdverts(getType);
             }
 
             @Override

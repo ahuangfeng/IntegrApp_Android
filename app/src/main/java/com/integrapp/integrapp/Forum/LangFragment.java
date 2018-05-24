@@ -31,6 +31,7 @@ import java.util.ArrayList;
 public class LangFragment extends android.support.v4.app.Fragment {
 
     private Server server;
+    private ForumServer forumServer;
     private ArrayList<ForumItem> threads = new ArrayList<>();
     private ArrayList<DataComment> comments = new ArrayList<>();
     private ListView llista;
@@ -46,6 +47,7 @@ public class LangFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forum_lang, container, false);
         this.server = Server.getInstance();
+        this.forumServer = ForumServer.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
         return view;
@@ -63,7 +65,7 @@ public class LangFragment extends android.support.v4.app.Fragment {
 
             @Override
             protected String doInBackground(Void... voids) {
-                return server.getForumLang();
+                return forumServer.getForumLang();
             }
 
             protected void onPostExecute(String s) {
