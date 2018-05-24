@@ -2,7 +2,6 @@ package com.integrapp.integrapp.Forum;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,6 +32,7 @@ import java.util.ArrayList;
 public class DocuFragment extends Fragment {
 
     private Server server;
+    private ForumServer forumServer;
     private ArrayList<ForumItem> threads = new ArrayList<>();
     private ArrayList<DataComment> comments = new ArrayList<>();
     private ListView llista;
@@ -49,6 +48,7 @@ public class DocuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forum_docu, container, false);
         this.server = Server.getInstance();
+        this.forumServer = ForumServer.getInstance();
         llista = view.findViewById(R.id.llista);
         setInfoForum();
         return view;
@@ -66,7 +66,7 @@ public class DocuFragment extends Fragment {
 
             @Override
             protected String doInBackground(Void... voids) {
-                return server.getForumDocu();
+                return forumServer.getForumDocu();
             }
 
             protected void onPostExecute(String s) {
