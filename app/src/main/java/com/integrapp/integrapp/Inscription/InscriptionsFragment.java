@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.apapters.InscriptionsAdapter;
+import com.integrapp.integrapp.Adapters.InscriptionsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

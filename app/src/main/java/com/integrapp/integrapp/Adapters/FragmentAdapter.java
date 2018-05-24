@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.apapters;
+package com.integrapp.integrapp.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

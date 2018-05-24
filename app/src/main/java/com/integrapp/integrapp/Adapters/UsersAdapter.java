@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.apapters;
+package com.integrapp.integrapp.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -28,7 +28,7 @@ public class UsersAdapter extends BaseAdapter {
         this.users = users;
     }
 
-    public void adduser(User user) {
+    public void addUser(User user) {
         this.users.add(user);
     }
 

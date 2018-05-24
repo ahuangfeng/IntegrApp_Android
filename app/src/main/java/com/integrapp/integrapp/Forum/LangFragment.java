@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.integrapp.integrapp.DataComment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.apapters.ForumsAdapter;
+import com.integrapp.integrapp.Adapters.ForumsAdapter;
 import com.integrapp.integrapp.model.ForumItem;
 
 import org.json.JSONArray;

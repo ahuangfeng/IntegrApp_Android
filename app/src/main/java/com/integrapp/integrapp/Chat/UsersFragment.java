@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.apapters.UsersAdapter;
+import com.integrapp.integrapp.Adapters.UsersAdapter;
 import com.integrapp.integrapp.model.User;
 
 import org.json.JSONArray;

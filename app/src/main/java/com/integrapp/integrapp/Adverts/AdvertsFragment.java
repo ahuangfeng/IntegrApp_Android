@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.apapters.AdvertsAdapter;
+import com.integrapp.integrapp.Adapters.AdvertsAdapter;
 import com.integrapp.integrapp.model.DataAdvert;
 import com.integrapp.integrapp.model.UserDataAdvertiser;
 

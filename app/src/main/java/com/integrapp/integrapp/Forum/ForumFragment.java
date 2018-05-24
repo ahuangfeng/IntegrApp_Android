@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.apapters.FragmentAdapter;
+import com.integrapp.integrapp.Adapters.FragmentAdapter;
 
 public class ForumFragment extends Fragment {
 
