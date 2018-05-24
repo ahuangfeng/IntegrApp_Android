@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
@@ -38,7 +39,9 @@ public class SingleChatFragment extends Fragment {
     private RecyclerView msgRecyclerView;
     private List<ChatAppMsgDTO> msgDtoList;
     private ChatAppMsgAdapter chatAppMsgAdapter ;
-
+    private List<ChatAppMsgDTO> historial = new ArrayList<>();
+    private boolean error = false;
+    private String callback = null;
     private Emitter.Listener handleIncomingMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -67,9 +70,7 @@ public class SingleChatFragment extends Fragment {
             }
         }
     };
-
-    private Socket mSocket;
-    {
+    private Socket mSocket; {
         try {
             mSocket = IO.socket("https://integrappbackend.herokuapp.com/");
             Log.e("EVENT_CONNECT", "SUCCESS");
@@ -78,6 +79,7 @@ public class SingleChatFragment extends Fragment {
         }
     }
 
+    ///////////////////////////////methods/////////////////////////////////////////////////////////
     public SingleChatFragment() {
     }
 
@@ -127,25 +129,56 @@ public class SingleChatFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         personalUserId = preferences.getString("idUser", "null");
 
-        mSocket.emit("new user", personalUserId, toUser.getId(),new Ack() {
+        mSocket.emit("new user", personalUserId, toUser.getId(), new Ack() {
             @Override
             public void call(Object... args) {
-                Log.i("callback","test");
+                Log.i("callback", "test");
                 System.out.println("RETURNING EVENT CALLBACK " + args[0]);
-                try {
-                    JSONObject myJsonObject = new JSONObject(args[0].toString());
-                    System.out.println("CHATS: " + myJsonObject.getString("chats"));
-                    JSONArray chats = myJsonObject.getJSONArray("chats");
-                    for (int i = 0; i < chats.length(); i++) {
-                        System.out.println("Chat numero " + i+" : "+ chats.get(i));
+                if (!args[0].toString().equals("false")) {
+                    try {
+                        JSONObject myJsonObject = new JSONObject(args[0].toString());
+                        System.out.println("CHATS: " + myJsonObject.getString("chats"));
+                        JSONArray chats = myJsonObject.getJSONArray("chats");
+                        for (int i = 0; i < chats.length(); i++) {
+                            String from = chats.getJSONObject(i).getString("from");
+                            System.out.println("from: " + from);
+                            String content = chats.getJSONObject(i).getString("content");
+                            System.out.println("content: " + content);
+                            if (from.equals(personalUserId)) {
+                                ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_SENT, content);
+                                historial.add(msgDto);
+                            } else {
+                                ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, content);
+                                historial.add(msgDto);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+                else {error = true;}
+                callback = args[0].toString();
             }
         });
-
+        if (error) showError();
+        while(callback == null || callback.equals("false")) {System.out.println("esperant");}
         return view;
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        System.out.println("mida historial:" + historial.size());
+        for(int i=0; i<historial.size(); ++i) {
+            msgDtoList.add(historial.get(i));
+            int newMsgPosition = msgDtoList.size() - 1;
+            // Notify recycler view insert one new data.
+            chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
+            // Scroll RecyclerView to the last message.
+            msgRecyclerView.scrollToPosition(newMsgPosition);
+        }
+    }
+
+    private void showError() {
+        Toast.makeText(getActivity(), "Error loading history", Toast.LENGTH_SHORT).show();
     }
 
 
