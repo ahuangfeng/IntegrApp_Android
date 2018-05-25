@@ -119,35 +119,39 @@ public class SingleAdvertFragment extends Fragment {
         inscriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (advertStatus.equals("owner")) {
-                    Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.screen_area, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
-                } else if (advertStatus.equals("canEnroll")) {
-                    doServerCallForCreateInscription();
-                } else if (advertStatus.equals("pending")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                switch (advertStatus) {
+                    case "owner":
+                        Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                        ft.replace(R.id.screen_area, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
+                        break;
+                    case "canEnroll":
+                        doServerCallForCreateInscription();
+                        break;
+                    case "pending":
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                    builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            doServerCallForDeleteInscription();
-                        }
-                    });
+                        builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                doServerCallForDeleteInscription();
+                            }
+                        });
 
-                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
                 }
             }
         });
@@ -168,7 +172,7 @@ public class SingleAdvertFragment extends Fragment {
         textViewTitle = view.findViewById(R.id.textView_title);
         textViewDescription = view.findViewById(R.id.textView_description);
         textViewPlaces = view.findViewById(R.id.textView_places);
-        textViewDate = view.findViewById(R.id.textView_date);
+        textViewDate = view.findViewById(R.id.textView_datText);
 
         textViewUsername.setText(userData.getUsername());
         setEditableTexts();
@@ -441,7 +445,7 @@ public class SingleAdvertFragment extends Fragment {
     private void saveChanges(final String idAdvert) {
         final String json = generateRequestModifyAdvert();
         Boolean errors = false;
-        if (json.equals("empty")) {
+        if (json==null || json.equals("empty")) {
             errors = true;
             Toast.makeText(getContext(), getString(R.string.error_EmptyValuesAdded), Toast.LENGTH_SHORT).show();
         }
@@ -656,35 +660,39 @@ public class SingleAdvertFragment extends Fragment {
         inscriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (advertStatus.equals("owner")) {
-                    Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.screen_area, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.manageInscriptions), Toast.LENGTH_SHORT).show();
-                } else if (advertStatus.equals("canEnroll")) {
-                    doServerCallForCreateInscription();
-                } else if (advertStatus.equals("pending")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                switch (advertStatus) {
+                    case "owner":
+                        Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                        ft.replace(R.id.screen_area, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.manageInscriptions), Toast.LENGTH_SHORT).show();
+                        break;
+                    case "canEnroll":
+                        doServerCallForCreateInscription();
+                        break;
+                    case "pending":
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                    builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            doServerCallForDeleteInscription();
-                        }
-                    });
+                        builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                doServerCallForDeleteInscription();
+                            }
+                        });
 
-                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
                 }
             }
         });
