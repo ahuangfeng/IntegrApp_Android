@@ -187,7 +187,6 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     private void checkInscriptionStatus() {
-        inscriptionButton.setVisibility(View.VISIBLE);
         inscriptionButton.setClickable(false);
         switch (advertStatus) {
             case "pending":

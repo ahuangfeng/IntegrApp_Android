@@ -236,7 +236,7 @@ public class AdvertsFragment extends Fragment {
                 dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
                         attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
                         attributes.get(i).get(5), attributes.get(i).get(6), image, attributes.get(i).get(7),
-                        attributes.get(i).get(9));
+                        attributes.get(i).get(8));
                 adverts.add(dataAdvert);
 
                 //Los datos del usuario que ha publicado el anuncio
