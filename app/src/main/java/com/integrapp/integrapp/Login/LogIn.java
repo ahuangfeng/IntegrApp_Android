@@ -46,7 +46,7 @@ public class LogIn extends AppCompatActivity {
                 String user = userEditText.getText().toString();
                 String pass = passEditText.getText().toString();
                 if(fieldsOk(user, pass)) {
-                    Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.connecting), Toast.LENGTH_SHORT).show();
                     sendDataToServer(user, pass);
                 }
             }
@@ -74,7 +74,6 @@ public class LogIn extends AppCompatActivity {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
                     checkLogIn(s);
                 }
             }.execute();
@@ -117,8 +116,10 @@ public class LogIn extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
                     saveInfoUser(s);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -138,8 +139,10 @@ public class LogIn extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
-                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
                     saveInscriptions(s);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_GettingInscriptions), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -154,26 +157,26 @@ public class LogIn extends AppCompatActivity {
 
     private void saveInfoUser(String s) {
         try {
-            JSONObject myJsonjObject = new JSONObject(s);
-            String userId = myJsonjObject.getString("_id");
-            String username = myJsonjObject.getString("username");
-            String type = myJsonjObject.getString("type");
-            String name = myJsonjObject.getString("name");
+            JSONObject myJsonObject = new JSONObject(s);
+            String userId = myJsonObject.getString("_id");
+            String username = myJsonObject.getString("username");
+            String type = myJsonObject.getString("type");
+            String name = myJsonObject.getString("name");
             String email = "No e-mail";
             String phone = "No phone";
-            if(myJsonjObject.has("email")) {
-                email = myJsonjObject.getString("email");
+            if(myJsonObject.has("email")) {
+                email = myJsonObject.getString("email");
             }
-            if(myJsonjObject.has("phone")) {
-                phone = myJsonjObject.getString("phone");
+            if(myJsonObject.has("phone")) {
+                phone = myJsonObject.getString("phone");
             }
 
-            String rate = myJsonjObject.getString("rate");
+            String rate = myJsonObject.getString("rate");
             JSONObject myJsonRate = new JSONObject(rate);
             int likes = myJsonRate.getInt("likes");
             int dislikes = myJsonRate.getInt("dislikes");
 
-            JSONArray myJsonArrayAds = myJsonjObject.getJSONArray("adverts");
+            JSONArray myJsonArrayAds = myJsonObject.getJSONArray("adverts");
 
             SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -190,7 +193,6 @@ public class LogIn extends AppCompatActivity {
 
             doServerCallForSaveInscriptions(userId);
 
-
             Intent i = new Intent(LogIn.this, MainActivity.class);
             startActivity(i);
             finish();
@@ -203,8 +205,8 @@ public class LogIn extends AppCompatActivity {
     private String getTokenResponse(String s) {
         String myJsonString = s;
         try {
-            JSONObject myJsonjObject = new JSONObject(myJsonString);
-            myJsonString = myJsonjObject.getString("token");
+            JSONObject myJsonObject = new JSONObject(myJsonString);
+            myJsonString = myJsonObject.getString("token");
             return myJsonString;
         } catch (JSONException e) {
             e.printStackTrace();

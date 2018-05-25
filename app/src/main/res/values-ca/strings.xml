@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IntegrApp</string>
+
+    <string name="navigation_drawer_open">Obrir la caixa de navegació</string>
+    <string name="navigation_drawer_close">Tancar la caixa de navegació</string>
+    <string name="action_settings">Configuració</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_changePass">Canvia la contrasenya</string>
+    <string name="action_modifyAdvertState">Modificar estat</string>
+    <string name="action_lookfor">Anuncis de cerca</string>
+    <string name="action_offer">Anuncis d\'ofertes</string>
+    <string name="action_all">Tots els anuncis</string>
+
+    <!-- Strings of SplashIntegrApp activity-->
+    <string name="splash_title">IntegrApp</string>
+    <string name="splash_slogan">Welcome to your new home!</string>
+
+    <!-- Strings of LogIn activity-->
+    <string name="hint_username">Usuari</string>
+    <string name="hint_password">Contrasenya</string>
+    <string name="checkbox_text">Recordeu-me</string>
+    <string name="button_login_text">Inicia sessió</string>
+    <string name="signUp_text">NO TENS UN COMPTE? REGISTRA\'T</string>
+    <string name="success_login">S\'ha iniciat sessió correctament</string>
+    <string name="login_error">Usuari o contrasenya incorrectes</string>
+
+    <!-- Strings of Advert activity-->
+    <string name="date">Data</string>
+    <string name="title">Títol</string>
+    <string name="description">Descripció</string>
+    <string name="places">Places</string>
+    <string name="type_advert">Tipus d\'anunci</string>
+    <string name="state">Estat</string>
+    <string name="image_desc">Imatge de l\'anunci</string>
+
+    <!-- Strings of SignUp activity-->
+    <string name="signUp_title">Registra\'t</string>
+    <string name="full_name">Nom complet</string>
+    <string name="username">Usuari</string>
+    <string name="password">Contrasenya</string>
+    <string name="e_mail">E-mail</string>
+    <string name="phone">telèfon</string>
+    <string name="type">Tipus</string>
+    <string name="cif">CIF</string>
+    <string name="button_create">Crear</string>
+    <string name="signUp_success">Usuari creat amb èxit</string>
+    <string name="user_exists">L\'usuari ja existeix</string>
+    <string name="connecting">Connectant…</string>
+
+    <!-- Strings of Profile activity-->
+    <string name="adds_profile">Anuncis</string>
+    <string name="likes_profile">Likes</string>
+    <string name="dislikes_profile">Dislikes</string>
+    <string name="typeUser_profile">tipus d\'usuari</string>
+    <string name="email_profile">email</string>
+    <string name="phone_profile">telèfon</string>
+    <string name="name_profile">nom complet</string>
+    <string name="username_profile">usuari</string>
+    <string name="saveProfile_button">Desar</string>
+    <string name="dialog_save">Segur que vols guardar els canvis?</string>
+    <string name="tittle_dialogSave">Els canvis seran guardats</string>
+    <string name="accept">Acceptar</string>
+    <string name="cancel">Cancel·lar</string>
+    <string name="dialog_delete_user">Segur que vols eliminar l\'usuari?</string>
+    <string name="tittle_dialogDeleteUser">L\'usuari serà eliminat</string>
+
+    <!-- Strings of New Advert Activity-->
+    <string name="newAdvert_title">Títol</string>
+    <string name="newAdvert_description">Descripció</string>
+    <string name="newAdvert_places">Places</string>
+    <string name="newAdvert_screenTitle">Nou anunci</string>
+    <string name="newAdvert_post">Publicar</string>
+    <string name="newAdvert_success">Anunci creat amb èxit</string>
+    <string name="newAdvert_error">Error en crear l\'anunci</string>
+    <string name="newAdvert_creating">Creant anunci…</string>
+    <string name="newAdvert_expectedDate">Data prevista</string>
+    <string name="newAdvert_expectedTime">Hora prevista</string>
+    <string name="newAdvert_buttonDate">Data</string>
+    <string name="newAdvert_buttonTime">Hora</string>
+
+    <!-- Strings of Menu-->
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_adverts">Anuncis</string>
+    <string name="menu_forum">Fòrum</string>
+    <string name="menu_chats">Xats</string>
+    <string name="menu_settings">Configuració</string>
+    <string name="menu_aboutUs">Sobre</string>
+    <string name="menu_logOut">Tancar sessió</string>
+
+    <!-- Error messages-->
+    <string name="error_fullName_empty">El nom complet és obligatori</string>
+    <string name="error_username_length">L\'usuari ha de tenir entre 3 i 20 caràcters</string>
+    <string name="error_username_chars">Caràcters vàlids: alfanumèrics, _ i -</string>
+    <string name="error_password_length">La contrasenya ha de tenir entre 6 i 12 caràcters</string>
+    <string name="error_cif_empty">El CIF ha de contenir 9 caràcters</string>
+    <string name="error_username_empty">L\'usuari és obligatori</string>
+    <string name="error_password_empty">La contrasenya és obligatòria</string>
+    <string name="error_title_empty">El títol és obligatori</string>
+    <string name="error_description_empty">La descripció és obligatòria</string>
+    <string name="error_places_empty">El nombre de places és obligatori</string>
+    <string name="error_date_not_selected">Seleccioneu una data</string>
+    <string name="error_time_not_selected">Seleccioneu una hora</string>
+    <string name="error_changePassField_empty">Aquest camp és obligatori</string>
+
+    <!-- Strings of SingleAdvert fragment-->
+    <string name="username_advert">Usuari</string>
+    <string name="profileButton_advert">Perfil</string>
+    <string name="tittle_advert">Títol de l\'anunci</string>
+    <string name="description_advert">Descripció de l\'anunci</string>
+    <string name="places_advert">Places</string>
+    <string name="expectedDate_advert">Data prevista</string>
+    <string name="wantItButton_advert">VULL AIXÒ!</string>
+    <string name="acceptedButton_advert">ACCEPTAT</string>
+    <string name="pendingButton_advert">PENDENT</string>
+    <string name="completedButton_advert">COMPLETAT</string>
+    <string name="refusedButton_advert">REBUTJAT</string>
+    <string name="manageInscriptions">GESTIÓ D\'INSCRIPCIONS</string>
+    <string name="inscription_error">Error en fer la inscripció</string>
+    <string name="wantItButton_advertOther">Vull això!</string>
+    <string name="wantItButton_advertOwner">Veure inscripcions</string>
+    <string name="dialog_delete_advert">Segur que vols eliminar l\'anunci?</string>
+    <string name="dialog_modify_state_advert">Segur que vols canviar l\'estat de l\'anunci?</string>
+    <string name="tittle_dialogDeleteAdvert">L\'anunci serà eliminat</string>
+    <string name="tittle_dialogModifyStateAdvert">L\'estat de l\'anunci es modificarà</string>
+    <string name="wantItButton_editadvert">Desa els canvis</string>
+    <string name="dialog_delete_inscription">Segur que vols cancel·lar la teva sol·licitud?</string>
+    <string name="tittle_dialogDeleteInscription">La teva inscripció serà eliminada</string>
+
+    <!-- Strings of ChangePassword Dialog -->
+    <string name="changePass_tittle">Canvia la contrasenya</string>
+    <string name="current_pass">Contrasenya actual</string>
+    <string name="new_pass">Contrasenya nova</string>
+    <string name="confirm_pass">Confirmar nova contrasenya</string>
+    <string name="changePass_button">Canviar</string>
+
+    <!-- Strings of Inscriptions Fragment -->
+    <string name="acceptInscription">Acceptar inscripció</string>
+    <string name="refuseInscription">Rebutjar inscripció</string>
+    <string name="menu_inscriptions">Inscripcions</string>
+
+    <!-- Strings of SingleForum fragment-->
+    <string name="commentButton_forum">Comentar</string>
+    <string name="postCommentButton_forum">Publicar</string>
+    <string name="dialog_delete_comment">Segur que vols eliminar el comentari?</string>
+    <string name="tittle_dialogDeleteComment">El comentari serà eliminat</string>
+    //Hola
+    <string name="error_GettingUserInfo">Error en obtenir la informació de l\'usuari</string>
+    <string name="error_GettingAdvertInfo">Error en obtenir la informació de l\'anunci</string>
+    <string name="error_DeletingInscription">Error en eliminar la inscripció</string>
+    <string name="error_GettingInscriptions">Error en obtenir inscripcions</string>
+    <string name="error_LoadingAds">Error en carregar anuncis</string>
+    <string name="toast_LookForAds">Anuncis de cerca</string>
+    <string name="toast_OfferAds">Anuncis d\'oferta</string>
+    <string name="toast_AllAds">Tots els anuncis</string>
+    <string name="toast_ManageInscriptions">Gestionar inscripcions</string>
+    <string name="toast_AdvertDeletedSuccessfully">Anunci eliminat amb èxit</string>
+    <string name="error_DeletingAdvert">Error en eliminar anunci</string>
+    <string name="error_EmptyValuesAdded">Es van agregar valors buits</string>
+    <string name="error_PlacesMustBeGreaterThatZero">El nombre de places ha de ser més gran que zero</string>
+    <string name="toast_ChangesSaveCorrectly">Els canvis es van guardar amb èxit</string>
+    <string name="error_SavingChangesAdvert">Error en desar els canvis, verificar la data</string>
+    <string name="toast_AdvertStateChangedSuccessfully">L\'estat de l\'anunci s\'ha modificat amb èxit</string>
+    <string name="error_ChangingAdvertState">Error en modificar l\'estat de l\'anunci</string>
+    <string name="toast_ChatCorrectly">Aneu a la pestanya d\'usuaris per obrir un nou xat!</string>
+    <string name="error_SettingInfoChats">Error en configurar la informació dels xats</string>
+    <string name="titleTab_Chats">XATS</string>
+    <string name="titleTab_Users">USUARIS</string>
+    <string name="error_LoadingHistory">Error en carregar l\'historial</string>
+    <string name="error_SettingInfoOfUsers">Error en configurar la informació dels usuaris</string>
+    <string name="error_SettingInfo">Error en configurar la informació</string>
+    <string name="error_GettingFullForum">Error en obtenir un fòrum complet</string>
+    <string name="titleTab_Documentation">DOCUMENTACIÓ</string>
+    <string name="titleTab_Languages">IDIOMES</string>
+    <string name="titleTab_Entertainment">ENTRETENIMENT</string>
+    <string name="titleTab_Various">ALTRES</string>
+    <string name="documentationSpinner">documentació</string>
+    <string name="languageSpinner">idioma</string>
+    <string name="entertainmentSpinner">entreteniment</string>
+    <string name="variousSpinner">altres</string>
+    <string name="toast_PostingForum">Publicant el teu nou fòrum…</string>
+    <string name="toast_FillNewForumFields">Completa el títol i la descripció correctament</string>
+    <string name="toast_ForumCreatedSuccessfully">Nou fòrum creat amb èxit</string>
+    <string name="error_CreatingForum">El fòrum no va poder ser creat</string>
+    <string name="toast_CommentCreatedCorrectly">Comentari creat amb èxit</string>
+    <string name="error_PostingComment">Error en publicar el comentari</string>
+    <string name="toast_CommentDeletedSuccessfully">Comentari eliminat amb èxit</string>
+    <string name="error_DeletingComment">Error en eliminar el comentari</string>
+    <string name="toast_ShowAdvertsOfUser">Mostra els anuncis d\'aquest usuari</string>
+    <string name="error_VotingDislike">Error en votar \'dislike\'</string>
+    <string name="error_VotingLike">Error en votar \'like\'</string>
+    <string name="toast_AlreadyLike">Ja has votat \'like\'</string>
+    <string name="toast_VotedLike">Has votat \'like\'</string>
+    <string name="toast_AlreadyDislike">Ja has votat \'dislike\'</string>
+    <string name="toast_VotedDislike">Has votat \'dislike\'</string>
+    <string name="error_DeletingUser">Error en eliminar usuari</string>
+    <string name="toast_UserDeletedSuccessfully">Usuari eliminat amb èxit</string>
+    <string name="toast_PasswordChagedSuccessfully">Contrasenya canviada amb èxit</string>
+    <string name="error_ChangingPassword">Error en canviar la contrasenya</string>
+    <string name="toast_PasswordsDoNotMatch">Les noves contrasenyes no coincideixen</string>
+    <string name="toast_InvalidCurrentPassword">Contrasenya actual no vàlida</string>
+    <string name="error_ModifyingProfile">Error en modificar el perfil</string>
+    <string name="No_email">No e-mail</string>
+    <string name="No_phone">No telèfon</string>
+    <string name="error_SettingInscriptionStatus">Error en configurar l\'estat de la inscripció</string>
+    <string name="new_forum">Nou fòrum</string>
+    <string name="places_points">Places:</string>
+    <string name="expected_date_points">Data prevista:</string>
+    <string name="write_a_message">Escriu un missatge</string>
+
+    <!-- Server errors-->
+
+    <!-- Array for the spinner of user types-->
+    <string-array name="user_types">
+        <item>Voluntari</item>
+        <item>Nouvingut</item>
+        <item>Associació</item>
+    </string-array>
+
+    <!-- Array for the spinner of advert types-->
+    <string-array name="advert_types">
+        <item>Cercar</item>
+        <item>Oferir</item>
+    </string-array>
+
+</resources>

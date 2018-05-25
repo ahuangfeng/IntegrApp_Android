@@ -5,10 +5,6 @@ import android.os.AsyncTask;
 
 import com.integrapp.integrapp.Server;
 
-/**
- * Created by alexhuang05 on 24/05/18.
- */
-
 class AdvertsServer {
     private static final AdvertsServer ourInstance = new AdvertsServer();
 

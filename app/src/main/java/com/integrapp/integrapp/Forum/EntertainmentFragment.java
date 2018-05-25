@@ -16,11 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.integrapp.integrapp.DataComment;
+import com.integrapp.integrapp.Model.DataComment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.apapters.ForumsAdapter;
-import com.integrapp.integrapp.model.ForumItem;
+import com.integrapp.integrapp.Adapters.ForumsAdapter;
+import com.integrapp.integrapp.Model.ForumItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,13 +29,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class DocuFragment extends Fragment {
-
+public class EntertainmentFragment extends android.support.v4.app.Fragment {
     private Server server;
     private ForumServer forumServer;
     private ArrayList<ForumItem> threads = new ArrayList<>();
     private ArrayList<DataComment> comments = new ArrayList<>();
-    private ListView llista;
+    private ListView list;
     private ForumsAdapter forumsAdapter;
     private ForumItem forumItem;
 
@@ -46,10 +45,10 @@ public class DocuFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_forum_docu, container, false);
+        View view = inflater.inflate(R.layout.fragment_forum_entre, container, false);
         this.server = Server.getInstance();
         this.forumServer = ForumServer.getInstance();
-        llista = view.findViewById(R.id.llista);
+        list = view.findViewById(R.id.llista);
         setInfoForum();
         return view;
     }
@@ -66,22 +65,20 @@ public class DocuFragment extends Fragment {
 
             @Override
             protected String doInBackground(Void... voids) {
-                return forumServer.getForumDocu();
+                return forumServer.getForumEnter();
             }
 
             protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GETTING FORUM(DOCUMENTATION)")) {
+                if (!s.equals("ERROR IN GETTING FORUM(ENTERTAINMENT)")) {
                     try {
                         getInfoFromString(s);
                         forumsAdapter = new ForumsAdapter(getContext(), threads);
-                        llista.setAdapter(forumsAdapter);
+                        list.setAdapter(forumsAdapter);
                         forumsAdapter.notifyDataSetChanged();
 
-                        llista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(getActivity(), "Elemento "+ position+ " clickado", Toast.LENGTH_SHORT).show();
-
                                 forumItem = threads.get(position);
                                 getCommentsForum(forumItem.getId());
                             }
@@ -92,7 +89,7 @@ public class DocuFragment extends Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error setting info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_SettingInfo), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -104,17 +101,13 @@ public class DocuFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                System.out.println("TOKEN :" + server.token); //correcto (es nulo cuando entras la primera vez)
                 SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                String token = preferences.getString("user_token", "user_token");
-                server.token = token; //por eso lo volemos a guardar en el server
-                System.out.println("TOKEN PREFERENCES: " + token);
+                server.token = preferences.getString("user_token", "user_token");
                 return server.getCommentsForum(id);
             }
 
             @Override
             protected void onPostExecute(String s) {
-                System.out.println("FORUM WITH COMMENTS : " +s);
                 if (!s.equals("ERROR IN GETTING COMMENTS FORUM")) {
                     getInfoComments(s);
                     Fragment fragment = new SingleForumFragment(forumItem, comments);
@@ -125,7 +118,7 @@ public class DocuFragment extends Fragment {
                     ft.commit();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error getting full forum", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingFullForum), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -155,10 +148,10 @@ public class DocuFragment extends Fragment {
     }
 
     private void getInfoFromString(String s) throws JSONException {
-        JSONArray llistaForums = new JSONArray(s);
+        JSONArray forumsList = new JSONArray(s);
 
-        for (int i=0; i<llistaForums.length(); ++i) {
-            JSONObject forum = new JSONObject(llistaForums.getString(i));
+        for (int i=0; i<forumsList.length(); ++i) {
+            JSONObject forum = new JSONObject(forumsList.getString(i));
             String id = forum.getString("_id");
             String type = forum.getString("type");
             String title = forum.getString("title");
@@ -179,5 +172,4 @@ public class DocuFragment extends Fragment {
             threads.add(item);
         }
     }
-
 }

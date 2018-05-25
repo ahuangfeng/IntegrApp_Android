@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.apapters;
+package com.integrapp.integrapp.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.ForumItem;
+import com.integrapp.integrapp.Model.ForumItem;
 
 import java.util.ArrayList;
 
@@ -49,8 +49,7 @@ public class ForumsAdapter extends BaseAdapter{
 
     @Override
     public long getItemId(int position) {
-        Long l = 1L;
-        return l;
+        return 1L;
     }
 
     @SuppressLint("ViewHolder")

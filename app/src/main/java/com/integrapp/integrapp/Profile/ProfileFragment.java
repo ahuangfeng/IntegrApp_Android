@@ -100,8 +100,6 @@ public class ProfileFragment extends Fragment {
             int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
 
-            System.out.println("COSIKAAS: "+idUser + " " + username + " " + type + " " + name+ " "+ email+ " "+ phone+ " "+likes+ " "+dislikes+ " "+ ads);
-
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes,dislikes,ads);
 
@@ -155,7 +153,6 @@ public class ProfileFragment extends Fragment {
             adsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
                     showUserAdverts(idUser);
                 }
             });
@@ -164,7 +161,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showUserAdverts(final String idUser) {
-        Toast.makeText(getActivity(), "Show the adverts of this user", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.toast_ShowAdvertsOfUser), Toast.LENGTH_SHORT).show();
         Fragment fragment = new AdvertsFragment(idUser);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -186,8 +183,10 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DISLIKE VOTE")) {
-                    System.out.println("DISLIKE VOTE RESPONSE: " +s);
                     saveVote(s, "dislike");
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_VotingDislike), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -206,8 +205,10 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN LIKE VOTE")) {
-                    System.out.println("LIKE VOTE RESPONSE: " +s);
                     saveVote(s, "like");
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_VotingLike), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -224,18 +225,18 @@ public class ProfileFragment extends Fragment {
             //Para que el usuario sepa que ya ha votado en like o en dislike
             if (Objects.equals(typeOfVote, "like")) {
                 if (Integer.parseInt(likesTextView.getText().toString()) == likes) {
-                    Toast.makeText(getActivity(), "You already voted 'like'", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_AlreadyLike), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), "You voted 'like'", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_VotedLike), Toast.LENGTH_SHORT).show();
                 }
             }
             else if (Objects.equals(typeOfVote, "dislike")) {
                 if (Integer.parseInt(dislikesTextView.getText().toString()) == dislikes) {
-                    Toast.makeText(getActivity(), "You already voted 'dislike'", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_AlreadyDislike), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), "You voted 'dislike'", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_VotedDislike), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -269,8 +270,7 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING USER")) {
-                    System.out.println("DELETE USER SUCCESSFULL RESPONSE: " +s);
-                    Toast.makeText(getActivity().getApplicationContext(), "User deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_UserDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
                     startActivity(i);
                     getActivity().finish();
@@ -282,7 +282,7 @@ public class ProfileFragment extends Fragment {
                     editor.apply();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_DeletingUser), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -441,9 +441,11 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR MODIFY PROFILE")) {
-                    System.out.println("MODIFY RESPONSE " +s);
-                    Toast.makeText(getActivity(), "Password changed correctly", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_PasswordChagedSuccessfully), Toast.LENGTH_SHORT).show();
                     dialog.cancel();
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_ChangingPassword), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -455,11 +457,11 @@ public class ProfileFragment extends Fragment {
         String password = preferences.getString("password", "password");
 
         if (!Objects.equals(newPass, confirmPass)) {
-            Toast.makeText(getActivity(), "The new passwords do not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_PasswordsDoNotMatch), Toast.LENGTH_SHORT).show();
             return false;
         }
         else if (!Objects.equals(currentPass, password)) {
-            Toast.makeText(getActivity(), "Invalid current password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_InvalidCurrentPassword), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -533,10 +535,12 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR MODIFY PROFILE")) {
-                    System.out.println("MODIFY RESPONSE " +s);
                     setVisibility(false, View.INVISIBLE);
                     setNewPreferences();
-                    Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.toast_ChangesSaveCorrectly), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_ModifyingProfile), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -555,11 +559,11 @@ public class ProfileFragment extends Fragment {
         /*Si el usuario quiere hacer el email o el phone no visible*/
         if (email.isEmpty()) {
             email = "No e-mail";
-            emailTextView.setText("No e-mail");
+            emailTextView.setText(getString(R.string.No_email));
         }
         if (phone.isEmpty()) {
             phone = "No phone";
-            phoneTextView.setText("No phone");
+            phoneTextView.setText(getString(R.string.No_phone));
         }
 
         editor.putString("username", username);

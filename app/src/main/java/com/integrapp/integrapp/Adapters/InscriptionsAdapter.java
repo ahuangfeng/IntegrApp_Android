@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.apapters;
+package com.integrapp.integrapp.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -23,27 +23,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.integrapp.integrapp.Adverts.SingleAdvertFragment;
-import com.integrapp.integrapp.Inscription.DataInscription;
+import com.integrapp.integrapp.Model.DataInscription;
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.SingleInscriptionFragment;
-import com.integrapp.integrapp.model.DataAdvert;
-import com.integrapp.integrapp.model.UserDataAdvertiser;
+import com.integrapp.integrapp.Inscription.SingleInscriptionFragment;
+import com.integrapp.integrapp.Model.DataAdvert;
+import com.integrapp.integrapp.Model.UserDataAdvertiser;
 
 import java.util.List;
 
 public class InscriptionsAdapter extends BaseAdapter {
 
-    private Context contexto;
+    private Context context;
     private List<DataInscription> objectList;
     private Server server;
     private FragmentActivity activity;
     private String type;
 
-    public InscriptionsAdapter(Context contexto, List<DataInscription> objectList, FragmentActivity activity, String type) {
-        this.contexto = contexto;
+    public InscriptionsAdapter(Context context, List<DataInscription> objectList, FragmentActivity activity, String type) {
+        this.context = context;
         this.objectList = objectList;
         this.activity = activity;
         this.type = type;
@@ -71,7 +71,7 @@ public class InscriptionsAdapter extends BaseAdapter {
         final String idUser = objectList.get(i).getIdUser();
         final String idAdvert = objectList.get(i).getIdAdvert();
         View vista;
-        LayoutInflater inflate = LayoutInflater.from(contexto);
+        LayoutInflater inflate = LayoutInflater.from(context);
         vista = inflate.inflate(R.layout.activity_item_inscription, null);
 
         final TextView objectTextView = vista.findViewById(R.id.textViewObject);
@@ -99,7 +99,6 @@ public class InscriptionsAdapter extends BaseAdapter {
             public void onClick(View view) {
                 if (status.equals("pending")) {
                     if (type.equals("inscriptions")) {
-                        //hacer funcion para alert dialog eliminar inscription
                         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
                         builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
@@ -129,7 +128,6 @@ public class InscriptionsAdapter extends BaseAdapter {
                 }
             }
         });
-
         return vista;
     }
 
@@ -138,7 +136,7 @@ public class InscriptionsAdapter extends BaseAdapter {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = contexto.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = context.getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getUserInfoByUsername(username);
             }
@@ -146,8 +144,10 @@ public class InscriptionsAdapter extends BaseAdapter {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO USER")) {
-                    System.out.println("INFO USUARI RESPONSE: " +s);
                     sendInfoUserToProfile(s, idUser);
+                }
+                else {
+                    Toast.makeText(activity, R.string.error_GettingUserInfo, Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -196,7 +196,7 @@ public class InscriptionsAdapter extends BaseAdapter {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = contexto.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = context.getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getAdvertInfoById(idAdvert);
         }
@@ -204,8 +204,10 @@ public class InscriptionsAdapter extends BaseAdapter {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO ADVERT")) {
-                    System.out.println("INFO ADVERT RESPONSE: " +s);
                     sendInfoAdvert(s, idAdvert);
+                }
+                else {
+                    Toast.makeText(activity, R.string.error_GettingAdvertInfo, Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -251,7 +253,6 @@ public class InscriptionsAdapter extends BaseAdapter {
 
             @Override
             protected void onPostExecute(String s) {
-                System.out.println("SERVER RESPONSE: " + s);
                 updateInscriptions(s, idUser);
             }
         }.execute();
@@ -288,7 +289,7 @@ public class InscriptionsAdapter extends BaseAdapter {
             }*/
             doServerCallForSaveInscriptions(idUser);
         } else {
-            Toast.makeText(activity, contexto.getResources().getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.error_DeletingInscription, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -306,8 +307,10 @@ public class InscriptionsAdapter extends BaseAdapter {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
-                    System.out.println("GETTING INSCRIPTIONS RESPONSE: " +s);
                     saveInscriptions(s);
+                }
+                else {
+                    Toast.makeText(activity, R.string.error_GettingInscriptions, Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

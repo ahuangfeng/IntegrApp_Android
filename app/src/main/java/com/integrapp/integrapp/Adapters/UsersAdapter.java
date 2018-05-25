@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.apapters;
+package com.integrapp.integrapp.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.ForumItem;
-import com.integrapp.integrapp.model.User;
+import com.integrapp.integrapp.Model.ForumItem;
+import com.integrapp.integrapp.Model.User;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class UsersAdapter extends BaseAdapter {
         this.users = users;
     }
 
-    public void adduser(User user) {
+    public void addUser(User user) {
         this.users.add(user);
     }
 

@@ -21,6 +21,7 @@ import com.integrapp.integrapp.Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -149,7 +150,6 @@ public class SignUp extends AppCompatActivity {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    System.out.println("SERVER RESPONSE: " + s);
                     checkSignUp(s);
                 }
             }.execute();

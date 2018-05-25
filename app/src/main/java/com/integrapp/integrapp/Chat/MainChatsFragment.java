@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.apapters.FragmentAdapter;
+import com.integrapp.integrapp.Adapters.FragmentAdapter;
 
 public class MainChatsFragment extends Fragment{
     private static Fragment users;
@@ -43,9 +43,8 @@ public class MainChatsFragment extends Fragment{
     //ADD FRAGMENTS TO TABS
     private void setupViewPager (ViewPager viewPager) {
         FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager());
-        adapter.addFragment(chats, "CHATS");
-        adapter.addFragment(users, "USERS");
+        adapter.addFragment(chats, getString(R.string.titleTab_Chats));
+        adapter.addFragment(users, getString(R.string.titleTab_Users));
         viewPager.setAdapter(adapter);
     }
-
 }

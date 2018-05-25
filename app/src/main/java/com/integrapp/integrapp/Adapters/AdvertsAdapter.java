@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.apapters;
+package com.integrapp.integrapp.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,17 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.DataAdvert;
+import com.integrapp.integrapp.Model.DataAdvert;
 
 import java.util.List;
 
 public class AdvertsAdapter extends BaseAdapter {
 
-    Context contexto;
-    List<DataAdvert> objectList;
+    private Context context;
+    private List<DataAdvert> objectList;
 
-    public AdvertsAdapter(Context contexto, List<DataAdvert> objectList) {
-        this.contexto = contexto;
+    public AdvertsAdapter(Context context, List<DataAdvert> objectList) {
+        this.context = context;
         this.objectList = objectList;
     }
 
@@ -41,7 +41,7 @@ public class AdvertsAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View vista;
-        LayoutInflater inflate = LayoutInflater.from(contexto);
+        LayoutInflater inflate = LayoutInflater.from(context);
         vista = inflate.inflate(R.layout.activity_item_advert, null);
 
         ImageView imageView = vista.findViewById(R.id.imageViewAd);

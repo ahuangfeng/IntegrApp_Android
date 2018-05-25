@@ -23,8 +23,8 @@ import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.model.ChatAppMsgDTO;
-import com.integrapp.integrapp.model.User;
+import com.integrapp.integrapp.Model.ChatAppMsgDTO;
+import com.integrapp.integrapp.Model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -133,11 +133,9 @@ public class SingleChatFragment extends Fragment {
             @Override
             public void call(Object... args) {
                 Log.i("callback", "test");
-                System.out.println("RETURNING EVENT CALLBACK " + args[0]);
                 if (!args[0].toString().equals("false")) {
                     try {
                         JSONObject myJsonObject = new JSONObject(args[0].toString());
-                        System.out.println("CHATS: " + myJsonObject.getString("chats"));
                         final JSONArray chats = myJsonObject.getJSONArray("chats");
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -149,7 +147,6 @@ public class SingleChatFragment extends Fragment {
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("Error on callback");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -189,7 +186,7 @@ public class SingleChatFragment extends Fragment {
     }
 
     private void showError() {
-        Toast.makeText(getActivity(), "Error loading history", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.error_LoadingHistory), Toast.LENGTH_SHORT).show();
     }
 
 
