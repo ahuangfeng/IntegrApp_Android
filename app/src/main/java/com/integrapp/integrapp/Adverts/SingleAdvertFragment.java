@@ -582,6 +582,7 @@ public class SingleAdvertFragment extends Fragment {
                 protected void onPostExecute(String s) {
                     if(!s.equals("ERROR CREATING INSCRIPTION")) {
                         advertStatus = "pending";
+                        updateInscriptions(s);
                         checkInscriptionStatus();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
@@ -618,6 +619,7 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     private String getIdInscriptionToDelete(String s) {
+        System.out.println("QUE HAY EN DELETE: " + s);
         try {
             JSONArray myJSONArray = new JSONArray(s);
             String id;
@@ -677,6 +679,50 @@ public class SingleAdvertFragment extends Fragment {
                 }
             }
             checkInscriptionStatus();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void doServerCallForSaveInscriptions() {
+        final String idUser = userId;
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getInscriptionsByUserId(personalUserId);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
+                    saveInscriptions(s);
+                }
+                else {
+                    Toast.makeText(getActivity(), R.string.error_GettingInscriptions, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private void saveInscriptions(String inscriptions) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("inscriptions", inscriptions);
+        editor.apply();
+    }
+
+    private void updateInscriptions(String s) {
+        doServerCallForSaveInscriptions();
+        try {
+            JSONArray myJSONArray = new JSONArray(registered);
+            JSONObject myJSONObject =new JSONObject(s);
+            myJSONObject.put("id", myJSONObject.get("_id"));
+            myJSONArray.put(myJSONObject);
+            registered = myJSONArray.toString();
+            System.out.println("QUE HAY REGISTERED: " + registered);
         } catch (JSONException e) {
             e.printStackTrace();
         }
