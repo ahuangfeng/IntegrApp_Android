@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IntegrApp</string>
+
+    <string name="navigation_drawer_open">Abrir la caja de navegación</string>
+    <string name="navigation_drawer_close">Cerrar la caja de navegación</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_changePass">Cambiar contraseña</string>
+    <string name="action_modifyAdvertState">Modificar estado</string>
+    <string name="action_lookfor">Anuncios de búsqueda</string>
+    <string name="action_offer">Anuncios de ofertas</string>
+    <string name="action_all">Todos los anuncios</string>
+
+    <!-- Strings of SplashIntegrApp activity-->
+    <string name="splash_title">IntegrApp</string>
+    <string name="splash_slogan">Welcome to your new home!</string>
+
+    <!-- Strings of LogIn activity-->
+    <string name="hint_username">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="checkbox_text">Recuérdame</string>
+    <string name="button_login_text">Iniciar sesión</string>
+    <string name="signUp_text">NO TIENES UNA CUENTA? REGÍSTRATE</string>
+    <string name="success_login">Se ha iniciado sesión correctamente</string>
+    <string name="login_error">Usuario o contraseña son incorrectos</string>
+
+    <!-- Strings of Advert activity-->
+    <string name="date">Fecha</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="places">Plazas</string>
+    <string name="type_advert">Tipo de anuncio</string>
+    <string name="state">Estado</string>
+    <string name="image_desc">Imagen del anuncio</string>
+
+    <!-- Strings of SignUp activity-->
+    <string name="signUp_title">Regístrate</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="e_mail">E-mail</string>
+    <string name="phone">Teléfono</string>
+    <string name="type">Tipo</string>
+    <string name="cif">CIF</string>
+    <string name="button_create">Crear</string>
+    <string name="signUp_success">Usuario creado con éxito</string>
+    <string name="user_exists">El usuario ya existe</string>
+    <string name="connecting">Conectando…</string>
+
+    <!-- Strings of Profile activity-->
+    <string name="adds_profile">Anuncios</string>
+    <string name="likes_profile">Likes</string>
+    <string name="dislikes_profile">Dislikes</string>
+    <string name="typeUser_profile">tipo de usuario</string>
+    <string name="email_profile">email</string>
+    <string name="phone_profile">teléfono</string>
+    <string name="name_profile">nombre completo</string>
+    <string name="username_profile">usuario</string>
+    <string name="saveProfile_button">Guardar</string>
+    <string name="dialog_save">¿Seguro que quieres guardar los cambios?</string>
+    <string name="tittle_dialogSave">Los cambios serán guardados</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="dialog_delete_user">¿Seguro que quieres eliminar el usuario?</string>
+    <string name="tittle_dialogDeleteUser">El usuario será eliminado</string>
+
+    <!-- Strings of New Advert Activity-->
+    <string name="newAdvert_title">Título</string>
+    <string name="newAdvert_description">Descripción</string>
+    <string name="newAdvert_places">Plazas</string>
+    <string name="newAdvert_screenTitle">Nuevo anuncio</string>
+    <string name="newAdvert_post">Publicar</string>
+    <string name="newAdvert_success">Anuncio creado con éxito</string>
+    <string name="newAdvert_error">Error al crear el anuncio</string>
+    <string name="newAdvert_creating">Creando anuncio…</string>
+    <string name="newAdvert_expectedDate">Fecha prevista</string>
+    <string name="newAdvert_expectedTime">Hora prevista</string>
+    <string name="newAdvert_buttonDate">Fecha</string>
+    <string name="newAdvert_buttonTime">Hora</string>
+
+    <!-- Strings of Menu-->
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_adverts">Anuncios</string>
+    <string name="menu_forum">Foro</string>
+    <string name="menu_chats">Chats</string>
+    <string name="menu_settings">Ajustes</string>
+    <string name="menu_aboutUs">Acerca de</string>
+    <string name="menu_logOut">Cerrar sesión</string>
+
+    <!-- Error messages-->
+    <string name="error_fullName_empty">El nombre completo es obligatorio</string>
+    <string name="error_username_length">El usuario debe contener entre 3 y 20 caracteres</string>
+    <string name="error_username_chars">Caracteres válidos: alfanuméricos, _ y -</string>
+    <string name="error_password_length">La contraseña debe contener entre 6 y 12 caracteres</string>
+    <string name="error_cif_empty">El CIF debe contener 9 caracteres</string>
+    <string name="error_username_empty">El username es obligatorio</string>
+    <string name="error_password_empty">El password es obligatorio</string>
+    <string name="error_title_empty">El título es obligatorio</string>
+    <string name="error_description_empty">La descripción es obligatoria</string>
+    <string name="error_places_empty">El número de plazas es obligatorio</string>
+    <string name="error_date_not_selected">Seleccione una fecha</string>
+    <string name="error_time_not_selected">Seleccione una hora</string>
+    <string name="error_changePassField_empty">Este campo es obligatorio</string>
+
+    <!-- Strings of SingleAdvert fragment-->
+    <string name="username_advert">Usuario</string>
+    <string name="profileButton_advert">Perfil</string>
+    <string name="tittle_advert">Título del anuncio</string>
+    <string name="description_advert">Descripción del anuncio</string>
+    <string name="places_advert">Plazas</string>
+    <string name="expectedDate_advert">Fecha prevista</string>
+    <string name="wantItButton_advert">¡LO QUIERO!</string>
+    <string name="acceptedButton_advert">ACEPTADO</string>
+    <string name="pendingButton_advert">PENDIENTE</string>
+    <string name="completedButton_advert">COMPLETADO</string>
+    <string name="refusedButton_advert">RECHAZADO</string>
+    <string name="manageInscriptions">GESTIÓN DE INSCRIPCIONES</string>
+    <string name="inscription_error">Error al hacer la inscripción</string>
+    <string name="wantItButton_advertOther">¡Lo quiero!</string>
+    <string name="wantItButton_advertOwner">Ver inscripciones</string>
+    <string name="dialog_delete_advert">¿Seguro que quieres eliminar el anuncio?</string>
+    <string name="dialog_modify_state_advert">¿Seguro que quieres cambiar el estado del anuncio?</string>
+    <string name="tittle_dialogDeleteAdvert">El anuncio será eliminado</string>
+    <string name="tittle_dialogModifyStateAdvert">El estado del anuncio se modificará.</string>
+    <string name="wantItButton_editadvert">Guardar cambios</string>
+    <string name="dialog_delete_inscription">¿Seguro que quieres cancelar tu solicitud?</string>
+    <string name="tittle_dialogDeleteInscription">Tu inscripción será eliminada</string>
+
+    <!-- Strings of ChangePassword Dialog -->
+    <string name="changePass_tittle">Cambiar contraseña</string>
+    <string name="current_pass">Contraseña actual</string>
+    <string name="new_pass">Contraseña nueva</string>
+    <string name="confirm_pass">Confirmar nueva contraseña</string>
+    <string name="changePass_button">Cambiar</string>
+
+    <!-- Strings of Inscriptions Fragment -->
+    <string name="acceptInscription">Aceptar inscripción</string>
+    <string name="refuseInscription">Rechazar inscripción</string>
+    <string name="menu_inscriptions">Inscripciones</string>
+
+    <!-- Strings of SingleForum fragment-->
+    <string name="commentButton_forum">Comentar</string>
+    <string name="postCommentButton_forum">Publicar</string>
+    <string name="dialog_delete_comment">¿Seguro que quieres eliminar el comentario?</string>
+    <string name="tittle_dialogDeleteComment">El comentario será eliminado</string>
+    //Hola
+    <string name="error_GettingUserInfo">Error al obtener la información del usuario</string>
+    <string name="error_GettingAdvertInfo">Error al obtener la información del anuncio</string>
+    <string name="error_DeletingInscription">Error al eliminar la inscripción</string>
+    <string name="error_GettingInscriptions">Error al obtener inscripciones</string>
+    <string name="error_LoadingAds">Error al cargar anuncios</string>
+    <string name="toast_LookForAds">Anuncios de búsqueda</string>
+    <string name="toast_OfferAds">Anuncios de oferta</string>
+    <string name="toast_AllAds">Todos los anuncios</string>
+    <string name="toast_ManageInscriptions">Gestionar inscripciones</string>
+    <string name="toast_AdvertDeletedSuccessfully">Anuncio eliminado con éxito</string>
+    <string name="error_DeletingAdvert">Error al eliminar anuncio</string>
+    <string name="error_EmptyValuesAdded">Se agregaron valores vacíos</string>
+    <string name="error_PlacesMustBeGreaterThatZero">El número de plazas debe ser mayor a cero</string>
+    <string name="toast_ChangesSaveCorrectly">Los cambios se guardaron exitosamente</string>
+    <string name="error_SavingChangesAdvert">Error al guardar los cambios, verificar la fecha</string>
+    <string name="toast_AdvertStateChangedSuccessfully">El estado del anuncio se ha modificado con éxito.</string>
+    <string name="error_ChangingAdvertState">Error al modificar el estado del anuncio</string>
+    <string name="toast_ChatCorrectly">¡Ve a la pestaña de usuarios para abrir un nuevo chat!</string>
+    <string name="error_SettingInfoChats">Error al configurar la información de los chats</string>
+    <string name="titleTab_Chats">CHATS</string>
+    <string name="titleTab_Users">USUARIOS</string>
+    <string name="error_LoadingHistory">Error al cargar el historial</string>
+    <string name="error_SettingInfoOfUsers">Error al configurar la información de los usuarios</string>
+    <string name="error_SettingInfo">Error al configurar la información</string>
+    <string name="error_GettingFullForum">Error al obtener un foro completo</string>
+    <string name="titleTab_Documentation">DOCUMENTACIÓN</string>
+    <string name="titleTab_Languages">IDIOMAS</string>
+    <string name="titleTab_Entertainment">ENTRETENIMIENTO</string>
+    <string name="titleTab_Various">VARIOS</string>
+    <string name="documentationSpinner">documentación</string>
+    <string name="languageSpinner">idioma</string>
+    <string name="entertainmentSpinner">entretenimiento</string>
+    <string name="variousSpinner">varios</string>
+    <string name="toast_PostingForum">Publicando tu nuevo foro…</string>
+    <string name="toast_FillNewForumFields">Completa el título y la descripción correctamente</string>
+    <string name="toast_ForumCreatedSuccessfully">Nuevo foro creado con éxito</string>
+    <string name="error_CreatingForum">El foro no pudo ser creado</string>
+    <string name="toast_CommentCreatedCorrectly">Comentario creado con éxito</string>
+    <string name="error_PostingComment">Error al publicar el comentario</string>
+    <string name="toast_CommentDeletedSuccessfully">Comentario eliminado con éxito</string>
+    <string name="error_DeletingComment">Error al eliminar el comentario</string>
+    <string name="toast_ShowAdvertsOfUser">Mostrar los anuncios de este usuario</string>
+    <string name="error_VotingDislike">Error al votar \'dislike\'</string>
+    <string name="error_VotingLike">Error al votar \'like\'</string>
+    <string name="toast_AlreadyLike">Ya has votado \'like\'</string>
+    <string name="toast_VotedLike">Has votado \'like\'</string>
+    <string name="toast_AlreadyDislike">Ya has votado \'dislike\'</string>
+    <string name="toast_VotedDislike">Has votado \'dislike\'</string>
+    <string name="error_DeletingUser">Error al eliminar usuario</string>
+    <string name="toast_UserDeletedSuccessfully">Usuario eliminado con éxito</string>
+    <string name="toast_PasswordChagedSuccessfully">Contraseña cambiada con éxito</string>
+    <string name="error_ChangingPassword">Error al cambiar la contraseña</string>
+    <string name="toast_PasswordsDoNotMatch">Las nuevas contraseñas no coinciden</string>
+    <string name="toast_InvalidCurrentPassword">Contraseña actual inválida</string>
+    <string name="error_ModifyingProfile">Error al modificar el perfil</string>
+    <string name="No_email">No e-mail</string>
+    <string name="No_phone">No teléfono</string>
+    <string name="error_SettingInscriptionStatus">Error al configurar el estado de la inscripción</string>
+    <string name="new_forum">Nuevo foro</string>
+    <string name="places_points">Plazas:</string>
+    <string name="expected_date_points">Fecha prevista:</string>
+    <string name="write_a_message">Escribe un mensaje</string>
+
+    <!-- Server errors-->
+
+    <!-- Array for the spinner of user types-->
+    <string-array name="user_types">
+        <item>Voluntario</item>
+        <item>Recién llegado</item>
+        <item>Asociación</item>
+    </string-array>
+
+    <!-- Array for the spinner of advert types-->
+    <string-array name="advert_types">
+        <item>Buscar</item>
+        <item>Ofrecer</item>
+    </string-array>
+
+
+</resources>

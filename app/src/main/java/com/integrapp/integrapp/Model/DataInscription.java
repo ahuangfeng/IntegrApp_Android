@@ -7,7 +7,7 @@ public class DataInscription {
     private String idAdvert;
     private String state;
 
-    DataInscription(String id, String info, String state, String idUser, String idAdvert) {
+    public DataInscription(String id, String info, String state, String idUser, String idAdvert) {
         this.id = id;
         this.info = info;
         this.state = state;
