@@ -226,7 +226,7 @@ public class SingleForumFragment extends Fragment {
 
             LinearLayout commentItemVertical = new LinearLayout(getActivity());
             commentItemVertical.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 5);
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1000);
             commentItemVertical.setLayoutParams(layoutParams2);
 
             TextView commentUsername = new TextView(getActivity());
