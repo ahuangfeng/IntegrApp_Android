@@ -147,10 +147,10 @@ public class SingleForumFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN COMMENTING FORUM")) {
                     showNewComment(s);
-                    Toast.makeText(getContext(), "Comment created correctly", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.toast_CommentCreatedCorrectly), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getContext(), "Error posting the comment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.error_PostingComment), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -318,7 +318,7 @@ public class SingleForumFragment extends Fragment {
                     sendInfoUserCommentToProfile(s);
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -390,10 +390,10 @@ public class SingleForumFragment extends Fragment {
                 if (!s.equals("ERROR IN DELETING COMMENT")) {
                     comments.remove(index);
                     showComments(getView());
-                    Toast.makeText(getContext(), "Comment deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.toast_CommentDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error deleting the comment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_DeletingComment), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -415,7 +415,7 @@ public class SingleForumFragment extends Fragment {
                     sendInfoUserToProfile(s);
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

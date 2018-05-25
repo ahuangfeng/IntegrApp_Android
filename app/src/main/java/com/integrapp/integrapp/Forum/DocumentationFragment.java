@@ -90,7 +90,7 @@ public class DocumentationFragment extends Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error setting info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_SettingInfo), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -119,7 +119,7 @@ public class DocumentationFragment extends Fragment {
                     ft.commit();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error getting full forum", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingFullForum), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

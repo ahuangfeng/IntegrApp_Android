@@ -64,10 +64,10 @@ public class ForumFragment extends Fragment {
     //ADD FRAGMENTS TO TABS
     private void setupViewPager (ViewPager viewPager) {
         FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager());
-        adapter.addFragment(doc, "DOCUMENTATION");
-        adapter.addFragment(lang, "LANGUAGES");
-        adapter.addFragment(enter, "ENTERTAINMENT");
-        adapter.addFragment(other, "VARIOUS");
+        adapter.addFragment(doc, getString(R.string.titleTab_Documentation));
+        adapter.addFragment(lang, getString(R.string.titleTab_Languages));
+        adapter.addFragment(enter, getString(R.string.titleTab_Entertainment));
+        adapter.addFragment(other, getString(R.string.titleTab_Various));
         viewPager.setAdapter(adapter);
     }
 }

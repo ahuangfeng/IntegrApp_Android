@@ -123,9 +123,9 @@ public class AdvertsFragment extends Fragment {
                         usersData.add(userDataAdvertiser);
                     }
 
-                    AdvertsAdapter myadapter = new AdvertsAdapter(getView().getContext(), adverts);
-                    list.setAdapter(myadapter);
-                    myadapter.notifyDataSetChanged();
+                    AdvertsAdapter myAdapter = new AdvertsAdapter(getView().getContext(), adverts);
+                    list.setAdapter(myAdapter);
+                    myAdapter.notifyDataSetChanged();
 
 
                     list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -143,7 +143,7 @@ public class AdvertsFragment extends Fragment {
                     });
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error loading ads", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_LoadingAds), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -166,7 +166,7 @@ public class AdvertsFragment extends Fragment {
                     getInfoUserById(getType, s);
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error loading ads", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_LoadingAds), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -186,7 +186,7 @@ public class AdvertsFragment extends Fragment {
                     getInfoUser(s, id, arguments);
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -220,9 +220,9 @@ public class AdvertsFragment extends Fragment {
             usersData.add(uda);
         }
 
-        AdvertsAdapter myadapter = new AdvertsAdapter(view.getContext(), adverts);
-        list.setAdapter(myadapter);
-        myadapter.notifyDataSetChanged();
+        AdvertsAdapter myAdapter = new AdvertsAdapter(view.getContext(), adverts);
+        list.setAdapter(myAdapter);
+        myAdapter.notifyDataSetChanged();
 
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -295,17 +295,17 @@ public class AdvertsFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_lookfor) {
             getAllAdverts("lookFor");
-            Toast.makeText(getActivity(), "Look for ads", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_LookForAds), Toast.LENGTH_SHORT).show();
             return true;
         }
         else if (id == R.id.action_offer) {
             getAllAdverts("offer");
-            Toast.makeText(getActivity(), "Offer ads", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_OfferAds), Toast.LENGTH_SHORT).show();
             return true;
         }
         else if (id == R.id.action_all) {
             getAllAdverts("");
-            Toast.makeText(getActivity(), "All ads", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_AllAds), Toast.LENGTH_SHORT).show();
             return true;
         }
 

@@ -47,10 +47,10 @@ public class NewForumFragment extends Fragment {
 
         // Spinner Drop down elements
         List<String> types = new ArrayList<>();
-        types.add("documentation");
-        types.add("language");
-        types.add("entertainment");
-        types.add("various");
+        types.add(getString(R.string.documentationSpinner));
+        types.add(getString(R.string.languageSpinner));
+        types.add(getString(R.string.entertainmentSpinner));
+        types.add(getString(R.string.variousSpinner));
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, types);
@@ -66,7 +66,7 @@ public class NewForumFragment extends Fragment {
                 String content_forum = content.getText().toString();
 
                 if(fieldsOk(title_forum, content_forum)) {
-                    Toast.makeText(getActivity(), "Posting your new forum...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_PostingForum), Toast.LENGTH_SHORT).show();
                     sendDataToServer(title_forum, type_forum, content_forum);
                 }
             }
@@ -78,7 +78,7 @@ public class NewForumFragment extends Fragment {
     private boolean fieldsOk(String title, String content_forum) {
 
         if (title.length()<=0 || title.equals("My forum") || content_forum.length()<=0 || content_forum.equals("Describe your forum")) {
-            Toast.makeText(getActivity(), "Fill in the title and the description correctly", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_FillNewForumFields), Toast.LENGTH_SHORT).show();
             return false;
         }
         else return true;
@@ -120,11 +120,11 @@ public class NewForumFragment extends Fragment {
 
     private void checkNewForum(String s) {
         if (!s.equals("ERROR CREATING FORUM")) {
-            Toast.makeText(getActivity(), "New forum created successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_ForumCreatedSuccessfully), Toast.LENGTH_SHORT).show();
             getFragmentManager().popBackStack();
         }
         else {
-            Toast.makeText(getActivity(), "The forum could not be created", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.error_CreatingForum), Toast.LENGTH_SHORT).show();
         }
     }
 

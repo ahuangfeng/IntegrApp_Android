@@ -27,6 +27,8 @@ import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Login.LogIn;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 
+import java.util.Objects;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,7 +61,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String name = preferences.getString("name", "name");
         headerName.setText(name);
         String email = preferences.getString("email", "email");
-        headerEmail.setText(email);
+        if (Objects.equals(email, "No e-mail")) {
+            headerEmail.setText(getString(R.string.No_email));
+        }
+        else headerEmail.setText(email);
     }
 
     /*@Override

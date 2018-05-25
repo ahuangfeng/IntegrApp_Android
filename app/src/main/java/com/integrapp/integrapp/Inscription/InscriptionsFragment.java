@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Model.DataInscription;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 import com.integrapp.integrapp.Adapters.InscriptionsAdapter;
@@ -103,7 +104,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
 
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error loading inscriptions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingInscriptions), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

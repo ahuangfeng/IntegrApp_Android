@@ -1,4 +1,4 @@
-package com.integrapp.integrapp;
+package com.integrapp.integrapp.Inscription;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,7 +105,7 @@ public class SingleInscriptionFragment extends Fragment {
                     ft.commit();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error setting inscription status", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_SettingInscriptionStatus), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

@@ -23,12 +23,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.integrapp.integrapp.Adverts.SingleAdvertFragment;
-import com.integrapp.integrapp.Inscription.DataInscription;
+import com.integrapp.integrapp.Model.DataInscription;
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.SingleInscriptionFragment;
+import com.integrapp.integrapp.Inscription.SingleInscriptionFragment;
 import com.integrapp.integrapp.Model.DataAdvert;
 import com.integrapp.integrapp.Model.UserDataAdvertiser;
 
@@ -146,6 +146,9 @@ public class InscriptionsAdapter extends BaseAdapter {
                 if (!s.equals("ERROR IN GET INFO USER")) {
                     sendInfoUserToProfile(s, idUser);
                 }
+                else {
+                    Toast.makeText(activity, R.string.error_GettingUserInfo, Toast.LENGTH_SHORT).show();
+                }
             }
         }.execute();
     }
@@ -204,7 +207,7 @@ public class InscriptionsAdapter extends BaseAdapter {
                     sendInfoAdvert(s, idAdvert);
                 }
                 else {
-                    Toast.makeText(activity, "Error getting advert info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.error_GettingAdvertInfo, Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -286,7 +289,7 @@ public class InscriptionsAdapter extends BaseAdapter {
             }*/
             doServerCallForSaveInscriptions(idUser);
         } else {
-            Toast.makeText(activity, context.getResources().getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.error_DeletingInscription, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -307,7 +310,7 @@ public class InscriptionsAdapter extends BaseAdapter {
                     saveInscriptions(s);
                 }
                 else {
-                    Toast.makeText(activity,"Error getting inscriptions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.error_GettingInscriptions, Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

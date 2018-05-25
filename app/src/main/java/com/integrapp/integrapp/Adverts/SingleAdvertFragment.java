@@ -126,7 +126,7 @@ public class SingleAdvertFragment extends Fragment {
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
-                    Toast.makeText(getActivity().getApplicationContext(), "Manage inscriptions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
                 } else if (advertStatus.equals("canEnroll")) {
                     doServerCallForCreateInscription();
                 } else if (advertStatus.equals("pending")) {
@@ -247,6 +247,9 @@ public class SingleAdvertFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GET INFO USER")) {
                     sendInfoUserToProfile(s);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -402,7 +405,7 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING ADVERT")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Advert deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_AdvertDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                     SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     int ads = preferences.getInt("ads", 0);
@@ -414,7 +417,7 @@ public class SingleAdvertFragment extends Fragment {
                     getActivity().finish();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error deleting advert", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_DeletingAdvert), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -440,11 +443,11 @@ public class SingleAdvertFragment extends Fragment {
         Boolean errors = false;
         if (json.equals("empty")) {
             errors = true;
-            Toast.makeText(getContext(), "Error empty values added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.error_EmptyValuesAdded), Toast.LENGTH_SHORT).show();
         }
         else if (json.equals("places greater 0")) {
             errors = true;
-            Toast.makeText(getContext(), "Error places must be greater than 0", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.error_PlacesMustBeGreaterThatZero), Toast.LENGTH_SHORT).show();
         }
 
         if (!errors) {
@@ -459,9 +462,9 @@ public class SingleAdvertFragment extends Fragment {
                     if (!s.equals("ERROR MODIFY ADVERT")) {
                         setVisibility(false, View.INVISIBLE);
                         setAttributes();
-                        Toast.makeText(getContext(), "Changes saved correctly", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.toast_ChangesSaveCorrectly), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "Error saving changes, check date", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.error_SavingChangesAdvert), Toast.LENGTH_SHORT).show();
                     }
                 }
             }.execute();
@@ -514,10 +517,10 @@ public class SingleAdvertFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR CHANGE ADVERT STATE")) {
                     changeState();
-                    Toast.makeText(getActivity().getApplicationContext(), "Advert State changed successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_AdvertStateChangedSuccessfully), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error changing advert state", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_ChangingAdvertState), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -615,7 +618,7 @@ public class SingleAdvertFragment extends Fragment {
             }*/
             doServerCallForSaveInscriptions(personalUserId);
         } else {
-            Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
         }
     }
   
@@ -634,6 +637,9 @@ public class SingleAdvertFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
                     saveInscriptions(s);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingInscriptions), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -657,7 +663,7 @@ public class SingleAdvertFragment extends Fragment {
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
-                    Toast.makeText(getActivity().getApplicationContext(), "Manage inscriptions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.manageInscriptions), Toast.LENGTH_SHORT).show();
                 } else if (advertStatus.equals("canEnroll")) {
                     doServerCallForCreateInscription();
                 } else if (advertStatus.equals("pending")) {

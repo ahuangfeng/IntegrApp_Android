@@ -130,7 +130,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -142,7 +142,7 @@
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:textColor="#0014cc"
-                    android:text="Places:" />
+                    android:text="@string/places_points" />
 
                 <EditText
                     android:id="@+id/textView_places"
@@ -187,7 +187,7 @@
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:textColor="#0014cc"
-                    android:text="Expected date:" />
+                    android:text="@string/expected_date_points" />
 
                 <EditText
                     android:id="@+id/textView_date"
@@ -221,7 +221,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
-                android:hint="State"
+                android:hint="@string/state"
                 android:textAllCaps="false"
                 android:textColor="@color/colorDisLikes"
                 android:textSize="20sp"

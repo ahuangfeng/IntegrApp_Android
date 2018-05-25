@@ -46,7 +46,7 @@ public class LogIn extends AppCompatActivity {
                 String user = userEditText.getText().toString();
                 String pass = passEditText.getText().toString();
                 if(fieldsOk(user, pass)) {
-                    Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.connecting), Toast.LENGTH_SHORT).show();
                     sendDataToServer(user, pass);
                 }
             }
@@ -119,7 +119,7 @@ public class LogIn extends AppCompatActivity {
                     saveInfoUser(s);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Error getting user info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -142,7 +142,7 @@ public class LogIn extends AppCompatActivity {
                     saveInscriptions(s);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Error getting inscriptions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_GettingInscriptions), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

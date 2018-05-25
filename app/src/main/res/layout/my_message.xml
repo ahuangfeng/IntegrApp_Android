@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:background="@drawable/background_recieved_msg">
 
         <TextView
@@ -26,7 +26,7 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:background="@drawable/background_sent_msg">
 
         <TextView

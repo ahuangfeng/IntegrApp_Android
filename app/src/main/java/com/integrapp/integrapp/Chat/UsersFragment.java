@@ -89,7 +89,7 @@ public class UsersFragment extends android.support.v4.app.Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), "Error setting info of users", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_SettingInfoOfUsers), Toast.LENGTH_SHORT).show();
                 }
             }
 

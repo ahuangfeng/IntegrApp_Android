@@ -186,7 +186,7 @@ public class SingleChatFragment extends Fragment {
     }
 
     private void showError() {
-        Toast.makeText(getActivity(), "Error loading history", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.error_LoadingHistory), Toast.LENGTH_SHORT).show();
     }
 
 
