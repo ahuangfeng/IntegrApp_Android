@@ -216,20 +216,8 @@ public class InscriptionsAdapter extends BaseAdapter {
     private void sendInfoAdvert(String s, String idAdvert) {
         try {
             JSONObject jsonObject = new JSONObject(s);
-            String date, title, description, places, typeAdvert, state, userId, id, registered;
-            date = jsonObject.getString("date");
-            title = jsonObject.getString("title");
-            description = jsonObject.getString("description");
-            places = jsonObject.getString("places");
-            typeAdvert = jsonObject.getString("typeAdvert");
-            state = jsonObject.getString("state");
-            userId = jsonObject.getString("userId");
-            id = jsonObject.getString("_id");
-            registered = jsonObject.getJSONArray("registered").toString();
-            int image = R.drawable.project_preview_large_2;
-            DataAdvert dataAdvert = new DataAdvert(date, title, description, places, typeAdvert, state, userId, image, id, registered);
-            UserDataAdvertiser userDataAdvertiser = new UserDataAdvertiser(jsonObject.getString("user"));
-            Fragment fragment = new SingleAdvertFragment(dataAdvert, userDataAdvertiser);
+            DataAdvert dataAdvert = new DataAdvert(jsonObject);
+            Fragment fragment = new SingleAdvertFragment(dataAdvert);
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, fragment);
