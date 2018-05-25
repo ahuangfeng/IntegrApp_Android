@@ -16,11 +16,14 @@ public class Server {
 
     public String token; //NO privado porque no podemos acceder a el desde los metodos doInBackground y onPostExecute de las AsynTasck
 
+    private DefaultHttpClient client;
+
     public static Server getInstance() {
         return serverInstance;
     }
 
     private Server() {
+        client = new DefaultHttpClient();
     }
 
     public String register(String json) {
@@ -30,7 +33,6 @@ public class Server {
             post.setEntity(entity);
             post.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
 
@@ -47,7 +49,6 @@ public class Server {
             post.setEntity(entity);
             post.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
 
@@ -61,7 +62,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/advert?type="+type);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -75,7 +75,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/inscription/"+idAdvert);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -89,7 +88,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/advertsUser/"+type);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -103,7 +101,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/user?username="+username);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -117,7 +114,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/userInfoById/"+id);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -131,7 +127,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/advert/"+id);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -149,7 +144,6 @@ public class Server {
             post.setHeader("x-access-token", token);
             post.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
         
@@ -163,7 +157,6 @@ public class Server {
         HttpDelete delete = new HttpDelete(API_URI+"/user/"+id);
         try {
             delete.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(delete, handler);
 
@@ -178,7 +171,6 @@ public class Server {
         HttpDelete delete = new HttpDelete(API_URI+"/advert/"+id);
         try {
             delete.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(delete, handler);
 
@@ -196,7 +188,6 @@ public class Server {
             modify.setHeader("x-access-token", token);
             modify.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(modify, handler);
 
@@ -215,7 +206,6 @@ public class Server {
             modify.setHeader("x-access-token", token);
             modify.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(modify, handler);
 
@@ -233,7 +223,6 @@ public class Server {
             modify.setHeader("x-access-token", token);
             modify.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(modify, handler);
 
@@ -247,7 +236,6 @@ public class Server {
         HttpPost post = new HttpPost(API_URI+"/like/"+idUser);
         try {
             post.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
 
@@ -262,7 +250,6 @@ public class Server {
         HttpPost post = new HttpPost(API_URI+"/dislike/"+idUser);
         try {
             post.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
 
@@ -281,7 +268,6 @@ public class Server {
             post.setHeader("x-access-token", token);
             post.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
           
@@ -295,7 +281,6 @@ public class Server {
         HttpDelete delete = new HttpDelete(API_URI+"/inscription/"+idInscription);
         try {
             delete.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(delete, handler);
 
@@ -309,7 +294,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/inscriptionsUser/"+userId);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
           
@@ -323,7 +307,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/forums?type=documentation");
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
           
@@ -337,7 +320,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/forums?type=entertainment");
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -352,7 +334,6 @@ public class Server {
 
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -367,7 +348,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/forums?type=various");
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -385,7 +365,6 @@ public class Server {
             modify.setHeader("x-access-token", token);
             modify.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(modify, handler);
           
@@ -399,7 +378,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/fullForum/"+id);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -417,7 +395,6 @@ public class Server {
             post.setHeader("x-access-token", token);
             post.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
 
@@ -435,7 +412,6 @@ public class Server {
             post.setHeader("x-access-token", token);
             post.setHeader("Content-Type", "application/json");
           
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
 
@@ -449,7 +425,6 @@ public class Server {
         HttpDelete delete = new HttpDelete(API_URI+"/commentForum/"+id);
         try {
             delete.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(delete, handler);
         } catch (IOException e) {
@@ -462,7 +437,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/inscriptionsUser/"+userId);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -476,7 +450,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/users");
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -490,7 +463,6 @@ public class Server {
         HttpGet get = new HttpGet(API_URI+"/chat/"+userId);
         try {
             get.setHeader("x-access-token", token);
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(get, handler);
 
@@ -508,7 +480,6 @@ public class Server {
             post.setHeader("x-access-token", token);
             post.setHeader("Content-type", "application/json");
 
-            DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             return client.execute(post, handler);
 
