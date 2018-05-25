@@ -1,5 +1,7 @@
 package com.integrapp.integrapp.Model;
 
+import com.integrapp.integrapp.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,40 +12,27 @@ public class DataAdvert {
     private String places;
     private String type;
     private String state;
-    private String userId;
     private int image;
     private String id;
     private String registered;
+    private UserDataAdvertiser userDataAdvertiser;
 
-    public DataAdvert(String date, String title, String description, String places, String type, String state, String userId, int image, String id, String registered) {
-        this.date = date;
-        this.title = title;
-        this.description = description;
-        this.places = places;
-        this.type = type;
-        this.state = state;
-        this.image = image;
-        this.userId = userId;
-        this.id = id;
-        this.registered = registered;
+    public DataAdvert(JSONObject dataAdvert) {
+        decryptJson(dataAdvert);
+        this.image = R.drawable.project_preview_large_2;
     }
 
-    public DataAdvert(JSONObject userInfo, int image) {
-        decryptJson(userInfo);
-        this.image = image;
-    }
-
-    private void decryptJson(JSONObject userInfo) {
+    private void decryptJson(JSONObject dataAdvert) {
         try {
-
-            this.date = userInfo.getString("date");
-            this.title = userInfo.getString("title");
-            this.description = userInfo.getString("description");
-            this.places = userInfo.getString("places");
-            this.type = "voluntary";
-            this.state = userInfo.getString("state");
-            this.id = userInfo.getString("_id");
-            this.registered = userInfo.getString("registered");
+            this.date = dataAdvert.getString("date");
+            this.title = dataAdvert.getString("title");
+            this.description = dataAdvert.getString("description");
+            this.places = dataAdvert.getString("places");
+            this.type = dataAdvert.getString("typeAdvert");
+            this.state = dataAdvert.getString("state");
+            this.id = dataAdvert.getString("_id");
+            this.registered = dataAdvert.getString("registered");
+            this.userDataAdvertiser = new UserDataAdvertiser(dataAdvert.getJSONObject("user"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -98,14 +87,6 @@ public class DataAdvert {
         this.state = state;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public int getImage() {
         return image;
     }
@@ -124,4 +105,11 @@ public class DataAdvert {
 
     public String getRegistered() {return registered;}
 
+    public UserDataAdvertiser getUserDataAdvertiser() {
+        return userDataAdvertiser;
+    }
+
+    public void setUserDataAdvertiser(UserDataAdvertiser userDataAdvertiser) {
+        this.userDataAdvertiser = userDataAdvertiser;
+    }
 }

@@ -12,37 +12,35 @@ public class UserDataAdvertiser {
     private String email = "No e-mail";
     private String phone = "No phone";
 
-    public UserDataAdvertiser(String userInfo) {
+    UserDataAdvertiser(JSONObject userInfo) {
         decryptJson(userInfo);
+    }
+
+    UserDataAdvertiser(String s) {
+        try {
+            JSONObject userInfo = new JSONObject(s);
+            decryptJson(userInfo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public UserDataAdvertiser(String id, String userInfo) {
         decryptJson2(id, userInfo);
     }
 
-    public UserDataAdvertiser(String id, String username, String name, String type, String email, String phone) {
-        idUser = id;
-        this.username = username;
-        this.name = name;
-        this.type = "voluntary";
-        if (!email.equals("")) this.email = email;
-        if (!phone.equals("")) this.phone = phone;
-    }
-
-    private void decryptJson(String userInfo) {
+    private void decryptJson(JSONObject userInfo) {
         try {
-            JSONObject myJsonObject = new JSONObject(userInfo);
+            this.idUser = userInfo.getString("_id");
+            this.username = userInfo.getString("username");
+            this.name = userInfo.getString("name");
+            this.type = userInfo.getString("type");
 
-            this.idUser = myJsonObject.getString("_id");
-            this.username = myJsonObject.getString("username");
-            this.name = myJsonObject.getString("name");
-            this.type = myJsonObject.getString("type");
-
-            if(myJsonObject.has("email")) {
-                this.email = myJsonObject.getString("email");
+            if(userInfo.has("email")) {
+                this.email = userInfo.getString("email");
             }
-            if(myJsonObject.has("phone")) {
-                this.phone = myJsonObject.getString("phone");
+            if(userInfo.has("phone")) {
+                this.phone = userInfo.getString("phone");
             }
 
         } catch (JSONException e) {

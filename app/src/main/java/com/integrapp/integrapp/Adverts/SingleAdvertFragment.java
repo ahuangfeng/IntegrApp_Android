@@ -74,18 +74,18 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public SingleAdvertFragment(DataAdvert dataAdvert, UserDataAdvertiser userData) {
+    public SingleAdvertFragment(DataAdvert dataAdvert) {
         title = dataAdvert.getTitle();
         type = dataAdvert.getType();
         state = dataAdvert.getState();
         places = dataAdvert.getPlaces();
         date = dataAdvert.getDate();
         description = dataAdvert.getDescription();
-        userId = dataAdvert.getUserId();
+        userId = dataAdvert.getUserDataAdvertiser().getIdUser();
         image = dataAdvert.getImage();
         registered = dataAdvert.getRegistered();
         idAdvert = dataAdvert.getId();
-        this.userData = userData;
+        this.userData = dataAdvert.getUserDataAdvertiser();
     }
 
     @SuppressLint("StaticFieldLeak")
