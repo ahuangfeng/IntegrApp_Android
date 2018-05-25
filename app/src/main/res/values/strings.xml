@@ -151,6 +151,7 @@
     <string name="acceptInscription">Accept inscription</string>
     <string name="refuseInscription">Refuse inscription</string>
     <string name="menu_inscriptions">Inscriptions</string>
+    <string name="toast_ManageInscriptions">Manage inscriptions</string>
 
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comment</string>
@@ -165,7 +166,6 @@
     <string name="toast_LookForAds">Look for ads</string>
     <string name="toast_OfferAds">Offer ads</string>
     <string name="toast_AllAds">All ads</string>
-    <string name="toast_ManageInscriptions">Manage inscriptions</string>
     <string name="toast_AdvertDeletedSuccessfully">Advert deleted successfully</string>
     <string name="error_DeletingAdvert">Error deleting advert</string>
     <string name="error_EmptyValuesAdded">Error empty values added</string>

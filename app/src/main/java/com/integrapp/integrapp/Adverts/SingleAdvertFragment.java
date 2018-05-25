@@ -105,6 +105,7 @@ public class SingleAdvertFragment extends Fragment {
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
 
         if (userData.getUsername().equals(usernamePreferences)) {
+            //TODO: WTF type_advert y advertStatus son "owner"?
             type_advert = "owner";
             inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
             advertStatus = "owner";
@@ -119,13 +120,22 @@ public class SingleAdvertFragment extends Fragment {
             public void onClick(View v) {
                 switch (advertStatus) {
                     case "owner":
-                        Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.screen_area, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
-                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONArray inscriptions = new JSONArray(registered);
+                            if(inscriptions.length() > 0){
+                                Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction ft = fragmentManager.beginTransaction();
+                                ft.replace(R.id.screen_area, fragment);
+                                ft.addToBackStack(null);
+                                ft.commit();
+                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.noUserInscriptions), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "canEnroll":
                         doServerCallForCreateInscription();
