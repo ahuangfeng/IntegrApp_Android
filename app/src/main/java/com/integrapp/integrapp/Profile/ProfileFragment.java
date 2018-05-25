@@ -323,6 +323,8 @@ public class ProfileFragment extends Fragment {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
             menu.findItem(R.id.action_changePass).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_reportUser).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }

@@ -616,7 +616,7 @@ public class SingleAdvertFragment extends Fragment {
   
     private void updateInscriptions(String s, String state) {
         if(!s.equals("ERROR DELETING INSCRIPTION")) {
-            if (state == "pending") {
+            /*if (state == "pending") {
                 inscriptionButton.setText(getString(R.string.pendingButton_advert));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
@@ -624,7 +624,7 @@ public class SingleAdvertFragment extends Fragment {
                 inscriptionButton.setText(getString(R.string.wantItButton_advertOther));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            }
+            }*/
         } else {
             Toast.makeText(getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
         }
