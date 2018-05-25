@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
     private String userId;
     private Context context;
     private View view;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public InscriptionsFragment() {
         idAdvert = "inscriptions";
@@ -50,6 +52,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.activity_inscription, container, false);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         this.server = Server.getInstance();
         this.inscriptionServer = InscriptionServer.getInstance();
         if (idAdvert.equals("inscriptions")) {
@@ -108,6 +111,14 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                             myAdapter.notifyDataSetChanged();
 
                             list.setClickable(false);
+
+                            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                @Override
+                                public void onRefresh() {
+                                    getAllInscriptions(idAdvert, userId);
+                                    mSwipeRefreshLayout.setRefreshing(false);
+                                }
+                            });
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
