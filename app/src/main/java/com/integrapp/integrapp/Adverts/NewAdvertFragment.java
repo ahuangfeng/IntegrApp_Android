@@ -214,6 +214,11 @@ public class NewAdvertFragment extends Fragment {
             valid = false;
         }
 
+        if (Integer.parseInt(places) <= 0) {
+            placesEditText.setError(getString(R.string.error_places_lte0));
+            valid = false;
+        }
+
         if (date.isEmpty()) {
             dateText.setError(getString(R.string.error_date_not_selected));
             valid = false;

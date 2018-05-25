@@ -12,6 +12,9 @@
     <string name="action_lookfor">Anuncios de búsqueda</string>
     <string name="action_offer">Anuncios de ofertas</string>
     <string name="action_all">Todos los anuncios</string>
+    <string name="action_reportAdvert">Denunciar anuncio</string>
+    <string name="action_reportUser">Denunciar usuario</string>
+
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -65,6 +68,9 @@
     <string name="cancel">Cancelar</string>
     <string name="dialog_delete_user">¿Seguro que quieres eliminar el usuario?</string>
     <string name="tittle_dialogDeleteUser">El usuario será eliminado</string>
+    <string name="title_dialogReportUser">Denunciando usuario</string>
+    <string name="userReport_ok">Usuario denunciado correctamente</string>
+    <string name="error_reportUser">Error al denunciar al usuario</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Título</string>
@@ -103,6 +109,7 @@
     <string name="error_date_not_selected">Seleccione una fecha</string>
     <string name="error_time_not_selected">Seleccione una hora</string>
     <string name="error_changePassField_empty">Este campo es obligatorio</string>
+    <string name="error_places_lte0">Plazas debe ser major que 0</string>
 
     <!-- Strings of SingleAdvert fragment-->
     <string name="username_advert">Usuario</string>
@@ -110,6 +117,7 @@
     <string name="tittle_advert">Título del anuncio</string>
     <string name="description_advert">Descripción del anuncio</string>
     <string name="places_advert">Plazas</string>
+    <string name="available_places">Plazas disponibles:</string>
     <string name="expectedDate_advert">Fecha prevista</string>
     <string name="wantItButton_advert">¡LO QUIERO!</string>
     <string name="acceptedButton_advert">ACEPTADO</string>
@@ -127,6 +135,11 @@
     <string name="wantItButton_editadvert">Guardar cambios</string>
     <string name="dialog_delete_inscription">¿Seguro que quieres cancelar tu solicitud?</string>
     <string name="tittle_dialogDeleteInscription">Tu inscripción será eliminada</string>
+    <string name="error_noPlaces">No te puedes apuntar a este anuncio</string>
+    <string name="dialog_report">Introduce la razón de la denuncia</string>
+    <string name="title_dialogReportAdvert">Denunciando anuncio</string>
+    <string name="advertReport_ok">Anuncio denunciado correctamente</string>
+    <string name="error_reportAdvert">Error al denunciar el anuncio</string>
 
     <!-- Strings of ChangePassword Dialog -->
     <string name="changePass_tittle">Cambiar contraseña</string>
@@ -209,6 +222,12 @@
     <string name="userTypeVoluntary_Profile">Voluntario</string>
     <string name="userTypeNewComer_Profile">Recién llegado</string>
     <string name="userTypeAssociation_Profile">Asociación</string>
+    <string name="noUserInscriptions">No has realizado ninguna inscripcion</string>
+    <string name="noAdvertInscriptions">Tu anuncio no tiene inscripciones</string>
+    <string name="noAdvertsOfUser">El usuario no tiene anuncios</string>
+    <string name="noLookForAdverts">No hay anuncios del tipo Búsqueda</string>
+    <string name="noOfferAdverts">No hay anuncios del tipo Oferta</string>
+    <string name="noAdverts">No hay anuncios publicados</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

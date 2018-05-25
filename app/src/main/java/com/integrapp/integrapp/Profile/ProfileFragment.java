@@ -54,6 +54,7 @@ public class ProfileFragment extends Fragment {
     private TextView likesTextView;
     private TextView dislikesTextView;
     private TextView adsTextView;
+    private String idUser;
     private Server server;
 
     public ProfileFragment() {
@@ -90,7 +91,7 @@ public class ProfileFragment extends Fragment {
         adsTextView = view.findViewById(R.id.adsTextView);
 
         if (Objects.equals(typeProfile, "advertiserUser")) {
-            final String idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
+            idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
             String username = getArguments() != null ? getArguments().getString("username") : "username";
             String type = getArguments() != null ? getArguments().getString("type") : "type";
             String name = getArguments() != null ? getArguments().getString("name") : "name";
@@ -110,7 +111,7 @@ public class ProfileFragment extends Fragment {
             adsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showUserAdverts(idUser);
+                    showUserAdverts();
                 }
             });
 
@@ -122,13 +123,13 @@ public class ProfileFragment extends Fragment {
                 likesLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        voteLike(idUser);
+                        voteLike();
                     }
                 });
                 dislikesLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        voteDislike(idUser);
+                        voteDislike();
                     }
                 });
             }
@@ -137,7 +138,7 @@ public class ProfileFragment extends Fragment {
         else {
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
             final String username = preferences.getString("username", "username");
-            final String idUser = preferences.getString("idUser", "idUser");
+            idUser = preferences.getString("idUser", "idUser");
             String name = preferences.getString("name", "name");
             String type = preferences.getString("type", "type");
             String email = preferences.getString("email", "email");
@@ -153,14 +154,14 @@ public class ProfileFragment extends Fragment {
             adsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showUserAdverts(idUser);
+                    showUserAdverts();
                 }
             });
         }
       return view;
     }
 
-    private void showUserAdverts(final String idUser) {
+    private void showUserAdverts() {
         Toast.makeText(getActivity(), getString(R.string.toast_ShowAdvertsOfUser), Toast.LENGTH_SHORT).show();
         Fragment fragment = new AdvertsFragment(idUser);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -171,7 +172,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void voteDislike(final String idUser) {
+    private void voteDislike() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -193,7 +194,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void voteLike(final String idUser) {
+    private void voteLike() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -260,11 +261,11 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void deleteUserById(final String id) {
+    private void deleteUserById() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                return server.deleteUserById(id);
+                return server.deleteUserById(idUser);
             }
 
             @Override
@@ -335,7 +336,6 @@ public class ProfileFragment extends Fragment {
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         server.token = preferences.getString("user_token", "user_token");
-        final String idUser = preferences.getString("idUser", "idUser");
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
@@ -345,7 +345,7 @@ public class ProfileFragment extends Fragment {
             builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    deleteUserById(idUser);
+                    deleteUserById();
                 }
             });
 
@@ -375,7 +375,7 @@ public class ProfileFragment extends Fragment {
                         builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                saveChanges(idUser);
+                                saveChanges();
                             }
                         });
 
@@ -415,11 +415,32 @@ public class ProfileFragment extends Fragment {
 
                     if (fieldsChangePassOK(currentPass, newPass, confirmPass)) {
                         if (passwordsOk(currentPass, newPass, confirmPass)) {
-                            saveChangePassword(idUser, newPass, dialog);
+                            saveChangePassword(newPass, dialog);
                         }
                     }
                 }
             });
+        } else if (id == R.id.action_reportUser) {
+            final EditText editText = new EditText(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_report).setTitle(R.string.title_dialogReportUser);
+            builder.setView(editText);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    reportUser(editText.getText().toString());
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -441,7 +462,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void saveChangePassword(final String idUser, String newPass, final AlertDialog dialog) {
+    private void saveChangePassword(String newPass, final AlertDialog dialog) {
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("password", newPass);
@@ -494,7 +515,7 @@ public class ProfileFragment extends Fragment {
         if (newPass.isEmpty()) {
             newPassEditText.setError(getString(R.string.error_changePassField_empty));
             valid = false;
-        }else if (checkInputText(newPass, 6, 128)) {
+        }else if (checkInputText(newPass)) {
             newPassEditText.setError(getString(R.string.error_password_length));
             valid = false;
         }
@@ -502,15 +523,15 @@ public class ProfileFragment extends Fragment {
         if (confirmPass.isEmpty()) {
             confirmNewPassEditText.setError(getString(R.string.error_changePassField_empty));
             valid = false;
-        }else if (checkInputText(confirmPass, 6, 128)){
+        }else if (checkInputText(confirmPass)){
             confirmNewPassEditText.setError(getString(R.string.error_password_length));
             valid = false;
         }
         return valid;
     }
 
-    private boolean checkInputText(String text, int min, int max) {
-        return text.isEmpty() || text.length() < min || text.length() > max;
+    private boolean checkInputText(String text) {
+        return text.isEmpty() || text.length() < 6 || text.length() > 128;
     }
 
     private void setVisibility(boolean b, int visibility) {
@@ -540,7 +561,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void saveChanges(final String idUser) {
+    private void saveChanges() {
         final String json = generateRequestModifyProfile();
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -574,12 +595,12 @@ public class ProfileFragment extends Fragment {
 
         /*Si el usuario quiere hacer el email o el phone no visible*/
         if (email.isEmpty()) {
-            email = "No e-mail";
-            emailTextView.setText(getString(R.string.No_email));
+            email = getString(R.string.No_email);
+            emailTextView.setText(email);
         }
         if (phone.isEmpty()) {
-            phone = "No phone";
-            phoneTextView.setText(getString(R.string.No_phone));
+            phone = getString(R.string.No_phone);
+            phoneTextView.setText(phone);
         }
 
         editor.putString("username", username);
@@ -630,6 +651,44 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void reportUser(String reason) {
+        try {
+            final String json = generateReportData(reason);
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.report(json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    if (!s.equals("ERROR CREATING REPORT")) {
+                        System.out.println("SERVER RESPONSE: " + s);
+                        Toast.makeText(getActivity(), getString(R.string.userReport_ok), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_reportUser), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateReportData(String reason) throws JSONException {
+        JSONObject oJSON = new JSONObject();
+
+        oJSON.put("description", reason);
+        oJSON.put("type", "user");
+        oJSON.put("typeId", idUser);
+
+        return oJSON.toString(1);
     }
 
     @Override

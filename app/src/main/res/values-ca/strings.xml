@@ -12,6 +12,8 @@
     <string name="action_lookfor">Anuncis de cerca</string>
     <string name="action_offer">Anuncis d\'ofertes</string>
     <string name="action_all">Tots els anuncis</string>
+    <string name="action_reportAdvert">Denunciar anunci</string>
+    <string name="action_reportUser">Denunciar usuari</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -65,6 +67,9 @@
     <string name="cancel">Cancel·lar</string>
     <string name="dialog_delete_user">Segur que vols eliminar l\'usuari?</string>
     <string name="tittle_dialogDeleteUser">L\'usuari serà eliminat</string>
+    <string name="title_dialogReportUser">Denunciant usuari</string>
+    <string name="userReport_ok">Usuari denunciat correctament</string>
+    <string name="error_reportUser">Error al denunciar a l\'usuari</string>
 
     <!-- Strings of New Advert Activity-->
     <string name="newAdvert_title">Títol</string>
@@ -103,6 +108,7 @@
     <string name="error_date_not_selected">Seleccioneu una data</string>
     <string name="error_time_not_selected">Seleccioneu una hora</string>
     <string name="error_changePassField_empty">Aquest camp és obligatori</string>
+    <string name="error_places_lte0">Places ha de ser major que 0</string>
 
     <!-- Strings of SingleAdvert fragment-->
     <string name="username_advert">Usuari</string>
@@ -110,6 +116,7 @@
     <string name="tittle_advert">Títol de l\'anunci</string>
     <string name="description_advert">Descripció de l\'anunci</string>
     <string name="places_advert">Places</string>
+    <string name="available_places">Places disponibles:</string>
     <string name="expectedDate_advert">Data prevista</string>
     <string name="wantItButton_advert">VULL AIXÒ!</string>
     <string name="acceptedButton_advert">ACCEPTAT</string>
@@ -127,6 +134,11 @@
     <string name="wantItButton_editadvert">Desa els canvis</string>
     <string name="dialog_delete_inscription">Segur que vols cancel·lar la teva sol·licitud?</string>
     <string name="tittle_dialogDeleteInscription">La teva inscripció serà eliminada</string>
+    <string name="error_noPlaces">No et pots apuntar a aquest anunci</string>
+    <string name="dialog_report">Introdueix la raó de la denuncia</string>
+    <string name="title_dialogReportAdvert">Denunciant anunci</string>
+    <string name="advertReport_ok">Anunci denunciat correctament</string>
+    <string name="error_reportAdvert">Error al denunciar l\'anunci</string>
 
     <!-- Strings of ChangePassword Dialog -->
     <string name="changePass_tittle">Canvia la contrasenya</string>
@@ -209,6 +221,12 @@
     <string name="userTypeVoluntary_Profile">Voluntari</string>
     <string name="userTypeNewComer_Profile">Nouvingut</string>
     <string name="userTypeAssociation_Profile">Associació</string>
+    <string name="noUserInscriptions">No has realitzat cap inscripció</string>
+    <string name="noAdvertInscriptions">El teu anunci no té inscripcions</string>
+    <string name="noAdvertsOfUser">L\'usuari no té anuncis</string>
+    <string name="noLookForAdverts">No hi ha anuncis del tipus Cerca</string>
+    <string name="noOfferAdverts">No hi ha anuncis del tipus Oferta</string>
+    <string name="noAdverts">No hi ha anuncis publicats</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

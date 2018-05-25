@@ -51,6 +51,7 @@ public class SingleAdvertFragment extends Fragment {
     private int image;
     private String type_advert;
     private String idAdvert;
+    private String registered;
 
     private Button inscriptionButton;
     private String personalUserId;
@@ -64,6 +65,7 @@ public class SingleAdvertFragment extends Fragment {
     private View viewPlaces;
     private View viewDate;
     private TextView textViewState;
+    private String advertStatus;
 
     UserDataAdvertiser userData;
     private Server server;
@@ -81,7 +83,7 @@ public class SingleAdvertFragment extends Fragment {
         description = dataAdvert.getDescription();
         userId = dataAdvert.getUserId();
         image = dataAdvert.getImage();
-
+        registered = dataAdvert.getRegistered();
         idAdvert = dataAdvert.getId();
         this.userData = userData;
     }
@@ -102,8 +104,6 @@ public class SingleAdvertFragment extends Fragment {
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
 
-        final String advertStatus;
-
         if (userData.getUsername().equals(usernamePreferences)) {
             type_advert = "owner";
             inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
@@ -111,43 +111,45 @@ public class SingleAdvertFragment extends Fragment {
         }
         else {
             type_advert = "other";
-            String userInscriptions = preferences.getString("inscriptions", "[]");
-            advertStatus = checkAdvertStatus(userInscriptions);
-            checkInscriptionStatus(advertStatus);
+            updatePlacesAndStatus();
         }
 
         inscriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (advertStatus.equals("owner")) {
-                    Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.screen_area, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
-                } else if (advertStatus.equals("canEnroll")) {
-                    doServerCallForCreateInscription();
-                } else if (advertStatus.equals("pending")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                switch (advertStatus) {
+                    case "owner":
+                        Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                        ft.replace(R.id.screen_area, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
+                        break;
+                    case "canEnroll":
+                        doServerCallForCreateInscription();
+                        break;
+                    case "pending":
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                    builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            doServerCallForDeleteInscription();
-                        }
-                    });
+                        builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                doServerCallForDeleteInscription();
+                            }
+                        });
 
-                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
                 }
             }
         });
@@ -184,13 +186,15 @@ public class SingleAdvertFragment extends Fragment {
         imageView.setImageResource(image);
     }
 
-    private void checkInscriptionStatus(String advertStatus) {
+    private void checkInscriptionStatus() {
+        inscriptionButton.setVisibility(View.VISIBLE);
         inscriptionButton.setClickable(false);
         switch (advertStatus) {
             case "pending":
                 inscriptionButton.setText(getString(R.string.pendingButton_advert));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+                inscriptionButton.setClickable(true);
                 break;
             case "canEnroll":
                 inscriptionButton.setText(getString(R.string.wantItButton_advert));
@@ -213,24 +217,6 @@ public class SingleAdvertFragment extends Fragment {
                 break;
             default:
         }
-    }
-
-    private String checkAdvertStatus(String userInscriptions) {
-        try {
-            JSONArray myJSONArray = new JSONArray(userInscriptions);
-            String advertId;
-            for (int i = 0; i < myJSONArray.length(); ++i) {
-                advertId = myJSONArray.getJSONObject(i).getString("advertId");
-                if (advertId.equals(idAdvert)) {
-                    return myJSONArray.getJSONObject(i).getString("status");
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-  
-        return "canEnroll";
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -299,6 +285,8 @@ public class SingleAdvertFragment extends Fragment {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
             menu.findItem(R.id.action_modifyAdvertState).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_reportAdvert).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -365,6 +353,27 @@ public class SingleAdvertFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     modifyStateAdvertById(idAdvert);
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else if (id == R.id.action_reportAdvert) {
+            final EditText editText = new EditText(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_report).setTitle(R.string.title_dialogReportAdvert);
+            builder.setView(editText);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    reportAdvert(editText.getText().toString());
                 }
             });
 
@@ -607,7 +616,7 @@ public class SingleAdvertFragment extends Fragment {
   
     private void updateInscriptions(String s, String state) {
         if(!s.equals("ERROR DELETING INSCRIPTION")) {
-            /*if (state == "pending") {
+            if (state == "pending") {
                 inscriptionButton.setText(getString(R.string.pendingButton_advert));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
@@ -615,80 +624,10 @@ public class SingleAdvertFragment extends Fragment {
                 inscriptionButton.setText(getString(R.string.wantItButton_advertOther));
                 inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            }*/
-            doServerCallForSaveInscriptions(personalUserId);
+            }
         } else {
             Toast.makeText(getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
         }
-    }
-  
-    @SuppressLint("StaticFieldLeak")
-    public void doServerCallForSaveInscriptions(String userId) {
-        final String idUser = userId;
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-                server.token = preferences.getString("user_token", "user_token");
-                return server.getInscriptionsByUserId(idUser);
-            }
-            
-            @Override
-            protected void onPostExecute(String s) {
-                if (!s.equals("ERROR IN GETTING INSCRIPTIONS")) {
-                    saveInscriptions(s);
-                }
-                else {
-                    Toast.makeText(getActivity(), getString(R.string.error_GettingInscriptions), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }.execute();
-    }
-
-    private void saveInscriptions(String inscriptions) {
-        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("inscriptions", inscriptions);
-        editor.apply();
-        final String advertStatus = checkAdvertStatus(inscriptions);
-        checkInscriptionStatus(advertStatus);
-
-        inscriptionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (advertStatus.equals("owner")) {
-                    Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.screen_area, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.manageInscriptions), Toast.LENGTH_SHORT).show();
-                } else if (advertStatus.equals("canEnroll")) {
-                    doServerCallForCreateInscription();
-                } else if (advertStatus.equals("pending")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                    builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            doServerCallForDeleteInscription();
-                        }
-                    });
-
-                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            }
-        });
-
     }
 
     private String generateRequestInscription() throws JSONException {
@@ -696,6 +635,69 @@ public class SingleAdvertFragment extends Fragment {
 
         oJSON.put("userId", personalUserId);
         oJSON.put("advertId", idAdvert);
+
+        return oJSON.toString(1);
+    }
+
+    private void updatePlacesAndStatus() {
+        try {
+            JSONArray myJSONArray = new JSONArray(registered);
+            String status;
+            String id;
+            advertStatus = "canEnroll";
+            int count = 0;
+            for (int i = 0; i < myJSONArray.length(); ++i) {
+                status = myJSONArray.getJSONObject(i).getString("status");
+                id = myJSONArray.getJSONObject(i).getString("userId");
+                if (status.equals("accepted")) {
+                    ++count;
+                }
+                if (personalUserId.equals(id)) {
+                    advertStatus = myJSONArray.getJSONObject(i).getString("status");
+                }
+            }
+            String emptyPlaces = Integer.parseInt(places) - count + " / " + places + "";
+            textViewPlaces.setText(emptyPlaces);
+            checkInscriptionStatus();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void reportAdvert(String reason) {
+        try {
+            final String json = generateReportData(reason);
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.report(json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    if (!s.equals("ERROR CREATING REPORT")) {
+                        System.out.println("SERVER RESPONSE: " + s);
+                        Toast.makeText(getActivity(), getString(R.string.advertReport_ok), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_reportAdvert), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateReportData(String reason) throws JSONException {
+        JSONObject oJSON = new JSONObject();
+
+        oJSON.put("description", reason);
+        oJSON.put("type", "advert");
+        oJSON.put("typeId", idAdvert);
 
         return oJSON.toString(1);
     }

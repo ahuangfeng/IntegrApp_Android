@@ -136,13 +136,13 @@
 
                 <TextView
                     android:id="@+id/textView3"
-                    android:layout_width="112dp"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:textColor="#0014cc"
-                    android:text="@string/places_points" />
+                    android:text="@string/available_places" />
 
                 <EditText
                     android:id="@+id/textView_places"
@@ -252,9 +252,10 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/background_signup_button"
             android:clickable="true"
+            android:visibility="invisible"
             android:focusable="true"
             android:padding="16dp"
-            android:text="@string/wantItButton_advertOther"
+            android:text="@string/wantItButton_advert"
             android:textAllCaps="false"
             android:textColor="@color/whiteLetter"
             android:textSize="18sp" />
