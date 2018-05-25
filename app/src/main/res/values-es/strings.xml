@@ -22,7 +22,7 @@
     <string name="hint_password">Contraseña</string>
     <string name="checkbox_text">Recuérdame</string>
     <string name="button_login_text">Iniciar sesión</string>
-    <string name="signUp_text">NO TIENES UNA CUENTA? REGÍSTRATE</string>
+    <string name="signUp_text">¿NO TIENES UNA CUENTA? REGÍSTRATE</string>
     <string name="success_login">Se ha iniciado sesión correctamente</string>
     <string name="login_error">Usuario o contraseña son incorrectos</string>
 
@@ -95,8 +95,8 @@
     <string name="error_username_chars">Caracteres válidos: alfanuméricos, _ y -</string>
     <string name="error_password_length">La contraseña debe contener entre 6 y 12 caracteres</string>
     <string name="error_cif_empty">El CIF debe contener 9 caracteres</string>
-    <string name="error_username_empty">El username es obligatorio</string>
-    <string name="error_password_empty">El password es obligatorio</string>
+    <string name="error_username_empty">El usuario es obligatorio</string>
+    <string name="error_password_empty">La contraseña es obligatoria</string>
     <string name="error_title_empty">El título es obligatorio</string>
     <string name="error_description_empty">La descripción es obligatoria</string>
     <string name="error_places_empty">El número de plazas es obligatorio</string>
@@ -123,7 +123,7 @@
     <string name="dialog_delete_advert">¿Seguro que quieres eliminar el anuncio?</string>
     <string name="dialog_modify_state_advert">¿Seguro que quieres cambiar el estado del anuncio?</string>
     <string name="tittle_dialogDeleteAdvert">El anuncio será eliminado</string>
-    <string name="tittle_dialogModifyStateAdvert">El estado del anuncio se modificará.</string>
+    <string name="tittle_dialogModifyStateAdvert">El estado del anuncio se modificará</string>
     <string name="wantItButton_editadvert">Guardar cambios</string>
     <string name="dialog_delete_inscription">¿Seguro que quieres cancelar tu solicitud?</string>
     <string name="tittle_dialogDeleteInscription">Tu inscripción será eliminada</string>
@@ -161,7 +161,7 @@
     <string name="error_PlacesMustBeGreaterThatZero">El número de plazas debe ser mayor a cero</string>
     <string name="toast_ChangesSaveCorrectly">Los cambios se guardaron exitosamente</string>
     <string name="error_SavingChangesAdvert">Error al guardar los cambios, verificar la fecha</string>
-    <string name="toast_AdvertStateChangedSuccessfully">El estado del anuncio se ha modificado con éxito.</string>
+    <string name="toast_AdvertStateChangedSuccessfully">El estado del anuncio se ha modificado con éxito</string>
     <string name="error_ChangingAdvertState">Error al modificar el estado del anuncio</string>
     <string name="toast_ChatCorrectly">¡Ve a la pestaña de usuarios para abrir un nuevo chat!</string>
     <string name="error_SettingInfoChats">Error al configurar la información de los chats</string>
