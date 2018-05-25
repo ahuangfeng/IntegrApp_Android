@@ -22,11 +22,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.Server;
 import com.integrapp.integrapp.Adapters.AdvertsAdapter;
 import com.integrapp.integrapp.Model.DataAdvert;
 import com.integrapp.integrapp.Model.UserDataAdvertiser;
+import com.integrapp.integrapp.R;
+import com.integrapp.integrapp.Server;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -186,7 +186,7 @@ public class AdvertsFragment extends Fragment {
             protected String doInBackground(Void... voids) {
                 SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
-                return advertsServer.getAllUserAdverts(getType);
+                return server.getAllUserAdverts(getType);
             }
 
             @Override

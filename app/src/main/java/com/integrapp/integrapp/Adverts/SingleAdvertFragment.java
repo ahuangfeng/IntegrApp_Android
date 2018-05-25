@@ -27,11 +27,11 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.MainActivity;
+import com.integrapp.integrapp.Model.DataAdvert;
+import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.Model.DataAdvert;
-import com.integrapp.integrapp.Model.UserDataAdvertiser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -625,6 +625,7 @@ public class SingleAdvertFragment extends Fragment {
                 inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
             }*/
         } else {
+            System.out.println("Error deleting inscription : " + s);
             Toast.makeText(getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
         }
     }
