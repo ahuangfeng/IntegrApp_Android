@@ -99,48 +99,64 @@ public class AdvertsFragment extends Fragment {
                 if (!s.equals("ERROR IN GETTING ALL ADVERTS")) {
 
                     ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s, getType);
-
-                    //Preparación del diseño
-                    LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
-                    ListView list;
-                    list = contentAdvert.findViewById(R.id.sampleListView);
-                    final ArrayList<DataAdvert> adverts = new ArrayList<>();
-                    DataAdvert dataAdvert;
-                    /*Imagen fija*/
-                    int image = R.drawable.project_preview_large_2;
-
-                    final ArrayList<UserDataAdvertiser> usersData = new ArrayList<>();
-                    UserDataAdvertiser userDataAdvertiser;
-
-                    for (int i=0; i< attributes.size(); ++i) {
-                        dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
-                                attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
-                                attributes.get(i).get(5), attributes.get(i).get(6), image, attributes.get(i).get(8));
-                        adverts.add(dataAdvert);
-
-                        //Los datos del usuario que ha publicado el anuncio
-                        userDataAdvertiser = new UserDataAdvertiser(attributes.get(i).get(7));
-                        usersData.add(userDataAdvertiser);
-                    }
-
-                    AdvertsAdapter myAdapter = new AdvertsAdapter(getView().getContext(), adverts);
-                    list.setAdapter(myAdapter);
-                    myAdapter.notifyDataSetChanged();
-
-
-                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            DataAdvert dataAdvert = adverts.get(position);
-                            UserDataAdvertiser userData = usersData.get(position);
-                            Fragment fragment = new SingleAdvertFragment(dataAdvert, userData);
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            FragmentTransaction ft = fragmentManager.beginTransaction();
-                            ft.replace(R.id.screen_area, fragment);
-                            ft.addToBackStack(null);
-                            ft.commit();
+                    if (attributes==null || attributes.isEmpty()) {
+                        switch (getType) {
+                            case "lookFor":
+                                Toast.makeText(getActivity(), getString(R.string.noLookForAdverts), Toast.LENGTH_SHORT).show();
+                                break;
+                            case "offer":
+                                Toast.makeText(getActivity(), getString(R.string.noOfferAdverts), Toast.LENGTH_SHORT).show();
+                                break;
+                            default:
+                                Toast.makeText(getActivity(), getString(R.string.noAdverts), Toast.LENGTH_SHORT).show();
+                                break;
                         }
-                    });
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.popBackStackImmediate();
+                    } else {
+
+                        //Preparación del diseño
+                        LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
+                        ListView list;
+                        list = contentAdvert.findViewById(R.id.sampleListView);
+                        final ArrayList<DataAdvert> adverts = new ArrayList<>();
+                        DataAdvert dataAdvert;
+                        /*Imagen fija*/
+                        int image = R.drawable.project_preview_large_2;
+
+                        final ArrayList<UserDataAdvertiser> usersData = new ArrayList<>();
+                        UserDataAdvertiser userDataAdvertiser;
+
+                        for (int i = 0; i < attributes.size(); ++i) {
+                            dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
+                                    attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
+                                    attributes.get(i).get(5), attributes.get(i).get(6), image, attributes.get(i).get(8));
+                            adverts.add(dataAdvert);
+
+                            //Los datos del usuario que ha publicado el anuncio
+                            userDataAdvertiser = new UserDataAdvertiser(attributes.get(i).get(7));
+                            usersData.add(userDataAdvertiser);
+                        }
+
+                        AdvertsAdapter myAdapter = new AdvertsAdapter(view.getContext(), adverts);
+                        list.setAdapter(myAdapter);
+                        myAdapter.notifyDataSetChanged();
+
+
+                        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                DataAdvert dataAdvert = adverts.get(position);
+                                UserDataAdvertiser userData = usersData.get(position);
+                                Fragment fragment = new SingleAdvertFragment(dataAdvert, userData);
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction ft = fragmentManager.beginTransaction();
+                                ft.replace(R.id.screen_area, fragment);
+                                ft.addToBackStack(null);
+                                ft.commit();
+                            }
+                        });
+                    }
                 }
                 else {
                     Toast.makeText(getActivity(), getString(R.string.error_LoadingAds), Toast.LENGTH_SHORT).show();
@@ -199,45 +215,51 @@ public class AdvertsFragment extends Fragment {
 
     private void setViewAdvertsOfUser(String s, UserDataAdvertiser uda, String id) {
         ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s, id);
-        //Preparación del diseño
-        LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
-        ListView list;
-        list = contentAdvert.findViewById(R.id.sampleListView);
-        final ArrayList<DataAdvert> adverts = new ArrayList<>();
-        DataAdvert dataAdvert;
-        /*Imagen fija*/
-        int image = R.drawable.project_preview_large_2;
+        if (attributes==null || attributes.isEmpty()) {
+            Toast.makeText(getActivity(), getString(R.string.noAdvertsOfUser), Toast.LENGTH_SHORT).show();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStackImmediate();
+        } else {
+            //Preparación del diseño
+            LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
+            ListView list;
+            list = contentAdvert.findViewById(R.id.sampleListView);
+            final ArrayList<DataAdvert> adverts = new ArrayList<>();
+            DataAdvert dataAdvert;
+            /*Imagen fija*/
+            int image = R.drawable.project_preview_large_2;
 
-        final ArrayList<UserDataAdvertiser> usersData = new ArrayList<>();
+            final ArrayList<UserDataAdvertiser> usersData = new ArrayList<>();
 
-        for (int i=0; i< attributes.size(); ++i) {
-            dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
-                    attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
-                    attributes.get(i).get(5), attributes.get(i).get(6), image, attributes.get(i).get(7));
-            adverts.add(dataAdvert);
+            for (int i = 0; i < attributes.size(); ++i) {
+                dataAdvert = new DataAdvert(attributes.get(i).get(0), attributes.get(i).get(1),
+                        attributes.get(i).get(2), attributes.get(i).get(3), attributes.get(i).get(4),
+                        attributes.get(i).get(5), attributes.get(i).get(6), image, attributes.get(i).get(7));
+                adverts.add(dataAdvert);
 
-            //Los datos del usuario que ha publicado el anuncio
-            usersData.add(uda);
-        }
-
-        AdvertsAdapter myAdapter = new AdvertsAdapter(view.getContext(), adverts);
-        list.setAdapter(myAdapter);
-        myAdapter.notifyDataSetChanged();
-
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DataAdvert dataAdvert = adverts.get(position);
-                UserDataAdvertiser userData = usersData.get(position);
-                Fragment fragment = new SingleAdvertFragment(dataAdvert, userData);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.screen_area, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
+                //Los datos del usuario que ha publicado el anuncio
+                usersData.add(uda);
             }
-        });
+
+            AdvertsAdapter myAdapter = new AdvertsAdapter(view.getContext(), adverts);
+            list.setAdapter(myAdapter);
+            myAdapter.notifyDataSetChanged();
+
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    DataAdvert dataAdvert = adverts.get(position);
+                    UserDataAdvertiser userData = usersData.get(position);
+                    Fragment fragment = new SingleAdvertFragment(dataAdvert, userData);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+        }
     }
 
     private ArrayList<ArrayList<String>> getAttributesAllAdverts(String stringJson, String getType) {

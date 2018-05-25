@@ -209,6 +209,12 @@
     <string name="userTypeVoluntary_Profile">Voluntari</string>
     <string name="userTypeNewComer_Profile">Nouvingut</string>
     <string name="userTypeAssociation_Profile">Associació</string>
+    <string name="noUserInscriptions">No has realitzat cap inscripció</string>
+    <string name="noAdvertInscriptions">El teu anunci no té inscripcions</string>
+    <string name="noAdvertsOfUser">L\'usuari no té anuncis</string>
+    <string name="noLookForAdverts">No hi ha anuncis del tipus Cerca</string>
+    <string name="noOfferAdverts">No hi ha anuncis del tipus Oferta</string>
+    <string name="noAdverts">No hi ha anuncis publicats</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

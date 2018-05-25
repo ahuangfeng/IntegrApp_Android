@@ -209,6 +209,12 @@
     <string name="userTypeVoluntary_Profile">Voluntario</string>
     <string name="userTypeNewComer_Profile">Recién llegado</string>
     <string name="userTypeAssociation_Profile">Asociación</string>
+    <string name="noUserInscriptions">No has realizado ninguna inscripcion</string>
+    <string name="noAdvertInscriptions">Tu anuncio no tiene inscripciones</string>
+    <string name="noAdvertsOfUser">El usuario no tiene anuncios</string>
+    <string name="noLookForAdverts">No hay anuncios del tipo Búsqueda</string>
+    <string name="noOfferAdverts">No hay anuncios del tipo Oferta</string>
+    <string name="noAdverts">No hay anuncios publicados</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

@@ -208,6 +208,12 @@
     <string name="userTypeVoluntary_Profile">Voluntary</string>
     <string name="userTypeNewComer_Profile">Newcomer</string>
     <string name="userTypeAssociation_Profile">Association</string>
+    <string name="noUserInscriptions">You don\'t have any inscription</string>
+    <string name="noAdvertInscriptions">There aren\'t inscriptions for your advert</string>
+    <string name="noAdvertsOfUser">The user doesn\'t have adverts</string>
+    <string name="noLookForAdverts">No \'LookFor\' adverts posted</string>
+    <string name="noOfferAdverts">No \'Offer\' adverts posted</string>
+    <string name="noAdverts">No adverts posted</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
