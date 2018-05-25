@@ -280,8 +280,10 @@ public class Server {
     public String deleteInscriptionAdvert(String idInscription) {
         HttpDelete delete = new HttpDelete(API_URI+"/inscription/"+idInscription);
         try {
+            System.out.println("IDINSCRIPTION " + idInscription + " .... + ");
             delete.setHeader("x-access-token", token);
             BasicResponseHandler handler = new BasicResponseHandler();
+            DefaultHttpClient client = new DefaultHttpClient();
             return client.execute(delete, handler);
 
         } catch (IOException e) {

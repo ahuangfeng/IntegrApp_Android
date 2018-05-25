@@ -32,7 +32,9 @@ public class DataAdvert {
             this.state = dataAdvert.getString("state");
             this.id = dataAdvert.getString("_id");
             this.registered = dataAdvert.getString("registered");
-            this.userDataAdvertiser = new UserDataAdvertiser(dataAdvert.getJSONObject("user"));
+            if(dataAdvert.has("user")){
+                this.userDataAdvertiser = new UserDataAdvertiser(dataAdvert.getJSONObject("user"));
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

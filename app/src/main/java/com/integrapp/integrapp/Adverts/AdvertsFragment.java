@@ -152,7 +152,7 @@ public class AdvertsFragment extends Fragment {
                             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                                 @Override
                                 public void onRefresh() {
-                                    getAllUserAdverts(getType);
+                                    getAllAdverts(getType);
                                     mSwipeRefreshLayout.setRefreshing(false);
                                 }
                             });
