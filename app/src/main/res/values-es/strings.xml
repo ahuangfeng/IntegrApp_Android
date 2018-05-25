@@ -175,10 +175,6 @@
     <string name="titleTab_Languages">IDIOMAS</string>
     <string name="titleTab_Entertainment">ENTRETENIMIENTO</string>
     <string name="titleTab_Various">VARIOS</string>
-    <string name="documentationSpinner">documentación</string>
-    <string name="languageSpinner">idioma</string>
-    <string name="entertainmentSpinner">entretenimiento</string>
-    <string name="variousSpinner">varios</string>
     <string name="toast_PostingForum">Publicando tu nuevo foro…</string>
     <string name="toast_FillNewForumFields">Completa el título y la descripción correctamente</string>
     <string name="toast_ForumCreatedSuccessfully">Nuevo foro creado con éxito</string>
@@ -224,5 +220,12 @@
         <item>Ofrecer</item>
     </string-array>
 
+    <!-- Array for the spinner of forum types-->
+    <string-array name="forum_types">
+        <item>documentación</item>
+        <item>idioma</item>
+        <item>entretenimiento</item>
+        <item>varios</item>
+    </string-array>
 
 </resources>

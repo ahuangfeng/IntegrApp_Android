@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,9 +24,6 @@ import com.integrapp.integrapp.Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class NewForumFragment extends Fragment {
 
     private Server server;
@@ -34,6 +32,7 @@ public class NewForumFragment extends Fragment {
     private EditText content;
     private Button createButton;
     private FragmentActivity activity;
+    private String itemSelectedSpinner;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -45,24 +44,29 @@ public class NewForumFragment extends Fragment {
         createButton = view.findViewById(R.id.create_forum);
         activity = this.getActivity();
 
-        // Spinner Drop down elements
-        List<String> types = new ArrayList<>();
-        types.add(getString(R.string.documentationSpinner));
-        types.add(getString(R.string.languageSpinner));
-        types.add(getString(R.string.entertainmentSpinner));
-        types.add(getString(R.string.variousSpinner));
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, types);
+        spinner = view.findViewById(R.id.spinner_type);
+        ArrayAdapter<CharSequence> dataAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.forum_types, R.layout.my_spinner_advert);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                passFromSpinner(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String title_forum = title.getText().toString();
-                String type_forum = spinner.getSelectedItem().toString();
+                String type_forum = itemSelectedSpinner;
                 String content_forum = content.getText().toString();
 
                 if(fieldsOk(title_forum, content_forum)) {
@@ -73,6 +77,24 @@ public class NewForumFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void passFromSpinner(int position) {
+        switch (position) {
+            case 0:
+                itemSelectedSpinner = "documentation";
+                break;
+            case 1:
+                itemSelectedSpinner = "language";
+                break;
+            case 2:
+                itemSelectedSpinner = "entertainment";
+                break;
+            case 3:
+                itemSelectedSpinner = "various";
+                break;
+            default:
+        }
     }
 
     private boolean fieldsOk(String title, String content_forum) {
@@ -127,5 +149,4 @@ public class NewForumFragment extends Fragment {
             Toast.makeText(getActivity(), getString(R.string.error_CreatingForum), Toast.LENGTH_SHORT).show();
         }
     }
-
 }

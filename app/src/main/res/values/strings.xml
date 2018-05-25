@@ -133,7 +133,7 @@
     <string name="new_pass">New password</string>
     <string name="confirm_pass">Confirm new password</string>
     <string name="changePass_button">Change</string>
-    
+
     <!-- Strings of Inscriptions Fragment -->
     <string name="acceptInscription">Accept inscription</string>
     <string name="refuseInscription">Refuse inscription</string>
@@ -174,10 +174,6 @@
     <string name="titleTab_Languages">LANGUAGES</string>
     <string name="titleTab_Entertainment">ENTERTAINMENT</string>
     <string name="titleTab_Various">VARIOUS</string>
-    <string name="documentationSpinner">documentation</string>
-    <string name="languageSpinner">language</string>
-    <string name="entertainmentSpinner">entertainment</string>
-    <string name="variousSpinner">various</string>
     <string name="toast_PostingForum">Posting your new forum…</string>
     <string name="toast_FillNewForumFields">Fill in the title and the description correctly</string>
     <string name="toast_ForumCreatedSuccessfully">New forum created successfully</string>
@@ -216,12 +212,19 @@
         <item>NewComer</item>
         <item>Association</item>
     </string-array>
-  
-    <!-- Array for the spinner of advert types-->
-      <string-array name="advert_types">
-          <item>LookFor</item>
-          <item>Offer</item>
-      </string-array>
 
+    <!-- Array for the spinner of advert types-->
+    <string-array name="advert_types">
+        <item>LookFor</item>
+        <item>Offer</item>
+    </string-array>
+
+    <!-- Array for the spinner of forum types-->
+    <string-array name="forum_types">
+        <item>documentation</item>
+        <item>language</item>
+        <item>entertainment</item>
+        <item>various</item>
+    </string-array>
 
 </resources>

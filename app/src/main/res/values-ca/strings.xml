@@ -175,10 +175,6 @@
     <string name="titleTab_Languages">IDIOMES</string>
     <string name="titleTab_Entertainment">ENTRETENIMENT</string>
     <string name="titleTab_Various">ALTRES</string>
-    <string name="documentationSpinner">documentació</string>
-    <string name="languageSpinner">idioma</string>
-    <string name="entertainmentSpinner">entreteniment</string>
-    <string name="variousSpinner">altres</string>
     <string name="toast_PostingForum">Publicant el teu nou fòrum…</string>
     <string name="toast_FillNewForumFields">Completa el títol i la descripció correctament</string>
     <string name="toast_ForumCreatedSuccessfully">Nou fòrum creat amb èxit</string>
@@ -222,6 +218,14 @@
     <string-array name="advert_types">
         <item>Cercar</item>
         <item>Oferir</item>
+    </string-array>
+
+    <!-- Array for the spinner of forum types-->
+    <string-array name="forum_types">
+        <item>documentació</item>
+        <item>idioma</item>
+        <item>entreteniment</item>
+        <item>altres</item>
     </string-array>
 
 </resources>
