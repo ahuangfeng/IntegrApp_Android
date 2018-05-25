@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +40,7 @@ public class AdvertsFragment extends Fragment {
     private AdvertsServer advertsServer;
     private String SearchType;
     private View view;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public AdvertsFragment() {
         SearchType = "all";
@@ -55,6 +57,8 @@ public class AdvertsFragment extends Fragment {
 
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.activity_advert, container, false);
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
         this.server = Server.getInstance();
         this.advertsServer = AdvertsServer.getInstance();
@@ -157,6 +161,14 @@ public class AdvertsFragment extends Fragment {
                                 ft.commit();
                             }
                         });
+
+                        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                getAllAdverts(getType);
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
                     }
                 }
                 else {
@@ -215,6 +227,7 @@ public class AdvertsFragment extends Fragment {
     }
 
     private void setViewAdvertsOfUser(String s, UserDataAdvertiser uda, String id) {
+        final String getId = id;
         ArrayList<ArrayList<String>> attributes = getAttributesAllAdverts(s, id);
         if (attributes==null || attributes.isEmpty()) {
             Toast.makeText(getActivity(), getString(R.string.noAdvertsOfUser), Toast.LENGTH_SHORT).show();
@@ -259,6 +272,14 @@ public class AdvertsFragment extends Fragment {
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
+                }
+            });
+
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    getAllUserAdverts(getId);
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
         }
