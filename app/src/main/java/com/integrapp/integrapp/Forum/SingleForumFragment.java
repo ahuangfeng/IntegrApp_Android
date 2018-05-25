@@ -15,9 +15,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -73,6 +77,7 @@ public class SingleForumFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.single_forum_fragment, container, false);
         server = Server.getInstance();
 
@@ -453,6 +458,85 @@ public class SingleForumFragment extends Fragment {
         ft.replace(R.id.screen_area, fragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.forum, menu);
+        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_reportForum).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_reportForum) {
+            final EditText editText = new EditText(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_report).setTitle(R.string.title_dialogReportForum);
+            builder.setView(editText);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    reportForum(editText.getText().toString());
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void reportForum(String reason) {
+        try {
+            final String json = generateReportData(reason);
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    server.token = preferences.getString("user_token", "user_token");
+                    return server.report(json);
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    if (!s.equals("ERROR CREATING REPORT")) {
+                        System.out.println("SERVER RESPONSE: " + s);
+                        Toast.makeText(getActivity(), getString(R.string.forumReport_ok), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_reportForum), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateReportData(String reason) throws JSONException {
+        JSONObject oJSON = new JSONObject();
+
+        oJSON.put("description", reason);
+        oJSON.put("type", "forum");
+        oJSON.put("typeId", idForum);
+
+        return oJSON.toString(1);
     }
 
     @Override

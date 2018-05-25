@@ -13,6 +13,7 @@
     <string name="action_all">All ads</string>
     <string name="action_reportAdvert">Report advert</string>
     <string name="action_reportUser">Report user</string>
+    <string name="action_reportForum">Report forum</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -226,6 +227,9 @@
     <string name="noLookForAdverts">No \'LookFor\' adverts posted</string>
     <string name="noOfferAdverts">No \'Offer\' adverts posted</string>
     <string name="noAdverts">No adverts posted</string>
+    <string name="title_dialogReportForum">Reporting forum</string>
+    <string name="forumReport_ok">Forum reported correctly</string>
+    <string name="error_reportForum">Error reporting forum</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

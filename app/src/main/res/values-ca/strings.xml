@@ -14,6 +14,7 @@
     <string name="action_all">Tots els anuncis</string>
     <string name="action_reportAdvert">Denunciar anunci</string>
     <string name="action_reportUser">Denunciar usuari</string>
+    <string name="action_reportForum">Denunciar fòrum</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -227,6 +228,9 @@
     <string name="noLookForAdverts">No hi ha anuncis del tipus Cerca</string>
     <string name="noOfferAdverts">No hi ha anuncis del tipus Oferta</string>
     <string name="noAdverts">No hi ha anuncis publicats</string>
+    <string name="title_dialogReportForum">Denunciant fòrum</string>
+    <string name="forumReport_ok">Fòrum denunciat correctament</string>
+    <string name="error_reportForum">Error al denunciar el fòrum</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

@@ -14,6 +14,7 @@
     <string name="action_all">Todos los anuncios</string>
     <string name="action_reportAdvert">Denunciar anuncio</string>
     <string name="action_reportUser">Denunciar usuario</string>
+    <string name="action_reportForum">Denunciar foro</string>
 
 
     <!-- Strings of SplashIntegrApp activity-->
@@ -228,6 +229,10 @@
     <string name="noLookForAdverts">No hay anuncios del tipo Búsqueda</string>
     <string name="noOfferAdverts">No hay anuncios del tipo Oferta</string>
     <string name="noAdverts">No hay anuncios publicados</string>
+    <string name="title_dialogReportForum">Denunciando foro</string>
+    <string name="forumReport_ok">Foro denunciado correctamente</string>
+    <string name="error_reportForum">Error al denunciar el foro</string>
+
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
