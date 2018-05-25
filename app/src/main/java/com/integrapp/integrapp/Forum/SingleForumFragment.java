@@ -226,7 +226,7 @@ public class SingleForumFragment extends Fragment {
 
             LinearLayout commentItemVertical = new LinearLayout(getActivity());
             commentItemVertical.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(575, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 5);
             commentItemVertical.setLayoutParams(layoutParams2);
 
             TextView commentUsername = new TextView(getActivity());
@@ -267,7 +267,7 @@ public class SingleForumFragment extends Fragment {
             if (Objects.equals(userPref, comments.get(i).getUsername())) {
                 ImageButton imageButton = new ImageButton(getActivity());
                 imageButton.setBackground(getResources().getDrawable(R.drawable.baseline_remove_circle_black_18));
-                LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
                 layoutParams3.setMargins(0,20, 0, 0);
                 imageButton.setLayoutParams(layoutParams3);
 
