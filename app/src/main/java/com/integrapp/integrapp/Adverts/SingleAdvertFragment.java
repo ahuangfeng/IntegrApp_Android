@@ -28,11 +28,11 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.MainActivity;
+import com.integrapp.integrapp.Model.DataAdvert;
+import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.Model.DataAdvert;
-import com.integrapp.integrapp.Model.UserDataAdvertiser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -637,7 +637,6 @@ public class SingleAdvertFragment extends Fragment {
     private void updatePlaces() {
         try {
             JSONArray myJSONArray = new JSONArray(registered);
-            System.out.println("QUE PASA :" + myJSONArray);
             String status;
             int count = 0;
             for (int i = 0; i < myJSONArray.length(); ++i) {

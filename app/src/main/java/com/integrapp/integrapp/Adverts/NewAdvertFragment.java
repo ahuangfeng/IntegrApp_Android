@@ -194,6 +194,7 @@ public class NewAdvertFragment extends Fragment {
         }
         else {
             Toast.makeText(getActivity(), getString(R.string.newAdvert_error), Toast.LENGTH_SHORT).show();
+            System.out.println("Error creating advert :" + s);
         }
     }
 

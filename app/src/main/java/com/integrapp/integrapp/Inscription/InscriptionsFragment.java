@@ -15,10 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Adapters.InscriptionsAdapter;
 import com.integrapp.integrapp.Model.DataInscription;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.Adapters.InscriptionsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,7 +81,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                 if (idAdvert.equals("inscriptions")) {
                     return inscriptionServer.getAllUserInscriptions(userId);
                 } else {
-                    return inscriptionServer.getAllInscriptions(idAdvert);
+                    return server.getAllInscriptions(idAdvert);
                 }
             }
 

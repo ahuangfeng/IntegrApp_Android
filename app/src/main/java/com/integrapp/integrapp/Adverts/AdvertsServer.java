@@ -10,7 +10,7 @@ class AdvertsServer {
 
     private Server server;
     private String RAWAdverts = "";
-    private String RAWAllUsersAdverts = "";
+//    private String RAWAllUsersAdverts = "";
 //    private String RAWUser = "";
 
     static AdvertsServer getInstance() {
@@ -46,30 +46,30 @@ class AdvertsServer {
 //        }.execute();
 //    }
 
-    public String getAllUserAdverts(String getType){
-        if(this.RAWAllUsersAdverts.isEmpty()){
-            this.RAWAllUsersAdverts = this.server.getAllUserAdverts(getType);
-            return this.RAWAllUsersAdverts;
-        }else{
-            updateAllUserAdverts(getType);
-            return this.RAWAllUsersAdverts;
-        }
-    }
+//    public String getAllUserAdverts(String getType){
+//        if(this.RAWAllUsersAdverts.isEmpty()){
+//            this.RAWAllUsersAdverts = this.server.getAllUserAdverts(getType);
+//            return this.RAWAllUsersAdverts;
+//        }else{
+//            updateAllUserAdverts(getType);
+//            return this.RAWAllUsersAdverts;
+//        }
+//    }
 
-    @SuppressLint("StaticFieldLeak")
-    private void updateAllUserAdverts(String getType){
-        final String types = getType;
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                return server.getAllUserAdverts(types);
-            }
-
-            protected void onPostExecute(String s) {
-                RAWAllUsersAdverts = s;
-            }
-        }.execute();
-    }
+//    @SuppressLint("StaticFieldLeak")
+//    private void updateAllUserAdverts(String getType){
+//        final String types = getType;
+//        new AsyncTask<Void, Void, String>() {
+//            @Override
+//            protected String doInBackground(Void... voids) {
+//                return server.getAllUserAdverts(types);
+//            }
+//
+//            protected void onPostExecute(String s) {
+//                RAWAllUsersAdverts = s;
+//            }
+//        }.execute();
+//    }
 
     public String getAllAdverts(String getType){
         if(this.RAWAdverts.isEmpty()){
