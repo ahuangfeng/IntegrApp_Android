@@ -291,9 +291,25 @@ public class ProfileFragment extends Fragment {
     private void setAttributes(String name, String username, String type, String email, String phone) {
         nameTextView.setText(name);
         usernameTextView.setText(username);
-        typeUserTextView.setText(type);
-        emailTextView.setText(email);
-        phoneTextView.setText(phone);
+        if (Objects.equals(type, "voluntary")) {
+            typeUserTextView.setText(R.string.userTypeVoluntary_Profile);
+        }else if (Objects.equals(type, "newComer")) {
+            typeUserTextView.setText(R.string.userTypeNewComer_Profile);
+        }else {
+            typeUserTextView.setText(R.string.userTypeAssociation_Profile);
+        }
+
+        if (Objects.equals(email, "No-email")) {
+            emailTextView.setText(getString(R.string.No_email));
+        }else {
+            emailTextView.setText(email);
+        }
+
+        if (Objects.equals(phone, "No phone")) {
+            phoneTextView.setText(getString(R.string.No_phone));
+        }else {
+            phoneTextView.setText(phone);
+        }
     }
 
     @Override

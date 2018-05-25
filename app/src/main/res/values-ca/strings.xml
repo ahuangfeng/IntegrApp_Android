@@ -145,7 +145,6 @@
     <string name="postCommentButton_forum">Publicar</string>
     <string name="dialog_delete_comment">Segur que vols eliminar el comentari?</string>
     <string name="tittle_dialogDeleteComment">El comentari serà eliminat</string>
-    //Hola
     <string name="error_GettingUserInfo">Error en obtenir la informació de l\'usuari</string>
     <string name="error_GettingAdvertInfo">Error en obtenir la informació de l\'anunci</string>
     <string name="error_DeletingInscription">Error en eliminar la inscripció</string>
@@ -204,8 +203,12 @@
     <string name="places_points">Places:</string>
     <string name="expected_date_points">Data prevista:</string>
     <string name="write_a_message">Escriu un missatge</string>
-
-    <!-- Server errors-->
+    <string name="my_forum">El meu fòrum</string>
+    <string name="content">Contingut</string>
+    <string name="describe_your_forum">Descriu el teu fòrum</string>
+    <string name="userTypeVoluntary_Profile">Voluntari</string>
+    <string name="userTypeNewComer_Profile">Nouvingut</string>
+    <string name="userTypeAssociation_Profile">Associació</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
@@ -222,10 +225,10 @@
 
     <!-- Array for the spinner of forum types-->
     <string-array name="forum_types">
-        <item>documentació</item>
-        <item>idioma</item>
-        <item>entreteniment</item>
-        <item>altres</item>
+        <item>Documentació</item>
+        <item>Idioma</item>
+        <item>Entreteniment</item>
+        <item>Altres</item>
     </string-array>
 
 </resources>
