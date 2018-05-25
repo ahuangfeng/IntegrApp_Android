@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,16 +89,26 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                         JSONArray allInscriptions = new JSONArray(s);
                         ArrayList<DataInscription> attributes = getAttributesAllInscriptions(allInscriptions);
 
-                        //Preparación del diseño
-                        ListView list;
-                        LinearLayout contentInscription = view.findViewById(R.id.includeContentInscription);
-                        list = contentInscription.findViewById(R.id.sampleListView);
+                        if (attributes==null || attributes.isEmpty()) {
+                            if (idAdvert.equals("inscriptions")) {
+                                Toast.makeText(getActivity(), getString(R.string.noUserInscriptions), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), getString(R.string.noAdvertInscriptions), Toast.LENGTH_SHORT).show();
+                            }
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.popBackStackImmediate();
+                        } else {
+                            //Preparación del diseño
+                            ListView list;
+                            LinearLayout contentInscription = view.findViewById(R.id.includeContentInscription);
+                            list = contentInscription.findViewById(R.id.sampleListView);
 
-                        InscriptionsAdapter myAdapter = new InscriptionsAdapter(view.getContext(), attributes, getActivity(), idAdvert);
-                        list.setAdapter(myAdapter);
-                        myAdapter.notifyDataSetChanged();
+                            InscriptionsAdapter myAdapter = new InscriptionsAdapter(view.getContext(), attributes, getActivity(), idAdvert);
+                            list.setAdapter(myAdapter);
+                            myAdapter.notifyDataSetChanged();
 
-                        list.setClickable(false);
+                            list.setClickable(false);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

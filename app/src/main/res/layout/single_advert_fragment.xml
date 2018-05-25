@@ -106,12 +106,15 @@
             <EditText
                 android:id="@+id/textView_description"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/description_advert"
-                android:inputType="text"
+                android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"
-                android:enabled="false" />
+                android:enabled="false"
+                android:hint="@string/description_advert"
+                android:singleLine="false"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                />
 
             <View
                 android:id="@+id/viewDescription"
@@ -142,7 +145,8 @@
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:textColor="#0014cc"
-                    android:text="@string/available_places" />
+                    android:text="@string/available_places"
+                    tools:ignore="NestedWeights" />
 
                 <EditText
                     android:id="@+id/textView_places"
@@ -187,10 +191,11 @@
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:textColor="#0014cc"
-                    android:text="@string/expected_date_points" />
+                    android:text="@string/expected_date_points"
+                    tools:ignore="NestedWeights" />
 
                 <EditText
-                    android:id="@+id/textView_date"
+                    android:id="@+id/textView_datText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

@@ -170,7 +170,7 @@ public class SingleAdvertFragment extends Fragment {
         textViewTitle = view.findViewById(R.id.textView_title);
         textViewDescription = view.findViewById(R.id.textView_description);
         textViewPlaces = view.findViewById(R.id.textView_places);
-        textViewDate = view.findViewById(R.id.textView_date);
+        textViewDate = view.findViewById(R.id.textView_datText);
 
         textViewUsername.setText(userData.getUsername());
         setEditableTexts();
@@ -450,7 +450,7 @@ public class SingleAdvertFragment extends Fragment {
     private void saveChanges(final String idAdvert) {
         final String json = generateRequestModifyAdvert();
         Boolean errors = false;
-        if (json.equals("empty")) {
+        if (json==null || json.equals("empty")) {
             errors = true;
             Toast.makeText(getContext(), getString(R.string.error_EmptyValuesAdded), Toast.LENGTH_SHORT).show();
         }
