@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ServiceCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -104,6 +105,7 @@ public class SingleAdvertFragment extends Fragment {
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
 
+        updatePlaces();
         if (userData.getUsername().equals(usernamePreferences)) {
             type_advert = "owner";
             inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
@@ -111,7 +113,7 @@ public class SingleAdvertFragment extends Fragment {
         }
         else {
             type_advert = "other";
-            updatePlacesAndStatus();
+            updateStatus();
         }
 
         inscriptionButton.setOnClickListener(new View.OnClickListener() {
@@ -568,7 +570,12 @@ public class SingleAdvertFragment extends Fragment {
 
                 @Override
                 protected void onPostExecute(String s) {
-                    updateInscriptions(s, "pending");
+                    if(!s.equals("ERROR CREATING INSCRIPTION")) {
+                        advertStatus = "pending";
+                        checkInscriptionStatus();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }.execute();
 
@@ -584,13 +591,18 @@ public class SingleAdvertFragment extends Fragment {
                 protected String doInBackground(Void... voids) {
                     SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
-                    String idInscription = getIdInscriptionToDelete(preferences.getString("inscriptions", "[]"));
+                    String idInscription = getIdInscriptionToDelete(registered);
                     return server.deleteInscriptionAdvert(idInscription);
                 }
 
                 @Override
                 protected void onPostExecute(String s) {
-                    updateInscriptions(s, "canEnroll");
+                    if(!s.equals("ERROR DELETING INSCRIPTION")) {
+                        advertStatus = "canEnroll";
+                        checkInscriptionStatus();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }.execute();
     }
@@ -598,11 +610,11 @@ public class SingleAdvertFragment extends Fragment {
     private String getIdInscriptionToDelete(String s) {
         try {
             JSONArray myJSONArray = new JSONArray(s);
-            String advertId;
+            String id;
             for (int i = 0; i < myJSONArray.length(); ++i) {
-                advertId = myJSONArray.getJSONObject(i).getString("advertId");
-                if (advertId.equals(idAdvert)) {
-                    return myJSONArray.getJSONObject(i).getString("_id");
+                id = myJSONArray.getJSONObject(i).getString("userId");
+                if (personalUserId.equals(id)) {
+                    return myJSONArray.getJSONObject(i).getString("id");
                 }
             }
 
@@ -611,22 +623,6 @@ public class SingleAdvertFragment extends Fragment {
         }
 
         return "error";
-    }
-  
-    private void updateInscriptions(String s, String state) {
-        if(!s.equals("ERROR DELETING INSCRIPTION")) {
-            /*if (state == "pending") {
-                inscriptionButton.setText(getString(R.string.pendingButton_advert));
-                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_pending_button));
-                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
-            } else {
-                inscriptionButton.setText(getString(R.string.wantItButton_advertOther));
-                inscriptionButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.background_signup_button));
-                inscriptionButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            }*/
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
-        }
     }
 
     private String generateRequestInscription() throws JSONException {
@@ -638,25 +634,39 @@ public class SingleAdvertFragment extends Fragment {
         return oJSON.toString(1);
     }
 
-    private void updatePlacesAndStatus() {
+    private void updatePlaces() {
         try {
             JSONArray myJSONArray = new JSONArray(registered);
+            System.out.println("QUE PASA :" + myJSONArray);
             String status;
-            String id;
-            advertStatus = "canEnroll";
             int count = 0;
             for (int i = 0; i < myJSONArray.length(); ++i) {
                 status = myJSONArray.getJSONObject(i).getString("status");
-                id = myJSONArray.getJSONObject(i).getString("userId");
                 if (status.equals("accepted")) {
                     ++count;
-                }
-                if (personalUserId.equals(id)) {
-                    advertStatus = myJSONArray.getJSONObject(i).getString("status");
                 }
             }
             String emptyPlaces = Integer.parseInt(places) - count + " / " + places + "";
             textViewPlaces.setText(emptyPlaces);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateStatus() {
+        System.out.printf("QUE PASA2: " + registered);
+        try {
+            JSONArray myJSONArray = new JSONArray(registered);
+            System.out.println("QUE PASA3: " + myJSONArray);
+            String id;
+            advertStatus = "canEnroll";
+            for (int i = 0; i < myJSONArray.length(); ++i) {
+                id = myJSONArray.getJSONObject(i).getString("userId");
+                if (personalUserId.equals(id)) {
+                    advertStatus = myJSONArray.getJSONObject(i).getString("status");
+                    break;
+                }
+            }
             checkInscriptionStatus();
         } catch (JSONException e) {
             e.printStackTrace();
