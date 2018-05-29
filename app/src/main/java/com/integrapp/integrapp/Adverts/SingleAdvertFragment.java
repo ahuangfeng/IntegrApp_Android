@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ServiceCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -28,7 +27,7 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.MainActivity;
-import com.integrapp.integrapp.Model.DataAdvert;
+import com.integrapp.integrapp.Model.Advert;
 import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
@@ -75,18 +74,18 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public SingleAdvertFragment(DataAdvert dataAdvert) {
-        title = dataAdvert.getTitle();
-        type = dataAdvert.getType();
-        state = dataAdvert.getState();
-        places = dataAdvert.getPlaces();
-        date = dataAdvert.getDate();
-        description = dataAdvert.getDescription();
-        userId = dataAdvert.getUserDataAdvertiser().getIdUser();
-        image = dataAdvert.getImage();
-        registered = dataAdvert.getRegistered();
-        idAdvert = dataAdvert.getId();
-        this.userData = dataAdvert.getUserDataAdvertiser();
+    public SingleAdvertFragment(Advert advert) {
+        title = advert.getTitle();
+        type = advert.getType();
+        state = advert.getState();
+        places = advert.getPlaces();
+        date = advert.getDate();
+        description = advert.getDescription();
+        userId = advert.getUserDataAdvertiser().getIdUser();
+        image = advert.getImage();
+        registered = advert.getRegistered();
+        idAdvert = advert.getId();
+        this.userData = advert.getUserDataAdvertiser();
     }
 
     @SuppressLint("StaticFieldLeak")

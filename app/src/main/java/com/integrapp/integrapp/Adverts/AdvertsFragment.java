@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.Adapters.AdvertsAdapter;
-import com.integrapp.integrapp.Model.DataAdvert;
+import com.integrapp.integrapp.Model.Advert;
 import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
@@ -122,13 +122,13 @@ public class AdvertsFragment extends Fragment {
                             LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
                             ListView list;
                             list = contentAdvert.findViewById(R.id.sampleListView);
-                            final ArrayList<DataAdvert> adverts = new ArrayList<>();
-                            DataAdvert dataAdvert;
+                            final ArrayList<Advert> adverts = new ArrayList<>();
+                            Advert advert;
 
                             for (int i = 0; i < myJsonArray.length(); ++i) {
                                 JSONObject myJsonObject = myJsonArray.getJSONObject(i);
-                                dataAdvert = new DataAdvert(myJsonObject);
-                                adverts.add(dataAdvert);
+                                advert = new Advert(myJsonObject);
+                                adverts.add(advert);
                             }
 
                             AdvertsAdapter myAdapter = new AdvertsAdapter(view.getContext(), adverts);
@@ -139,8 +139,8 @@ public class AdvertsFragment extends Fragment {
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    DataAdvert dataAdvert = adverts.get(position);
-                                    Fragment fragment = new SingleAdvertFragment(dataAdvert);
+                                    Advert advert = adverts.get(position);
+                                    Fragment fragment = new SingleAdvertFragment(advert);
                                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                     FragmentTransaction ft = fragmentManager.beginTransaction();
                                     ft.replace(R.id.screen_area, fragment);
@@ -229,13 +229,13 @@ public class AdvertsFragment extends Fragment {
                 LinearLayout contentAdvert = view.findViewById(R.id.includeContentAdvert);
                 ListView list;
                 list = contentAdvert.findViewById(R.id.sampleListView);
-                final ArrayList<DataAdvert> adverts = new ArrayList<>();
-                DataAdvert dataAdvert;
+                final ArrayList<Advert> adverts = new ArrayList<>();
+                Advert advert;
 
                 for (int i = 0; i < myJsonArray.length(); ++i) {
                     JSONObject myJsonObject = myJsonArray.getJSONObject(i);
-                    dataAdvert = new DataAdvert(myJsonObject);
-                    adverts.add(dataAdvert);
+                    advert = new Advert(myJsonObject);
+                    adverts.add(advert);
                 }
 
                 AdvertsAdapter myAdapter = new AdvertsAdapter(view.getContext(), adverts);
@@ -246,9 +246,9 @@ public class AdvertsFragment extends Fragment {
                 list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        DataAdvert dataAdvert = adverts.get(position);
-                        if (dataAdvert.getUserDataAdvertiser() == null) dataAdvert.setUserDataAdvertiser(uda);
-                        Fragment fragment = new SingleAdvertFragment(dataAdvert);
+                        Advert advert = adverts.get(position);
+                        if (advert.getUserDataAdvertiser() == null) advert.setUserDataAdvertiser(uda);
+                        Fragment fragment = new SingleAdvertFragment(advert);
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fragmentManager.beginTransaction();
                         ft.replace(R.id.screen_area, fragment);

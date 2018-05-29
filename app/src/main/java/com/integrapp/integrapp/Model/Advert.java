@@ -5,7 +5,7 @@ import com.integrapp.integrapp.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class DataAdvert {
+public class Advert {
     private String date;
     private String title;
     private String description;
@@ -17,7 +17,7 @@ public class DataAdvert {
     private String registered;
     private UserDataAdvertiser userDataAdvertiser;
 
-    public DataAdvert(JSONObject dataAdvert) {
+    public Advert(JSONObject dataAdvert) {
         decryptJson(dataAdvert);
         this.image = R.drawable.project_preview_large_2;
     }

@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
-import com.integrapp.integrapp.Model.DataAdvert;
+import com.integrapp.integrapp.Model.Advert;
 
 import java.util.List;
 
 public class AdvertsAdapter extends BaseAdapter {
 
     private Context context;
-    private List<DataAdvert> objectList;
+    private List<Advert> objectList;
 
-    public AdvertsAdapter(Context context, List<DataAdvert> objectList) {
+    public AdvertsAdapter(Context context, List<Advert> objectList) {
         this.context = context;
         this.objectList = objectList;
     }

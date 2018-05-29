@@ -29,8 +29,7 @@ import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 import com.integrapp.integrapp.Inscription.SingleInscriptionFragment;
-import com.integrapp.integrapp.Model.DataAdvert;
-import com.integrapp.integrapp.Model.UserDataAdvertiser;
+import com.integrapp.integrapp.Model.Advert;
 
 import java.util.List;
 
@@ -216,8 +215,8 @@ public class InscriptionsAdapter extends BaseAdapter {
     private void sendInfoAdvert(String s, String idAdvert) {
         try {
             JSONObject jsonObject = new JSONObject(s);
-            DataAdvert dataAdvert = new DataAdvert(jsonObject);
-            Fragment fragment = new SingleAdvertFragment(dataAdvert);
+            Advert advert = new Advert(jsonObject);
+            Fragment fragment = new SingleAdvertFragment(advert);
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.screen_area, fragment);
