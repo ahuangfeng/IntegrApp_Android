@@ -89,6 +89,8 @@ public class ProfileFragment extends Fragment {
         likesTextView = view.findViewById(R.id.likesTextView);
         dislikesTextView = view.findViewById(R.id.dislikesTextView);
         adsTextView = view.findViewById(R.id.adsTextView);
+        TextView profileAds = view.findViewById(R.id.profile_adds);
+        profileAds.setText(getString(R.string.adds_profile));
 
         if (Objects.equals(typeProfile, "advertiserUser")) {
             idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";

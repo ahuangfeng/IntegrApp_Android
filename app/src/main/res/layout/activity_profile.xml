@@ -258,7 +258,6 @@
                 android:id="@+id/profile_adds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:drawableStart="@drawable/baseline_description_black_24dp"
                 android:padding="8dp"
                 android:paddingStart="8dp"
