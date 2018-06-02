@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -55,9 +56,14 @@ public class SingleForumFragment extends Fragment {
     private List<DataComment> comments;
 
     private TextView commentTextView;
+    private TextView titleTextView;
+    private TextView descriptionTextView;
     private TextInputLayout textInputLayout;
     private Button commentButton;
+    private Button saveForumButton;
     private View viewFinishComments;
+    private View titleView;
+    private View descriptionView;
 
     public SingleForumFragment () {}
 
@@ -83,16 +89,22 @@ public class SingleForumFragment extends Fragment {
 
         Button profileButton = view.findViewById(R.id.profileButton);
         commentButton = view.findViewById(R.id.commentButton);
-
+        saveForumButton = view.findViewById(R.id.saveForumButton);
+        
         TextView username = view.findViewById(R.id.textViewUsernameForum);
-        TextView title = view.findViewById(R.id.textViewTitleForum);
+        titleTextView = view.findViewById(R.id.textViewTitleForum);
         TextView createdAt = view.findViewById(R.id.textViewCreatedAtForum);
-        TextView description = view.findViewById(R.id.textViewDescriptionForum);
+        descriptionTextView = view.findViewById(R.id.textViewDescriptionForum);
+        
+        titleView = view.findViewById(R.id.viewTitleForum);
+        descriptionView = view.findViewById(R.id.viewDescriptionForum);
+
+        textInputLayout = view.findViewById(R.id.textInputLayoutComment);
         
         username.setText(this.user.getUsername());
-        title.setText(this.title);
+        titleTextView.setText(this.title);
         createdAt.setText(this.createdAt);
-        description.setText(this.description);
+        descriptionTextView.setText(this.description);
 
         showComments(view);
 
@@ -107,7 +119,6 @@ public class SingleForumFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                textInputLayout = view.findViewById(R.id.textInputLayoutComment);
                 if (Objects.equals(commentButton.getText().toString(), getString(R.string.commentButton_forum))) {
                     textInputLayout.setVisibility(View.VISIBLE);
                     commentButton.setText(getString(R.string.postCommentButton_forum));
@@ -152,6 +163,9 @@ public class SingleForumFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN COMMENTING FORUM")) {
                     showNewComment(s);
+                    /*Cerrar teclado*/
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(commentTextView.getWindowToken(), 0);
                     Toast.makeText(getContext(), getString(R.string.toast_CommentCreatedCorrectly), Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -507,7 +521,116 @@ public class SingleForumFragment extends Fragment {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+        else if (id == R.id.action_editForum) {
+            setVisibility(true, View.VISIBLE);
+            commentButton.setVisibility(View.GONE);
+            textInputLayout.setVisibility(View.GONE);
+            commentButton.setText(getString(R.string.commentButton_forum));
+            
+            saveForumButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String newTitle = titleTextView.getText().toString();
+                    String newDescription = descriptionTextView.getText().toString();
+
+                    if (fieldsSaveForumOk(newTitle, newDescription)) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                        builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                saveChanges();
+                            }
+                        });
+
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setVisibility(false, View.INVISIBLE);
+                                commentButton.setVisibility(View.VISIBLE);
+                                undoChanges(title,description);
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                }
+            });
+        }
+        
         return super.onOptionsItemSelected(item);
+    }
+
+    private void undoChanges(String title, String description) {
+        titleTextView.setText(title);
+        descriptionTextView.setText(description);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void saveChanges() {
+        final String json = generateRequestModifyForum();
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.modifyForumById(idForum, json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR MODIFY FORUM")) {
+                    setVisibility(false, View.INVISIBLE);
+                    commentButton.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(), getString(R.string.toast_ChangesSaveCorrectly), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), R.string.error_ModifyingForum, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private String generateRequestModifyForum() {
+        String title = titleTextView.getText().toString();
+        String description = descriptionTextView.getText().toString();
+
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("title", title);
+            oJSON.put("description", description);
+
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean fieldsSaveForumOk(String newTitle, String newDescription) {
+        boolean valid = true;
+
+        if (newTitle.isEmpty()) {
+            titleTextView.setError(getString(R.string.error_changePassField_empty));
+            valid = false;
+        }
+
+        if (newDescription.isEmpty()) {
+            descriptionTextView.setError(getString(R.string.error_changePassField_empty));
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    private void setVisibility(boolean b, int visibility) {
+        titleTextView.setEnabled(b);
+        descriptionTextView.setEnabled(b);
+
+        titleView.setVisibility(visibility);
+        descriptionView.setVisibility(visibility);
+
+        saveForumButton.setVisibility(visibility);
     }
 
     @SuppressLint("StaticFieldLeak")

@@ -46,7 +46,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:textColor="@color/colorPrimaryDark"/>
                         <Button
                             android:id="@+id/profileButton"
                             style="@style/Base.TextAppearance.AppCompat.Body1"
@@ -73,12 +74,23 @@
                     android:orientation="vertical"
                     android:layout_marginTop="10dp">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/textViewTitleForum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:inputType="textMultiLine"
+                        android:enabled="false"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/title"
+                        android:textColor="@color/colorPrimaryDark"/>
+                    <View
+                        android:id="@+id/viewTitleForum"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorAccent"
+                        android:visibility="invisible" />
 
                     <TextView
                         android:id="@+id/textViewCreatedAtForum"
@@ -88,13 +100,24 @@
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"/>
 
-                    <TextView
+                    <EditText
                         android:id="@+id/textViewDescriptionForum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:layout_marginTop="5dp"
-                        android:text=""/>
+                        android:inputType="textMultiLine"
+                        android:enabled="false"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/description"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <View
+                        android:id="@+id/viewDescriptionForum"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorAccent"
+                        android:visibility="invisible" />
                 </LinearLayout>
 
                 <View
@@ -122,7 +145,7 @@
                     android:id="@+id/textInputLayoutComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/commentButton_forum"
+                    android:hint="@string/comment_noun"
                     android:layout_marginTop="20dp"
                     android:visibility="gone">
 
@@ -146,6 +169,21 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="@string/commentButton_forum"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteLetter"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"/>
+
+                <Button
+                    android:id="@+id/saveForumButton"
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_signup_button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:text="@string/saveProfile_button"
                     android:textAllCaps="false"
                     android:textColor="@color/whiteLetter"
                     android:layout_marginTop="10dp"

@@ -235,6 +235,8 @@
     <string name="state_opened">OBERT</string>
     <string name="lookfor_itemAdd">CERCA</string>
     <string name="offer_itemAdd">OFERTA</string>
+    <string name="error_ModifyingForum">Error en modificar el fòrum</string>
+    <string name="comment_noun">Comentari</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
