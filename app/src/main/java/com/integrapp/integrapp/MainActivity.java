@@ -1,8 +1,10 @@
 package com.integrapp.integrapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -27,15 +29,22 @@ import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Login.LogIn;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Server server;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        server = Server.getInstance();
         setContentView(R.layout.activity_main);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.screen_area, new AdvertsFragment());
@@ -119,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            fragment = new ProfileFragment();
+            getLikesDislikes();
         } else if (id == R.id.nav_adverts) {
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
@@ -155,5 +164,54 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getLikesDislikes() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                String username = preferences.getString("username", "username");
+                return server.getUserInfoByUsername(username);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO USER")) {
+                    saveLikesDislikes(s);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private void saveLikesDislikes(String s) {
+        try {
+            JSONObject myJsonObject = new JSONObject(s);
+            String rate = myJsonObject.getString("rate");
+            JSONObject myJsonRate = new JSONObject(rate);
+            int likes = myJsonRate.getInt("likes");
+            int dislikes = myJsonRate.getInt("dislikes");
+
+            SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("likes", likes);
+            editor.putInt("dislikes", dislikes);
+            editor.apply();
+
+            Fragment fragment = new ProfileFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.screen_area, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
