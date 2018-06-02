@@ -490,4 +490,22 @@ public class Server {
         }
         return "ERROR CREATING REPORT";
     }
+
+    public String modifyForumById(String id, String json) {
+        HttpPut modify = new HttpPut(API_URI+"/forum/"+id);
+        try {
+            StringEntity entity = new StringEntity(json);
+            modify.setEntity(entity);
+            modify.setHeader("x-access-token", token);
+            modify.setHeader("Content-type", "application/json");
+
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(modify, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "ERROR MODIFY FORUM";
+    }
 }

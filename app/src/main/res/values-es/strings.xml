@@ -236,6 +236,8 @@
     <string name="state_opened">ABIERTO</string>
     <string name="lookfor_itemAdd">BÚSQUEDA</string>
     <string name="offer_itemAdd">OFERTA</string>
+    <string name="error_ModifyingForum">Error al modificar el foro</string>
+    <string name="comment_noun">Comentario</string>
 
 
     <!-- Array for the spinner of user types-->
