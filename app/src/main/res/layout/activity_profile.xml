@@ -255,22 +255,21 @@
 
                 <LinearLayout
                     android:id="@+id/adsLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/background_recieved_msg"
-                    android:gravity="left"
                     android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/profile_adds"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/baseline_description_black_24dp"
-                        android:padding="8dp"
-                        android:paddingStart="8dp"
+                        android:drawablePadding="10dp"
+                        android:drawableStart="@drawable/ic_description_black_24dp"
                         android:textAlignment="textStart"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
                         tools:text="@string/adds_profile" />
 
@@ -278,6 +277,8 @@
                         android:id="@+id/adsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -297,6 +298,7 @@
                 android:textColor="@color/whiteLetter"
                 android:textSize="18sp"
                 android:visibility="invisible"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"/>
 
         </LinearLayout>

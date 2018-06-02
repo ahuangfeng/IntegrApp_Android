@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -143,6 +144,7 @@ public class ProfileFragment extends Fragment {
             idUser = preferences.getString("idUser", "idUser");
             String name = preferences.getString("name", "name");
             String type = preferences.getString("type", "type");
+            System.out.println("TIPOOOOO: " +type);
             String email = preferences.getString("email", "email");
             String phone = preferences.getString("phone", "phone");
             int likes = preferences.getInt("likes",0);
@@ -483,6 +485,9 @@ public class ProfileFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR MODIFY PROFILE")) {
                     Toast.makeText(getActivity(), getString(R.string.toast_PasswordChagedSuccessfully), Toast.LENGTH_SHORT).show();
+                    /*Cerrar teclado y dialogo*/
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(confirmNewPassEditText.getWindowToken(), 0);
                     dialog.cancel();
                 }
                 else {
@@ -611,7 +616,13 @@ public class ProfileFragment extends Fragment {
         editor.putString("name", name);
         editor.putString("email", email);
         editor.putString("phone", phone);
+
+        if (Objects.equals(type, getString(R.string.userTypeVoluntary_Profile))) type = "voluntary";
+        else if (Objects.equals(type, getString(R.string.userTypeAssociation_Profile))) type = "association";
+        else type = "newComer";
+
         editor.putString("type", type);
+
         editor.apply();
 
         setHeadersNavigation();
@@ -645,8 +656,13 @@ public class ProfileFragment extends Fragment {
             oJSON.put("username", username);
             oJSON.put("password", password);
             oJSON.put("name", name);
-            if (!email.isEmpty() && !Objects.equals(email, "No e-mail")) oJSON.put("email", email);
-            if (!phone.isEmpty() && !Objects.equals(phone, "No phone")) oJSON.put("phone", phone);
+            if (!email.isEmpty() && !Objects.equals(email, getString(R.string.No_email))) oJSON.put("email", email);
+            if (!phone.isEmpty() && !Objects.equals(phone, getString(R.string.No_phone))) oJSON.put("phone", phone);
+
+            if (Objects.equals(type, getString(R.string.userTypeVoluntary_Profile))) type = "voluntary";
+            else if (Objects.equals(type, getString(R.string.userTypeAssociation_Profile))) type = "association";
+            else type = "newComer";
+
             oJSON.put("type", type);
 
             return oJSON.toString(1);
