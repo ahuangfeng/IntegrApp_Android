@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_editForum"
+        android:orderInCategory="100"
+        android:title="@string/action_edit"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_reportForum"
         android:orderInCategory="100"
         android:title="@string/action_reportForum"

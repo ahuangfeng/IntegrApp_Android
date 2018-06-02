@@ -464,7 +464,16 @@ public class SingleForumFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.forum, menu);
         menu.findItem(R.id.action_settings).setVisible(false);
-        menu.findItem(R.id.action_reportForum).setVisible(true);
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String usernamePreferences = preferences.getString("username", "username");
+        if (Objects.equals(user.getUsername(), usernamePreferences)) {
+            menu.findItem(R.id.action_reportForum).setVisible(false);
+            menu.findItem(R.id.action_editForum).setVisible(true);
+        }
+        else {
+            menu.findItem(R.id.action_reportForum).setVisible(true);
+            menu.findItem(R.id.action_editForum).setVisible(false);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
