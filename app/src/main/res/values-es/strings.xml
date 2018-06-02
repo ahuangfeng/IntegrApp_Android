@@ -232,6 +232,10 @@
     <string name="title_dialogReportForum">Denunciando foro</string>
     <string name="forumReport_ok">Foro denunciado correctamente</string>
     <string name="error_reportForum">Error al denunciar el foro</string>
+    <string name="state_closed">CERRADO</string>
+    <string name="state_opened">ABIERTO</string>
+    <string name="lookfor_itemAdd">BÚSQUEDA</string>
+    <string name="offer_itemAdd">OFERTA</string>
 
 
     <!-- Array for the spinner of user types-->

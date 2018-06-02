@@ -231,6 +231,10 @@
     <string name="title_dialogReportForum">Denunciant fòrum</string>
     <string name="forumReport_ok">Fòrum denunciat correctament</string>
     <string name="error_reportForum">Error al denunciar el fòrum</string>
+    <string name="state_closed">TANCAT</string>
+    <string name="state_opened">OBERT</string>
+    <string name="lookfor_itemAdd">CERCA</string>
+    <string name="offer_itemAdd">OFERTA</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

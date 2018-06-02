@@ -191,7 +191,8 @@ public class SingleAdvertFragment extends Fragment {
         viewPlaces = view.findViewById(R.id.viewPlaces);
         viewDate = view.findViewById(R.id.viewDate);
         textViewState = view.findViewById(R.id.textViewState);
-        textViewState.setText(state.toUpperCase());
+        if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
+        else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
 
         ImageView imageView = view.findViewById(R.id.image_view_anunci);
         imageView.setImageResource(image);
@@ -560,9 +561,14 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     public void changeState() {
-        if (Objects.equals(state, "opened")) state = "closed";
-        else state = "opened";
-        textViewState.setText(state.toUpperCase());
+        if (Objects.equals(state, "opened")) {
+            textViewState.setText(getString(R.string.state_closed));
+            state = "closed";
+        }
+        else {
+            textViewState.setText(getString(R.string.state_opened));
+            state = "opened";
+        }
     }
 
     @SuppressLint("StaticFieldLeak")

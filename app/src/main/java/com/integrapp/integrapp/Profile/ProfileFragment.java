@@ -144,7 +144,6 @@ public class ProfileFragment extends Fragment {
             idUser = preferences.getString("idUser", "idUser");
             String name = preferences.getString("name", "name");
             String type = preferences.getString("type", "type");
-            System.out.println("TIPOOOOO: " +type);
             String email = preferences.getString("email", "email");
             String phone = preferences.getString("phone", "phone");
             int likes = preferences.getInt("likes",0);

@@ -230,6 +230,10 @@
     <string name="title_dialogReportForum">Reporting forum</string>
     <string name="forumReport_ok">Forum reported correctly</string>
     <string name="error_reportForum">Error reporting forum</string>
+    <string name="state_closed">CLOSED</string>
+    <string name="state_opened">OPENED</string>
+    <string name="lookfor_itemAdd">LOOKFOR</string>
+    <string name="offer_itemAdd">OFFER</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

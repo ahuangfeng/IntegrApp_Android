@@ -12,6 +12,7 @@ import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Model.Advert;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AdvertsAdapter extends BaseAdapter {
 
@@ -56,8 +57,11 @@ public class AdvertsAdapter extends BaseAdapter {
         date.setText(objectList.get(i).getDate());
         description.setText(objectList.get(i).getDescription());
         places.setText(objectList.get(i).getPlaces());
-        type.setText(objectList.get(i).getType());
-        state.setText(objectList.get(i).getState());
+        if (Objects.equals(objectList.get(i).getType(), "lookFor")) type.setText(R.string.lookfor_itemAdd);
+        else if (Objects.equals(objectList.get(i).getType(), "offer")) type.setText(R.string.offer_itemAdd);
+
+        if (Objects.equals(objectList.get(i).getState(), "opened")) state.setText(R.string.state_opened);
+        else if (Objects.equals(objectList.get(i).getState(), "closed")) state.setText(R.string.state_closed);
         imageView.setImageResource(objectList.get(i).getImage());
 
         return vista;
