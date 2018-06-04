@@ -160,6 +160,7 @@ public class DocumentationFragment extends Fragment {
             String createdAt = forum.getString("createdAt");
             String userId = forum.getString("userId");
             float rate = (float) forum.getDouble("rate");
+            System.out.println(Float.toString(rate));
             String user = forum.getString("user");
 
             String miniDescription = "";

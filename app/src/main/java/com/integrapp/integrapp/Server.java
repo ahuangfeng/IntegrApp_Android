@@ -8,7 +8,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Server {
     private static final Server serverInstance = new Server();
@@ -511,14 +514,14 @@ public class Server {
 
     public String voteForum(String forumId, String json) {
         HttpPut put = new HttpPut(API_URI+"/forum/" + forumId + "/vote");
-
+        System.out.println("json: " + json);
         try {
             StringEntity entity = new StringEntity(json);
             put.setEntity(entity);
             put.setHeader("x-access-token", token);
             put.setHeader("Content-type", "application/json");
-
             BasicResponseHandler handler = new BasicResponseHandler();
+
             return client.execute(put, handler);
 
         } catch (IOException e) {

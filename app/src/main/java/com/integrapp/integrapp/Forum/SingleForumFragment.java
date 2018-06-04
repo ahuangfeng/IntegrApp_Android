@@ -112,6 +112,7 @@ public class SingleForumFragment extends Fragment {
         rate_forum = view.findViewById(R.id.rate_forum);
         rate_forum.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                System.out.println("rate1: " + Float.toString(rate_forum.getRating()));
                 vote(rate_forum.getRating(), idForum);
 
             }
@@ -150,13 +151,12 @@ public class SingleForumFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void vote(final float rating, final String idForum) {
-        String r = Float.toString(rating);
-        final String json = generateRequestVote(r);
+
         new AsyncTask<Void, Void, String>() {
 
             @Override
             protected String doInBackground(Void... voids) {
-                return server.voteForum(idForum, json);
+                return server.voteForum(idForum, generateRequestVote(rating));
             }
 
             @Override
@@ -249,11 +249,11 @@ public class SingleForumFragment extends Fragment {
         return null;
     }
 
-    private String generateRequestVote(String rating) {
-
+    private String generateRequestVote(Float rating) {
+        int r = Math.round(rating);
         try {
             JSONObject oJSON = new JSONObject();
-            oJSON.put("rate", rating);
+            oJSON.put("rate", r);
             return oJSON.toString(1);
 
         } catch (JSONException e) {
