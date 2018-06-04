@@ -236,6 +236,8 @@
     <string name="offer_itemAdd">OFFER</string>
     <string name="error_ModifyingForum">Error modifying the forum</string>
     <string name="comment_noun">Comment</string>
+    <string name="toast_thanksForYourVote">Thanks for voting!</string>
+    <string name="toast_ForumCouldNotBeVoted">The forum couldn\'t be voted</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

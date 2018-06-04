@@ -118,6 +118,20 @@
                         android:layout_height="1dp"
                         android:background="@color/colorAccent"
                         android:visibility="invisible" />
+
+                    <RatingBar
+                        android:id="@+id/rate_forum"
+                        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
+                        android:layout_width="181dp"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:clickable="true"
+                        android:stepSize="1"
+                        android:isIndicator="false"
+                        android:focusable="true"
+                        />
                 </LinearLayout>
 
                 <View

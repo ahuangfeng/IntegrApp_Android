@@ -508,4 +508,22 @@ public class Server {
 
         return "ERROR MODIFY FORUM";
     }
+
+    public String voteForum(String forumId, String json) {
+        HttpPut put = new HttpPut(API_URI+"/forum/" + forumId + "/vote");
+
+        try {
+            StringEntity entity = new StringEntity(json);
+            put.setEntity(entity);
+            put.setHeader("x-access-token", token);
+            put.setHeader("Content-type", "application/json");
+
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(put, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR VOTING FORUM";
+    }
 }

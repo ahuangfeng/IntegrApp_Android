@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +65,8 @@ public class SingleForumFragment extends Fragment {
     private View viewFinishComments;
     private View titleView;
     private View descriptionView;
+
+    private RatingBar rate_forum;
 
     public SingleForumFragment () {}
 
@@ -106,6 +109,14 @@ public class SingleForumFragment extends Fragment {
         createdAt.setText(this.createdAt);
         descriptionTextView.setText(this.description);
 
+        rate_forum = view.findViewById(R.id.rate_forum);
+        rate_forum.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                vote(rate_forum.getRating(), idForum);
+
+            }
+        });
+
         showComments(view);
 
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +146,30 @@ public class SingleForumFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void vote(final float rating, final String idForum) {
+        String r = Float.toString(rating);
+        final String json = generateRequestVote(r);
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.voteForum(idForum, json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR VOTING FORUM")) {
+                    Toast.makeText(getContext(), getString(R.string.toast_thanksForYourVote), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getContext(), getString(R.string.toast_ForumCouldNotBeVoted), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }.execute();
     }
 
     private void scrollView(View view, final int focus) {
@@ -206,6 +241,19 @@ public class SingleForumFragment extends Fragment {
             JSONObject oJSON = new JSONObject();
             oJSON.put("forumId", this.idForum);
             oJSON.put("content", comment);
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String generateRequestVote(String rating) {
+
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("rate", rating);
             return oJSON.toString(1);
 
         } catch (JSONException e) {
