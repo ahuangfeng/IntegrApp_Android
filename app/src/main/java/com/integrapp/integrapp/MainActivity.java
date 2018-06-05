@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View header = navigationView.getHeaderView(0);
         TextView headerName = header.findViewById(R.id.headerName);
         TextView headerEmail = header.findViewById(R.id.headerEmail);
+
+        LinearLayout linearLayout = header.findViewById(R.id.headerLayout);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLikesDislikes();
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
 
         SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String name = preferences.getString("name", "name");
@@ -127,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_profile) {
+        if (id == R.id.nav_profile || id == R.id.headerLayout) {
             getLikesDislikes();
         } else if (id == R.id.nav_adverts) {
             Intent i = new Intent(this, MainActivity.class);
