@@ -15,13 +15,6 @@ public class DataInscription {
         this.idAdvert = idAdvert;
     }
 
-    public DataInscription(String id, String info, String status, String idUser) {
-        this.id = id;
-        this.info = info;
-        this.status = status;
-        this.idUser = idUser;
-    }
-
     public String getId() {
         return id;
     }

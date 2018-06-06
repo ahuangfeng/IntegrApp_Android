@@ -158,7 +158,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         String advertString = myJSONArray.getString(index);
         JSONObject myJsonObject = new JSONObject(advertString);
 
-        String id, info, status, idUser;
+        String id, info, status, idUser, advertId;
         DataInscription dataInscription;
 
         status = myJsonObject.getString("status");
@@ -167,13 +167,14 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         if (idAdvert.equals("inscriptions")) {
             id = myJsonObject.getString("_id");
             info = myJsonObject.getString("titleAdvert");
-            String advertId = myJsonObject.getString("advertId");
-            dataInscription = new DataInscription(id, info, status, idUser, advertId);
+            advertId = myJsonObject.getString("advertId");
+
         } else {
             id = myJsonObject.getString("id");
             info = myJsonObject.getString("username");
-            dataInscription = new DataInscription(id, info, status, idUser);
+            advertId = idAdvert;
         }
+        dataInscription = new DataInscription(id, info, status, idUser, advertId);
 
         return dataInscription;
     }

@@ -1,7 +1,6 @@
 package com.integrapp.integrapp.Adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -30,7 +29,6 @@ import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
-import com.integrapp.integrapp.Inscription.SingleInscriptionFragment;
 import com.integrapp.integrapp.Model.Advert;
 
 import java.util.List;
@@ -369,7 +367,7 @@ public class InscriptionsAdapter extends BaseAdapter {
                     }
                 }
                 else {
-                    System.out.printf("WHAAAAAT: " + s);
+
                     Toast.makeText(context, R.string.error_SettingInscriptionStatus, Toast.LENGTH_SHORT).show();
                 }
             }
