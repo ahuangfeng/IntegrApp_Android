@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ public class LogIn extends AppCompatActivity {
     private EditText userEditText;
     private EditText passEditText;
     private Server server;
+    private CheckBox rememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class LogIn extends AppCompatActivity {
         server = Server.getInstance();
         Button logInButton = findViewById(R.id.logInButton);
         TextView signUpTextView = findViewById(R.id.signUpTextView);
+        rememberMe = findViewById(R.id.checkRememberMe);
 
         logInButton.setOnClickListener(new View.OnClickListener() {
 
@@ -86,15 +90,18 @@ public class LogIn extends AppCompatActivity {
     private void checkLogIn(String s) {
         if(!s.equals("ERROR IN LOGIN")) {
             Toast.makeText(getApplicationContext(), getString(R.string.success_login), Toast.LENGTH_SHORT).show();
-            SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("isLogged", true);
-            editor.putString("username", userEditText.getText().toString());
-            editor.putString("password", passEditText.getText().toString());
             String token = getTokenResponse(s);
             server.token = token;
+            SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            if (rememberMe.isChecked()) {
+                editor.putBoolean("isLogged", true);
+            }
+            editor.putString("username", userEditText.getText().toString());
+            editor.putString("password", passEditText.getText().toString());
             editor.putString("user_token", token);//--> Here we will save the token "DONE"
             editor.apply();
+
             doServerCallForSaveInfoUser();//otra async task para obtener los datos del usuario
         }
         else {

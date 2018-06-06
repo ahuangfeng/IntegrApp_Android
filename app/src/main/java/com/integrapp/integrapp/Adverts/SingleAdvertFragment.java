@@ -42,14 +42,12 @@ import java.util.Objects;
 public class SingleAdvertFragment extends Fragment {
 
     private String title;
-    private String type;
     private String state;
     private String places;
     private String date;
     private String description;
     private String userId;
     private int image;
-    private String type_advert;
     private String idAdvert;
     private String registered;
 
@@ -76,7 +74,6 @@ public class SingleAdvertFragment extends Fragment {
     @SuppressLint("ValidFragment")
     public SingleAdvertFragment(Advert advert) {
         title = advert.getTitle();
-        type = advert.getType();
         state = advert.getState();
         places = advert.getPlaces();
         date = advert.getDate();
@@ -106,13 +103,10 @@ public class SingleAdvertFragment extends Fragment {
 
         updatePlaces();
         if (userData.getUsername().equals(usernamePreferences)) {
-            //TODO: WTF type_advert y advertStatus son "owner"?
-            type_advert = "owner";
             inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
             advertStatus = "owner";
         }
         else {
-            type_advert = "other";
             updateStatus();
         }
 
@@ -124,7 +118,7 @@ public class SingleAdvertFragment extends Fragment {
                         try {
                             JSONArray inscriptions = new JSONArray(registered);
                             if(inscriptions.length() > 0){
-                                Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
+                                Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext(), registered);
                                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                 FragmentTransaction ft = fragmentManager.beginTransaction();
                                 ft.replace(R.id.screen_area, fragment);
@@ -292,7 +286,7 @@ public class SingleAdvertFragment extends Fragment {
         menu.findItem(R.id.action_settings).setVisible(false);
         /*Solo se muestran las opciones de delte y edit cuando se consulta un advert del usuario
         logueado pero no si se está consultando el de algun otro */
-        if (type_advert.equals("other")) {
+        if (!advertStatus.equals("owner")) {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
             menu.findItem(R.id.action_modifyAdvertState).setVisible(false);
@@ -624,7 +618,6 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     private String getIdInscriptionToDelete(String s) {
-        System.out.println("QUE HAY EN DELETE: " + s);
         try {
             JSONArray myJSONArray = new JSONArray(s);
             String id;
@@ -670,10 +663,8 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     private void updateStatus() {
-        System.out.printf("QUE PASA2: " + registered);
         try {
             JSONArray myJSONArray = new JSONArray(registered);
-            System.out.println("QUE PASA3: " + myJSONArray);
             String id;
             advertStatus = "canEnroll";
             for (int i = 0; i < myJSONArray.length(); ++i) {
@@ -727,7 +718,6 @@ public class SingleAdvertFragment extends Fragment {
             myJSONObject.put("id", myJSONObject.get("_id"));
             myJSONArray.put(myJSONObject);
             registered = myJSONArray.toString();
-            System.out.println("QUE HAY REGISTERED: " + registered);
         } catch (JSONException e) {
             e.printStackTrace();
         }

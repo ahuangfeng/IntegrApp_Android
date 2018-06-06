@@ -97,7 +97,7 @@ public class SingleInscriptionFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN SET STATUS INSCRIPTION")) {
-                    Fragment fragment = new InscriptionsFragment(idAdvert, idUser, getContext());
+                    Fragment fragment = new InscriptionsFragment(idAdvert, idUser, getContext(), null);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction ft = fragmentManager.beginTransaction();
                     ft.replace(R.id.screen_area, fragment);
