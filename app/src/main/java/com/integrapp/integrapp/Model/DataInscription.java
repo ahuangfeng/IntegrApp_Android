@@ -5,14 +5,21 @@ public class DataInscription {
     private String info;
     private String idUser;
     private String idAdvert;
-    private String state;
+    private String status;
 
-    public DataInscription(String id, String info, String state, String idUser, String idAdvert) {
+    public DataInscription(String id, String info, String status, String idUser, String idAdvert) {
         this.id = id;
         this.info = info;
-        this.state = state;
+        this.status = status;
         this.idUser = idUser;
         this.idAdvert = idAdvert;
+    }
+
+    public DataInscription(String id, String info, String status, String idUser) {
+        this.id = id;
+        this.info = info;
+        this.status = status;
+        this.idUser = idUser;
     }
 
     public String getId() {
@@ -32,11 +39,11 @@ public class DataInscription {
     }
 
     public String getState() {
-        return state;
+        return status;
     }
 
     public void setState(String state) {
-        this.state = state;
+        this.status = state;
     }
 
     public String getIdUser() {

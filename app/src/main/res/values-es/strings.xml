@@ -155,6 +155,8 @@
     <string name="acceptInscription">Aceptar inscripción</string>
     <string name="refuseInscription">Rechazar inscripción</string>
     <string name="menu_inscriptions">Inscripciones</string>
+    <string name="dialog_refuse">Rechazar</string>
+    <string name="dialog_manage_inscription">¿Quieres aceptar o rechazar la inscripción?</string>
 
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comentar</string>

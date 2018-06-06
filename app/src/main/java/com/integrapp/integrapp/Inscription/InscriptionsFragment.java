@@ -87,7 +87,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
             protected String doInBackground(Void... voids) {
                 SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
-                return inscriptionServer.getAllUserInscriptions(userId);
+                return server.getAllUserInscriptions(userId);
             }
 
             @Override
@@ -158,21 +158,23 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
         String advertString = myJSONArray.getString(index);
         JSONObject myJsonObject = new JSONObject(advertString);
 
-        String id, info, state, IDuser, advertId;
+        String id, info, status, idUser;
         DataInscription dataInscription;
 
-        id = myJsonObject.getString("_id");
+        status = myJsonObject.getString("status");
+        idUser = myJsonObject.getString("userId");
+
         if (idAdvert.equals("inscriptions")) {
+            id = myJsonObject.getString("_id");
             info = myJsonObject.getString("titleAdvert");
+            String advertId = myJsonObject.getString("advertId");
+            dataInscription = new DataInscription(id, info, status, idUser, advertId);
         } else {
+            id = myJsonObject.getString("id");
             info = myJsonObject.getString("username");
+            dataInscription = new DataInscription(id, info, status, idUser);
         }
-        state = myJsonObject.getString("status");
-        IDuser = myJsonObject.getString("userId");
-        advertId = myJsonObject.getString("advertId");
 
-
-        dataInscription = new DataInscription(id, info, state, IDuser, advertId);
         return dataInscription;
     }
 

@@ -1,6 +1,7 @@
 package com.integrapp.integrapp.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,9 @@ public class InscriptionsAdapter extends BaseAdapter {
     private Server server;
     private FragmentActivity activity;
     private String type;
+    private String idUser;
+    private String idAdvert;
+    private TextView stateTextView;
 
     public InscriptionsAdapter(Context context, List<DataInscription> objectList, FragmentActivity activity, String type) {
         this.context = context;
@@ -67,8 +72,8 @@ public class InscriptionsAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         server = Server.getInstance();
-        final String idUser = objectList.get(i).getIdUser();
-        final String idAdvert = objectList.get(i).getIdAdvert();
+        idUser = objectList.get(i).getIdUser();
+        idAdvert = objectList.get(i).getIdAdvert();
         View vista;
         LayoutInflater inflate = LayoutInflater.from(context);
         vista = inflate.inflate(R.layout.activity_item_inscription, null);
@@ -88,7 +93,7 @@ public class InscriptionsAdapter extends BaseAdapter {
             }
         });
 
-        TextView stateTextView = vista.findViewById(R.id.textViewState);
+        stateTextView = vista.findViewById(R.id.textViewState);
         final String status = objectList.get(i).getState();
         stateTextView.setText(status);
         stateTextView.setClickable(true);
@@ -117,12 +122,26 @@ public class InscriptionsAdapter extends BaseAdapter {
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     } else {
-                        Fragment fragment = new SingleInscriptionFragment(idAdvert, idUser);
-                        android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.screen_area, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+                        builder.setMessage(R.string.dialog_manage_inscription).setTitle(R.string.toast_ManageInscriptions);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String json = generateRequestModifyStateAdvert("accepted");
+                                changeInscriptionStatus(json, "accepted");
+                            }
+                        });
+
+                        builder.setNegativeButton(R.string.dialog_refuse, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String json = generateRequestModifyStateAdvert("refused");
+                                changeInscriptionStatus(json, "refused");
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 }
             }
@@ -315,6 +334,46 @@ public class InscriptionsAdapter extends BaseAdapter {
         ft.replace(R.id.screen_area, fragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    private String generateRequestModifyStateAdvert(String state) {
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("userId", idUser);
+            oJSON.put("status", state);
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void changeInscriptionStatus(final String json, final String state) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = context.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.setInscriptionStatus(idAdvert, json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN SET STATUS INSCRIPTION")) {
+                    if (state.equals("accepted")) {
+                        stateTextView.setText(R.string.acceptedButton_advert);
+                    } else if (state.equals("refused")) {
+                        stateTextView.setText(R.string.refusedButton_advert);
+                    }
+                }
+                else {
+                    System.out.printf("WHAAAAAT: " + s);
+                    Toast.makeText(context, R.string.error_SettingInscriptionStatus, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 }
 
