@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView headerName = header.findViewById(R.id.headerName);
         TextView headerEmail = header.findViewById(R.id.headerEmail);
 
+        //loadNewMessages();
+
         SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String name = preferences.getString("name", "name");
         headerName.setText(name);
@@ -75,6 +77,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else headerEmail.setText(email);
     }
+
+//    @SuppressLint("StaticFieldLeak")
+//    private void loadNewMessages() {
+//        new AsyncTask<Void, Void, String>() {
+//            @Override
+//            protected String doInBackground(Void... voids) {
+//                SharedPreferences preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+//                server.token = preferences.getString("user_token", "user_token");
+//                String userId = preferences.getString("Iduser", "null");
+//                return server.getNewMessages(userId);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                if (!s.equals("ERROR IN GET INFO USER")) {
+//                    saveLikesDislikes(s);
+//                }
+//                else {
+//                    Toast.makeText(getApplicationContext(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }.execute();
+//    }
 
     /*@Override
     public void onBackPressed() {
@@ -112,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Function FAQ not implemented", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -139,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
             fragment = new MainChatsFragment();
-        } else if (id == R.id.nav_settings) {
-            Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_FAQ) {
+            Toast.makeText(getApplicationContext(), "Function FAQ not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_aboutUs) {
             Toast.makeText(getApplicationContext(), "Function About us not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_logOut) {

@@ -31,9 +31,9 @@
         android:id="@+id/menu_bottom"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings_black_48dp"
-            android:title="@string/menu_settings" />
+            android:id="@+id/nav_FAQ"
+            android:icon="@drawable/baseline_contact_support_black_48dp"
+            android:title="@string/FAQ" />
         <item
             android:id="@+id/nav_aboutUs"
             android:icon="@drawable/ic_info_black_48dp"

@@ -238,6 +238,8 @@
     <string name="comment_noun">Comment</string>
     <string name="toast_thanksForYourVote">Thanks for voting!</string>
     <string name="toast_ForumCouldNotBeVoted">The forum couldn\'t be voted</string>
+    <string name="menu_FAQ">menu_FAQ</string>
+    <string name="FAQ">FAQ</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

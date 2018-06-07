@@ -52,7 +52,7 @@ public class SingleForumFragment extends Fragment {
     private String createdAt;
     private String userId;
     private float rate;
-    UserDataAdvertiser user;
+    private UserDataAdvertiser user;
     private Server server;
     private List<DataComment> comments;
 

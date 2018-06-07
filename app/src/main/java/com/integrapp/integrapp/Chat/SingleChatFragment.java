@@ -54,7 +54,7 @@ public class SingleChatFragment extends Fragment {
 
                         try {
                             String from = data.getString("from");
-                            if (!from.equals(personalUserId)) {
+                            if (from.equals(toUser.getId().toString())) {
                                 String message = data.getString("content");
                                 ChatAppMsgDTO msgDto = new ChatAppMsgDTO(ChatAppMsgDTO.MSG_TYPE_RECEIVED, message);
                                 msgDtoList.add(msgDto);
@@ -128,7 +128,7 @@ public class SingleChatFragment extends Fragment {
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         personalUserId = preferences.getString("idUser", "null");
-
+        System.out.println("emit: "+ personalUserId +" "+ toUser.getId());
         mSocket.emit("new user", personalUserId, toUser.getId(), new Ack() {
             @Override
             public void call(Object... args) {
@@ -137,6 +137,7 @@ public class SingleChatFragment extends Fragment {
                     try {
                         JSONObject myJsonObject = new JSONObject(args[0].toString());
                         final JSONArray chats = myJsonObject.getJSONArray("chats");
+                        System.out.println("chats: "+chats.toString());
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
