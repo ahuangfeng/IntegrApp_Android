@@ -1,15 +1,25 @@
 package com.integrapp.integrapp.Adverts;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,9 +30,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.integrapp.integrapp.Adapters.AdvertsAdapter;
+import com.integrapp.integrapp.MainActivity;
 import com.integrapp.integrapp.Model.Advert;
 import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.R;
@@ -42,6 +54,7 @@ public class AdvertsFragment extends Fragment {
     private View view;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+
     public AdvertsFragment() {
         SearchType = "all";
     }
@@ -54,7 +67,6 @@ public class AdvertsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.activity_advert, container, false);
 
@@ -82,10 +94,13 @@ public class AdvertsFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //loadNewMessages();
     }
+
 
     @SuppressLint("StaticFieldLeak")
     private void getAllAdverts(String type) {

@@ -529,4 +529,17 @@ public class Server {
         }
         return "ERROR VOTING FORUM";
     }
+
+    public String getNewMessages(String userId) {
+        HttpGet get = new HttpGet(API_URI+"/newChats/"+userId);
+        try {
+            get.setHeader("x-access-token", token);
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING NUMBER OF NEW MESSAGES";
+    }
 }
