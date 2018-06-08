@@ -241,6 +241,24 @@
     <string name="toast_ErrorTakingPhotos">Error taking photo</string>
     <string name="error_UpdatingPhoto">Error updating photo</string>
 
+    <!-- About strings-->
+    <string name="who_we_are">Who we are</string>
+    <string name="who_we_are_text">We are a group of seven students of Informatics Engineering from the Faculty of Informatics of Barcelona (FIB), who carry out a project focused on helping the integration of people who arrive in an unknown country can be much easier.</string>
+    <string name="our_mission">Our mission</string>
+    <string name="our_mission_text">IntegrApp has the mission to help the immigrant community to interact with other people in the same situation or with people who live in the city that, for whatever reason, they have arrived at a given time.</string>
+    <string name="our_essence">Our essence</string>
+    <string name="our_essence_text">In our core, IntegrApp operates through imagination, teamwork, communication and, above all, motivation to help the immigrant community.</string>
+    <string name="our_promise">Our promise</string>
+    <string name="our_promise_text">We offer a bulletin board, a user forum, a chat so that users can interact directly, among other things.</string>
+    <string name="team">Team</string>
+    <string name="arnau_orriols">Arnau Orriols</string>
+    <string name="roger_lopez">Roger López</string>
+    <string name="laura_brull">Laura Brull</string>
+    <string name="alex_huang">Alex Huang</string>
+    <string name="manel_alex">Manel-Àlex</string>
+    <string name="sergi_aguilar">Sergi Aguilar</string>
+    <string name="daniel_perez">Daniel Pérez</string>
+
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
         <item>Voluntary</item>

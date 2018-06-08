@@ -240,6 +240,24 @@
     <string name="error_ModifyingForum">Error en modificar el fòrum</string>
     <string name="comment_noun">Comentari</string>
 
+    <!-- About strings-->
+    <string name="who_we_are">Qui som</string>
+    <string name="who_we_are_text">Som un grup de set estudiants d\'Enginyeria Informàtica de la Facultat d\'Informàtica de Barcelona (FIB), que duem a terme un projecte enfocat a ajudar que la integració de persones que arriben a un país desconegut sigui molt més fàcil.</string>
+    <string name="our_mission">La nostra missió</string>
+    <string name="our_mission_text">IntegrApp té la missió d\'ajudar a la comunitat immigrant a poder interactuar amb altres persones en la mateixa situació o amb persones residents a la ciutat a la que, pel motiu que sigui, han arribat en un moment determinat.</string>
+    <string name="our_essence">La nostra essència</string>
+    <string name="our_essence_text">En el nostre nucli, IntegrApp opera mitjançant la imaginació, el treball en equip, la comunicació i sobretot la motivació per ajudar a la comunitat immigrant.</string>
+    <string name="our_promise">La nostra promesa</string>
+    <string name="our_promise_text">Oferim un tauler d\'anuncis, un fòrum d\'usuaris, un xat de manera que els usuaris puguin interactuar de manera directa, entre altres coses.</string>
+    <string name="team">Equip</string>
+    <string name="arnau_orriols">Arnau Orriols</string>
+    <string name="roger_lopez">Roger López</string>
+    <string name="laura_brull">Laura Brull</string>
+    <string name="alex_huang">Alex Huang</string>
+    <string name="manel_alex">Manel-Àlex</string>
+    <string name="sergi_aguilar">Sergi Aguilar</string>
+    <string name="daniel_perez">Daniel Pérez</string>
+
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
         <item>Voluntari</item>
