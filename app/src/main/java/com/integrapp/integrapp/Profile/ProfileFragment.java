@@ -213,22 +213,6 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
     private void showUserAdverts() {
         Toast.makeText(getActivity(), getString(R.string.toast_ShowAdvertsOfUser), Toast.LENGTH_SHORT).show();
         Fragment fragment = new AdvertsFragment(idUser);
@@ -805,31 +789,29 @@ public class ProfileFragment extends Fragment {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            //create a file to write bitmap data
-            File f = new File(getContext().getCacheDir(), timeStamp + "_" + idUser);
-            try {
-                f.createNewFile();
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
-                byte[] bitmapdata = bos.toByteArray();
-                //write the bytes in file
-                FileOutputStream fos = new FileOutputStream(f);
-                fos.write(bitmapdata);
-                fos.flush();
-                fos.close();
-                System.out.println("filename: " + f.getName());
-                addPhoto(imageBitmap, f);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            addPhoto2(imageBitmap);
         }
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void addPhoto(final Bitmap bitmap, final File f) {
+    private void addPhoto2(final Bitmap bitmap) {
+        requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        File fPath = Environment.getExternalStorageDirectory();
+        File f2 = new File(fPath, "drawPic1.png");
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(f2);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            stream.close();
+            addPhoto3(bitmap, f2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void addPhoto3(final Bitmap bitmap, final File f) {
+        imageView.setImageDrawable(Drawable.createFromPath(f.getPath()));
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
