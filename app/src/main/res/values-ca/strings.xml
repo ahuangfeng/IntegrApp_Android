@@ -49,7 +49,7 @@
     <string name="cif">CIF</string>
     <string name="button_create">Crear</string>
     <string name="signUp_success">Usuari creat amb èxit</string>
-    <string name="user_exists">L\'usuari ja existeix</string>
+    <string name="error_signup">L\'usuari ja existeix</string>
     <string name="connecting">Connectant…</string>
 
     <!-- Strings of Profile activity-->

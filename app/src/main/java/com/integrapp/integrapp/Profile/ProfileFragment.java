@@ -5,8 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +36,28 @@ import com.integrapp.integrapp.Adverts.AdvertsFragment;
 import com.integrapp.integrapp.Login.LogIn;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
@@ -57,6 +80,13 @@ public class ProfileFragment extends Fragment {
     private TextView adsTextView;
     private String idUser;
     private Server server;
+
+    String mCurrentPhotoPath;
+    private ImageView imageView;
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     public ProfileFragment() {
     }
@@ -90,8 +120,13 @@ public class ProfileFragment extends Fragment {
         likesTextView = view.findViewById(R.id.likesTextView);
         dislikesTextView = view.findViewById(R.id.dislikesTextView);
         adsTextView = view.findViewById(R.id.adsTextView);
+
+        imageView = view.findViewById(R.id.profile_image);
+
         TextView profileAds = view.findViewById(R.id.profile_adds);
         profileAds.setText(getString(R.string.adds_profile));
+
+        setImagePhoto();
 
         if (Objects.equals(typeProfile, "advertiserUser")) {
             idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
@@ -136,7 +171,6 @@ public class ProfileFragment extends Fragment {
                     }
                 });
             }
-
         }
         else {
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
@@ -160,8 +194,39 @@ public class ProfileFragment extends Fragment {
                     showUserAdverts();
                 }
             });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dispatchTakePictureIntent();
+                }
+            });
+
+
         }
       return view;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     private void showUserAdverts() {
@@ -261,6 +326,26 @@ public class ProfileFragment extends Fragment {
         likesTextView.setText(likesString);
         dislikesTextView.setText(dislikesString);
         adsTextView.setText(adsString);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void setImagePhoto() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getImageUser(idUser);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING IMAGE")) {
+                    System.out.println("laimagenobtenida: " + s);
+                    Picasso.with(getContext()).load(s).into(imageView);
+                }
+            }
+        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -713,6 +798,56 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            //create a file to write bitmap data
+            File f = new File(getContext().getCacheDir(), timeStamp + "_" + idUser);
+            try {
+                f.createNewFile();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
+                byte[] bitmapdata = bos.toByteArray();
+                //write the bytes in file
+                FileOutputStream fos = new FileOutputStream(f);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
+                System.out.println("filename: " + f.getName());
+                addPhoto(imageBitmap, f);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void addPhoto(final Bitmap bitmap, final File f) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.addPhotoUser(f);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR UPDATING PHOTO")) {
+                    imageView.setImageBitmap(bitmap);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 
 }

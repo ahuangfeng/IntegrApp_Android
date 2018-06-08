@@ -50,7 +50,7 @@
     <string name="cif">CIF</string>
     <string name="button_create">Crear</string>
     <string name="signUp_success">Usuario creado con éxito</string>
-    <string name="user_exists">El usuario ya existe</string>
+    <string name="error_signup">El usuario ya existe</string>
     <string name="connecting">Conectando…</string>
 
     <!-- Strings of Profile activity-->

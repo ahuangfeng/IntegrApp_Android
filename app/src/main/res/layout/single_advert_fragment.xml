@@ -246,6 +246,8 @@
             android:layout_width="150sp"
             android:layout_height="150sp"
             android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/project_preview_large_2"
             tools:ignore="ContentDescription" />
 

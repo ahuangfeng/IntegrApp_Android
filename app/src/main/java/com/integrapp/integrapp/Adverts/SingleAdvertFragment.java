@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,6 +33,7 @@ import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +42,8 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class SingleAdvertFragment extends Fragment {
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private String title;
     private String type;
@@ -66,6 +70,7 @@ public class SingleAdvertFragment extends Fragment {
     private View viewDate;
     private TextView textViewState;
     private String advertStatus;
+    private ImageView imageView;
 
     UserDataAdvertiser userData;
     private Server server;
@@ -103,6 +108,7 @@ public class SingleAdvertFragment extends Fragment {
         personalUserId = preferences.getString("idUser", "null");
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
+        imageView = view.findViewById(R.id.image_view_anunci);
 
         updatePlaces();
         if (userData.getUsername().equals(usernamePreferences)) {
@@ -173,7 +179,23 @@ public class SingleAdvertFragment extends Fragment {
             }
         });
 
+        setImagePhoto();
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
+
         return view;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     private void loadAdvertData(View view) {
@@ -769,6 +791,26 @@ public class SingleAdvertFragment extends Fragment {
         oJSON.put("typeId", idAdvert);
 
         return oJSON.toString(1);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void setImagePhoto() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getImageAdvert(idAdvert);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING IMAGE")) {
+                    System.out.println("laimagenobtenida: " + s);
+                    Picasso.with(getContext()).load(s).into(imageView);
+                }
+            }
+        }.execute();
     }
 
     @Override

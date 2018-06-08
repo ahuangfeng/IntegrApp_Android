@@ -48,7 +48,7 @@
     <string name="cif">CIF</string>
     <string name="button_create">Register</string>
     <string name="signUp_success">User created successfully</string>
-    <string name="user_exists">User already exists</string>
+    <string name="error_signup">User already exists or wrong email provided</string>
     <string name="connecting">Connecting&#8230;</string>
 
     <!-- Strings of Profile activity-->
@@ -238,6 +238,8 @@
     <string name="comment_noun">Comment</string>
     <string name="toast_thanksForYourVote">Thanks for voting!</string>
     <string name="toast_ForumCouldNotBeVoted">The forum couldn\'t be voted</string>
+    <string name="toast_ErrorTakingPhotos">Error taking photo</string>
+    <string name="error_UpdatingPhoto">Error updating photo</string>
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">
