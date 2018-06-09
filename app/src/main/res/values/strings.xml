@@ -239,7 +239,8 @@
     <string name="toast_thanksForYourVote">Thanks for voting!</string>
     <string name="toast_ForumCouldNotBeVoted">The forum couldn\'t be voted</string>
     <string name="menu_FAQ">menu_FAQ</string>
-    <string name="FAQ">FAQ</string>
+    <string name="FAQ">F.A.Q.</string>
+    <string name="MainChatsFragment_title">Chat</string>
 
     <!-- Array of strings for the FAQ fragment -->
     <string-array name="faq_title_number">

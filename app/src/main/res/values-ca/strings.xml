@@ -239,6 +239,7 @@
     <string name="offer_itemAdd">OFERTA</string>
     <string name="error_ModifyingForum">Error en modificar el fòrum</string>
     <string name="comment_noun">Comentari</string>
+    <string name="MainChatsFragment_title">Xat</string>
 
     <!-- Array of strings for the FAQ fragment -->
     <string-array name="faq_title_number">

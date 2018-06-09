@@ -1,11 +1,13 @@
 package com.integrapp.integrapp.Faq;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.support.v7.widget.Toolbar;
 
 import com.integrapp.integrapp.R;
 import java.util.ArrayList;
@@ -50,6 +52,10 @@ public class FaqFragment extends android.support.v4.app.Fragment {
     @Override
     //Clear the list to avoid duplicated content
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        Toolbar toolbar= getActivity().findViewById(R.id.toolbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setTitle(R.string.FAQ);
+        }
         faqDocu = new ArrayList<>();
     }
 

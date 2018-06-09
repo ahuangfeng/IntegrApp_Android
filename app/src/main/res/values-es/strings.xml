@@ -240,6 +240,7 @@
     <string name="offer_itemAdd">OFERTA</string>
     <string name="error_ModifyingForum">Error al modificar el foro</string>
     <string name="comment_noun">Comentario</string>
+    <string name="MainChatsFragment_title">Chat</string>
 
     <!-- Array of strings for the FAQ fragment -->
     <string-array name="faq_title_number">

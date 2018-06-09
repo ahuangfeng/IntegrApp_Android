@@ -1,5 +1,6 @@
 package com.integrapp.integrapp.Forum;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -7,12 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Adapters.FragmentAdapter;
+
+import java.util.ArrayList;
 
 public class ForumFragment extends Fragment {
 
@@ -59,6 +63,15 @@ public class ForumFragment extends Fragment {
         tabs.setupWithViewPager(viewPager);
 
         return view;
+    }
+
+    @Override
+    //Clear the list to avoid duplicated content
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        Toolbar toolbar= getActivity().findViewById(R.id.toolbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setTitle(R.string.menu_forum);
+        }
     }
 
     //ADD FRAGMENTS TO TABS
