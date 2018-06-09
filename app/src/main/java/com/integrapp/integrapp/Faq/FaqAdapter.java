@@ -62,7 +62,18 @@ public class FaqAdapter extends BaseAdapter {
         TextView title = vista.findViewById(R.id.faq_list_title);
 
         title.setText(faqs.get(position).getTitle());
-        Drawable photo = ContextCompat.getDrawable(context, R.drawable.faqcasa);
+        Drawable photo = null;
+
+        if (position == 0) {
+            photo = ContextCompat.getDrawable(context, R.drawable.faqcasa);
+        }
+        else if (position == 1) {
+            photo = ContextCompat.getDrawable(context, R.drawable.faqempresa);
+        }
+        else if (position == 2) {
+            photo = ContextCompat.getDrawable(context, R.drawable.faqidiomes);
+        }
+
         image.setImageDrawable(photo);
 
 //        if (threads.get(position).getMiniDescription().length()>0) {

@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -224,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(i);
             finish();
         }
+        //onSectionAttached(item.getItemId());
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -237,6 +239,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+//    //TODO acabar de posar els titols a la action bar. crear resorce array-string amb els titols
+//    private void onSectionAttached(int number) {
+//        if (number == R.id.nav_FAQ) {
+//            ActionBar actionBar = getSupportActionBar();
+//            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//            actionBar.setDisplayShowTitleEnabled(true);
+//            actionBar.setTitle("F.A.Q.");
+//        }
+////        String[] stringArray = getResources().getStringArray(R.array.section);
+////        if (number >= 0) {
+////            mTitle = stringArray[number];
+////        }
+//    }
+//    //TODO acabar
+//    public void restoreActionBar() {
+////        ActionBar actionBar = getSupportActionBar();
+////        // actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+////        actionBar.setDisplayShowTitleEnabled(true);
+////        actionBar.setTitle(mTitle);
+//    }
 
     @SuppressLint("StaticFieldLeak")
     private void getLikesDislikes() {

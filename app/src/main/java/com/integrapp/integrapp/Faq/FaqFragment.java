@@ -25,7 +25,7 @@ public class FaqFragment extends android.support.v4.app.Fragment {
     }
 
     private void initializeItems() {
-        for (int i=0; i<2; ++i) {
+        for (int i=0; i<3; ++i) {
             String preparedTitle = getTitle(i);
             String preparedContent = getContent(i);
             SingleFaqItem newItem = new SingleFaqItem(preparedTitle, preparedContent);

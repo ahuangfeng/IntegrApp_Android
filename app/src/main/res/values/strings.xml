@@ -244,12 +244,41 @@
     <!-- Array of strings for the FAQ fragment -->
     <string-array name="faq_title_number">
         <item name="title_0"> Are there any limitations as to the buying of real estate? </item>
-        <item name="title_1"> Title 1 </item>
+        <item name="title_1"> What steps are necessary for setting up a company in Spain? </item>
+        <item name="title_2"> Are there language requirements in order to apply for citizenship? </item>
     </string-array>
 
     <string-array name="faq_content_number">
         <item name="content_0"> The only limitation is that each applicant must invest at least € 500,000 and the property must be free of liens and encumbrances. All types of property are eligible and may be used or leased freely. </item>
-        <item name="content_1"> This is the content of faq number 1 </item>
+        <item name="content_1"> The basic requirements for setting up a company in Spain are its incorporation before a Notary Public and its filing with the “Registro Mercantil” (“Mercantile Register”).
+
+Nonetheless, in order to meet these requirements, the following steps must be carried out:
+
+a) In case of doing it by means of a representative, granting of representative powers by the founder/s to the person who will be responsible for incorporating the company.
+
+b) Application for a Tax Identification Number (“NIF”) in the case of a legal entity, or a NIE (Foreigners Identity Number) in case of a natural person, of the partners and foreign directors of the company that is to be incorporated.
+
+c) Application for a certificate to prove that no other company is operating under the same name.
+
+d) Opening of a bank account for transactions and to obtain a bank certificate.
+
+e) Incorporation of the company before a Notary Public by means of a deed of incorporation.
+
+f) Application for provisional Tax Identification Number for the company.
+
+g) Settlement of the “Impuesto sobre Transmisiones Patrimoniales” –“Capital Transfer Tax”.
+
+h) Filing with the “Registro Mercantil” (“Mercantile Register”).
+
+i) Obtaining the final Tax Identification Number of the Company.
+
+j) Legalization of Official Trade Books.
+
+k) Tax procedures.
+
+l) Employment procedures. </item>
+
+        <item name="content_3">Not yet, but there is a draft law in the works that will render a minimum knowledge of Spanish compulsory.</item>
     </string-array>
 
 
