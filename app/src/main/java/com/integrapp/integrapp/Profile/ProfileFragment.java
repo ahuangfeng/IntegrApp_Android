@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,20 +41,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -81,6 +70,8 @@ public class ProfileFragment extends Fragment {
     private String idUser;
     private Server server;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     String mCurrentPhotoPath;
     private ImageView imageView;
 
@@ -104,6 +95,8 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.activity_profile, container, false);
         this.server = Server.getInstance();
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
         nameTextView = view.findViewById(R.id.nameTextView);
         usernameTextView = view.findViewById(R.id.usernameTextView);
@@ -171,6 +164,23 @@ public class ProfileFragment extends Fragment {
                     }
                 });
             }
+
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    Fragment fragment = new ProfileFragment("advertiserUser");
+                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    Bundle args = getArguments();
+                    fragment.setArguments(args);
+
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
         }
         else {
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
@@ -198,6 +208,19 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     dispatchTakePictureIntent();
+                }
+            });
+
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    Fragment fragment = new ProfileFragment();
+                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
 

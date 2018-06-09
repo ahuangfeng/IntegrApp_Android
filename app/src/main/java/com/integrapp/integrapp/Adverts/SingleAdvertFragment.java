@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -74,6 +75,8 @@ public class SingleAdvertFragment extends Fragment {
     private Button inscriptionButton;
     private String personalUserId;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     private EditText textViewTitle;
     private EditText textViewDescription;
     private EditText textViewPlaces;
@@ -86,6 +89,8 @@ public class SingleAdvertFragment extends Fragment {
     private String advertStatus;
     private ImageView imageView;
 
+    private Advert advert;
+
     UserDataAdvertiser userData;
     private Server server;
 
@@ -94,6 +99,7 @@ public class SingleAdvertFragment extends Fragment {
 
     @SuppressLint("ValidFragment")
     public SingleAdvertFragment(Advert advert) {
+        this.advert = advert;
         title = advert.getTitle();
         type = advert.getType();
         state = advert.getState();
@@ -116,6 +122,8 @@ public class SingleAdvertFragment extends Fragment {
         View view = inflater.inflate(R.layout.single_advert_fragment, container, false);
 
         loadAdvertData(view);
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String usernamePreferences = preferences.getString("username", "username");
@@ -203,6 +211,19 @@ public class SingleAdvertFragment extends Fragment {
                 }
             });
         }
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Fragment fragment = new SingleAdvertFragment(advert);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.screen_area, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
