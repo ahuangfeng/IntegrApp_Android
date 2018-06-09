@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_forum) {
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
-            initializeCountDrawer("0");
+            initializeCountDrawer("");
             fragment = new MainChatsFragment();
         } else if (id == R.id.nav_FAQ) {
             Toast.makeText(getApplicationContext(), "Function FAQ not implemented", Toast.LENGTH_SHORT).show();
