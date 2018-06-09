@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.Adverts.AdvertsFragment;
 import com.integrapp.integrapp.Chat.MainChatsFragment;
+import com.integrapp.integrapp.Faq.FaqFragment;
 import com.integrapp.integrapp.Forum.ForumFragment;
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Login.LogIn;
@@ -211,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             initializeCountDrawer("");
             fragment = new MainChatsFragment();
         } else if (id == R.id.nav_FAQ) {
-            Toast.makeText(getApplicationContext(), "Function FAQ not implemented", Toast.LENGTH_SHORT).show();
+            fragment = new FaqFragment();
         } else if (id == R.id.nav_aboutUs) {
             Toast.makeText(getApplicationContext(), "Function About us not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_logOut) {
