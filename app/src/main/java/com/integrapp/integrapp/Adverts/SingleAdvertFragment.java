@@ -348,7 +348,6 @@ public class SingleAdvertFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.advert, menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
         /*Solo se muestran las opciones de delte y edit cuando se consulta un advert del usuario
         logueado pero no si se está consultando el de algun otro */
         if (type_advert.equals("other")) {

@@ -527,7 +527,6 @@ public class SingleForumFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.forum, menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String usernamePreferences = preferences.getString("username", "username");
         if (Objects.equals(user.getUsername(), usernamePreferences)) {
