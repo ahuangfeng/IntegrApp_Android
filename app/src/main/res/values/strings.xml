@@ -13,6 +13,7 @@
     <string name="action_all">All ads</string>
     <string name="action_reportAdvert">Report advert</string>
     <string name="action_reportUser">Report user</string>
+    <string name="action_deleteImageUser">Delete user image</string>
     <string name="action_reportForum">Report forum</string>
 
     <!-- Strings of SplashIntegrApp activity-->
@@ -67,6 +68,7 @@
     <string name="cancel">Cancel</string>
     <string name="dialog_delete_user">Are you sure you want to delete the user?</string>
     <string name="tittle_dialogDeleteUser">User will be deleted</string>
+    <string name="tittle_dialogDeleteImageUser">Image User will be deleted</string>
     <string name="title_dialogReportUser">Reporting user</string>
     <string name="userReport_ok">User reported correctly</string>
     <string name="error_reportUser">Error reporting user</string>
@@ -133,6 +135,7 @@
     <string name="tittle_dialogModifyStateAdvert">Advert State will be changed</string>
     <string name="wantItButton_editadvert">Save Changes</string>
     <string name="dialog_delete_inscription">Are you sure you want to cancel your request?</string>
+    <string name="dialog_delete_image_user">Are you sure you want to delete your user image?</string>
     <string name="tittle_dialogDeleteInscription">Your inscription will be deleted</string>
     <string name="error_noPlaces">You can not enroll to this advert</string>
     <string name="dialog_report">Enter the reason of the report</string>
@@ -263,6 +266,7 @@
     <string name="manel_alex">Manel-Àlex</string>
     <string name="sergi_aguilar">Sergi Aguilar</string>
     <string name="daniel_perez">Daniel Pérez</string>
+    <string name="toast_UserImageDeletedSuccessfully">User Image Deleted SUccessfully</string>
 
 
     <!-- Array for the spinner of user types-->

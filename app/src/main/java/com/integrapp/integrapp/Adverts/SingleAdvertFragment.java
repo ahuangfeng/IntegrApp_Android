@@ -51,6 +51,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -71,6 +72,7 @@ public class SingleAdvertFragment extends Fragment {
     private String type_advert;
     private String idAdvert;
     private String registered;
+    private String path;
 
     private Button inscriptionButton;
     private String personalUserId;
@@ -100,6 +102,7 @@ public class SingleAdvertFragment extends Fragment {
     @SuppressLint("ValidFragment")
     public SingleAdvertFragment(Advert advert) {
         this.advert = advert;
+        path = advert.getPath();
         title = advert.getTitle();
         type = advert.getType();
         state = advert.getState();
@@ -130,7 +133,6 @@ public class SingleAdvertFragment extends Fragment {
         personalUserId = preferences.getString("idUser", "null");
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
-        imageView = view.findViewById(R.id.image_view_anunci);
 
         updatePlaces();
         if (userData.getUsername().equals(usernamePreferences)) {
@@ -201,8 +203,6 @@ public class SingleAdvertFragment extends Fragment {
             }
         });
 
-        setImagePhoto();
-
         if (type_advert.equals("owner")) {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -215,6 +215,7 @@ public class SingleAdvertFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                getAdvert(idAdvert);
                 Fragment fragment = new SingleAdvertFragment(advert);
                 FragmentManager fragmentManager = SingleAdvertFragment.this.getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -253,8 +254,12 @@ public class SingleAdvertFragment extends Fragment {
         if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
         else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
 
-        ImageView imageView = view.findViewById(R.id.image_view_anunci);
-        imageView.setImageResource(image);
+        imageView = view.findViewById(R.id.image_view_anunci);
+        if (!path.equals("")) {
+            Picasso.with(getContext()).load(path).into(imageView);
+        } else {
+            imageView.setImageResource(image);
+        }
     }
 
     private void checkInscriptionStatus() {
@@ -324,6 +329,7 @@ public class SingleAdvertFragment extends Fragment {
         args.putString("type", userData.getType());
         args.putString("email", userData.getEmail());
         args.putString("phone", userData.getPhone());
+        args.putString("imagePath", userData.getPath());
 
         try {
             JSONObject myJsonObject = new JSONObject(s);
@@ -888,6 +894,7 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR UPDATING PHOTO")) {
+                    System.out.println("imageAdvert obtained: "+s);
                     imageView.setImageBitmap(bitmap);
                 }
                 else {
@@ -900,5 +907,38 @@ public class SingleAdvertFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getAdvert(final String idAdvert) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getAdvertInfoById(idAdvert);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO ADVERT")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        advert = new Advert(jsonObject);
+                        Fragment fragment = new SingleAdvertFragment(advert);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                        ft.replace(R.id.screen_area, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.error_GettingAdvertInfo), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 }

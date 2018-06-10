@@ -1,5 +1,7 @@
 package com.integrapp.integrapp.Model;
 
+import android.graphics.drawable.Drawable;
+
 import com.integrapp.integrapp.R;
 
 import org.json.JSONException;
@@ -13,13 +15,13 @@ public class Advert {
     private String type;
     private String state;
     private int image;
+    private String path;
     private String id;
     private String registered;
     private UserDataAdvertiser userDataAdvertiser;
 
     public Advert(JSONObject dataAdvert) {
         decryptJson(dataAdvert);
-        this.image = R.drawable.project_preview_large_2;
     }
 
     private void decryptJson(JSONObject dataAdvert) {
@@ -34,6 +36,13 @@ public class Advert {
             this.registered = dataAdvert.getString("registered");
             if(dataAdvert.has("user")){
                 this.userDataAdvertiser = new UserDataAdvertiser(dataAdvert.getJSONObject("user"));
+            }
+            if (dataAdvert.has("imagePath")) {
+                this.path = dataAdvert.getString("imagePath");
+                this.image = -1;
+            } else {
+                this.path = "";
+                this.image = R.drawable.project_preview_large_2;
             }
 
         } catch (JSONException e) {
@@ -113,5 +122,13 @@ public class Advert {
 
     public void setUserDataAdvertiser(UserDataAdvertiser userDataAdvertiser) {
         this.userDataAdvertiser = userDataAdvertiser;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
