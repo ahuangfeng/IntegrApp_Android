@@ -933,9 +933,10 @@ public class SingleAdvertFragment extends Fragment {
                         description = advert.getDescription();
                         date = advert.getDate();
                         registered = advert.getRegistered();
+                        state = advert.getState();
                         setEditableTexts();
                         if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
-                        else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
+                        else textViewState.setText(getString(R.string.state_closed));
                         if (!advert.getPath().equals("null")) {
                             image = -1;
                             Picasso.with(getContext()).load(path).into(imageView);
