@@ -60,6 +60,8 @@ public class NewAdvertFragment extends Fragment {
         Button setTime = view.findViewById(R.id.setTimeButton);
         dateText = view.findViewById(R.id.dateText);
         timeText = view.findViewById(R.id.timeText);
+        latitude = 0;
+        longitude = 0;
 
         Spinner spinner = view.findViewById(R.id.newAdvertSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.advert_types, R.layout.my_spinner_advert);

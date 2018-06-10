@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,6 +39,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class SingleAdvertFragment extends Fragment {
@@ -58,12 +63,16 @@ public class SingleAdvertFragment extends Fragment {
     private EditText textViewDescription;
     private EditText textViewPlaces;
     private EditText textViewDate;
+    private EditText textViewLocation;
     private View viewTitle;
     private View viewDescription;
     private View viewPlaces;
     private View viewDate;
     private TextView textViewState;
     private String advertStatus;
+    private String location;
+    private Double lat;
+    private Double lng;
 
     UserDataAdvertiser userData;
     private Server server;
@@ -82,6 +91,7 @@ public class SingleAdvertFragment extends Fragment {
         image = advert.getImage();
         registered = advert.getRegistered();
         idAdvert = advert.getId();
+        location = advert.getLocation();
         this.userData = advert.getUserDataAdvertiser();
     }
 
@@ -93,7 +103,11 @@ public class SingleAdvertFragment extends Fragment {
         server = Server.getInstance();
         View view = inflater.inflate(R.layout.single_advert_fragment, container, false);
 
-        loadAdvertData(view);
+        try {
+            loadAdvertData(view);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String usernamePreferences = preferences.getString("username", "username");
@@ -170,12 +184,13 @@ public class SingleAdvertFragment extends Fragment {
         return view;
     }
 
-    private void loadAdvertData(View view) {
+    private void loadAdvertData(View view) throws IOException {
         TextView textViewUsername = view.findViewById(R.id.textView_username);
         textViewTitle = view.findViewById(R.id.textView_title);
         textViewDescription = view.findViewById(R.id.textView_description);
         textViewPlaces = view.findViewById(R.id.textView_places);
         textViewDate = view.findViewById(R.id.textView_datText);
+        textViewLocation = view.findViewById(R.id.textView_location);
 
         textViewUsername.setText(userData.getUsername());
         setEditableTexts();
@@ -184,6 +199,7 @@ public class SingleAdvertFragment extends Fragment {
         viewDescription = view.findViewById(R.id.viewDescription);
         viewPlaces = view.findViewById(R.id.viewPlaces);
         viewDate = view.findViewById(R.id.viewDate);
+
         textViewState = view.findViewById(R.id.textViewState);
         if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
         else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
@@ -343,7 +359,11 @@ public class SingleAdvertFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             setVisibility(false, View.INVISIBLE);
-                            setEditableTexts();
+                            try {
+                                setEditableTexts();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     AlertDialog dialog = builder.create();
@@ -394,11 +414,40 @@ public class SingleAdvertFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setEditableTexts() {   
+    private void setEditableTexts() throws IOException {
         textViewTitle.setText(title);
         textViewDescription.setText(description);
         textViewPlaces.setText(places);
         textViewDate.setText(date);
+        try {
+            JSONObject myJSONObject = new JSONObject(location);
+            lat = myJSONObject.getDouble("lat");
+            lng = myJSONObject.getDouble("lng");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String location = "";
+        if (lat == 0 && lng == 0) {
+            location = getString(R.string.no_location);
+        } else {
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+
+            String city = addresses.get(0).getLocality();
+            String country = addresses.get(0).getCountryName();
+
+            if (city != null && !city.isEmpty()) {
+                location += city;
+            }
+            if (country != null && !country.isEmpty()) {
+                location += ", " + country;
+            }
+        }
+
+        textViewLocation.setText(location);
     }
 
     private void setAttributes() {

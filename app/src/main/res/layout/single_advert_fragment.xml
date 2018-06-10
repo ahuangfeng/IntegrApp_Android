@@ -138,6 +138,46 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="141dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:text="@string/location_advert"
+                    android:textColor="#0014cc"
+                    tools:ignore="NestedWeights" />
+
+                <EditText
+                    android:id="@+id/textView_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:enabled="false"
+                    android:hint="@string/newAdvert_location"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="#0014cc"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
                     android:id="@+id/textView3"
                     android:layout_width="220dp"
                     android:layout_height="wrap_content"

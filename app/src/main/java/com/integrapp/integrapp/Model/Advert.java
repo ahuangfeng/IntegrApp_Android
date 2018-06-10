@@ -15,6 +15,7 @@ public class Advert {
     private int image;
     private String id;
     private String registered;
+    private String location;
     private UserDataAdvertiser userDataAdvertiser;
 
     public Advert(JSONObject dataAdvert) {
@@ -32,6 +33,7 @@ public class Advert {
             this.state = dataAdvert.getString("state");
             this.id = dataAdvert.getString("_id");
             this.registered = dataAdvert.getString("registered");
+            this.location = dataAdvert.getString("location");
             if(dataAdvert.has("user")){
                 this.userDataAdvertiser = new UserDataAdvertiser(dataAdvert.getJSONObject("user"));
             }
@@ -106,6 +108,10 @@ public class Advert {
     }
 
     public String getRegistered() {return registered;}
+
+    public String getLocation() {
+        return location;
+    }
 
     public UserDataAdvertiser getUserDataAdvertiser() {
         return userDataAdvertiser;

@@ -37,6 +37,7 @@
     <string name="type_advert">Tipus d\'anunci</string>
     <string name="state">Estat</string>
     <string name="image_desc">Imatge de l\'anunci</string>
+    <string name="no_location">Sense ubicació</string>
 
     <!-- Strings of SignUp activity-->
     <string name="signUp_title">Registra\'t</string>
@@ -118,6 +119,7 @@
     <string name="tittle_advert">Títol de l\'anunci</string>
     <string name="description_advert">Descripció de l\'anunci</string>
     <string name="places_advert">Places</string>
+    <string name="location_advert">Localització:</string>
     <string name="available_places">Places disponibles:</string>
     <string name="expectedDate_advert">Data prevista</string>
     <string name="wantItButton_advert">VULL AIXÒ!</string>

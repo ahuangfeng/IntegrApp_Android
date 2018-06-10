@@ -38,6 +38,7 @@
     <string name="type_advert">Tipo de anuncio</string>
     <string name="state">Estado</string>
     <string name="image_desc">Imagen del anuncio</string>
+    <string name="no_location">Sin localización</string>
 
     <!-- Strings of SignUp activity-->
     <string name="signUp_title">Regístrate</string>
@@ -119,6 +120,7 @@
     <string name="tittle_advert">Título del anuncio</string>
     <string name="description_advert">Descripción del anuncio</string>
     <string name="places_advert">Plazas</string>
+    <string name="location_advert">Localización:</string>
     <string name="available_places">Plazas disponibles:</string>
     <string name="expectedDate_advert">Fecha prevista</string>
     <string name="wantItButton_advert">¡LO QUIERO!</string>

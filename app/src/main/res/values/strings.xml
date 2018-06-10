@@ -36,6 +36,7 @@
     <string name="type_advert">Type Advert</string>
     <string name="state">State</string>
     <string name="image_desc">Image of advert</string>
+    <string name="no_location">No location</string>
 
     <!-- Strings of SignUp activity-->
     <string name="signUp_title">Sign up</string>
@@ -117,6 +118,7 @@
     <string name="tittle_advert">Ad tittle</string>
     <string name="description_advert">Description of the advert</string>
     <string name="places_advert">Places</string>
+    <string name="location_advert">Location:</string>
     <string name="available_places">Available places:</string>
     <string name="expectedDate_advert">Expected date</string>
     <string name="wantItButton_advert">I WANT IT!</string>
