@@ -863,11 +863,12 @@ public class SingleAdvertFragment extends Fragment {
     private void addPhoto2(final Bitmap bitmap) {
         requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         File fPath = Environment.getExternalStorageDirectory();
-        File f2 = new File(fPath, "drawPic1.png");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File f2 = new File(fPath, timeStamp);
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(f2);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
             stream.close();
             addPhoto3(bitmap, f2);
         } catch (IOException e) {
@@ -877,7 +878,6 @@ public class SingleAdvertFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void addPhoto3(final Bitmap bitmap, final File f) {
-        imageView.setImageDrawable(Drawable.createFromPath(f.getPath()));
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {

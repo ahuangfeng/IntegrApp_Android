@@ -3,6 +3,7 @@ package com.integrapp.integrapp.Chat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ import com.integrapp.integrapp.Adverts.SingleAdvertFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Model.ChatAppMsgDTO;
 import com.integrapp.integrapp.Model.User;
+import com.integrapp.integrapp.Server;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SingleChatFragment extends Fragment {
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private ImageView imageView;
+    private Server server;
 
     private User toUser;
     private String personalUserId;
@@ -115,6 +121,9 @@ public class SingleChatFragment extends Fragment {
         Button send = view.findViewById(R.id.send_button);
         user_name.setText(toUser.getName());
 
+        this.server = Server.getInstance();
+        imageView = view.findViewById(R.id.profile_image);
+
         // Get RecyclerView object.
         msgRecyclerView = view.findViewById(R.id.messages);
         //Set recyclerView layout manager
@@ -126,8 +135,6 @@ public class SingleChatFragment extends Fragment {
         chatAppMsgAdapter  = new ChatAppMsgAdapter(msgDtoList);
         //Set data adapter to the RecycleView
         msgRecyclerView.setAdapter(chatAppMsgAdapter);
-
-        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,18 +175,7 @@ public class SingleChatFragment extends Fragment {
             }
         });
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Fragment chatFrag = new SingleChatFragment(toUser);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.screen_area, chatFrag);
-                ft.addToBackStack(null);
-                ft.commit();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        setImagePhoto();
 
         return view;
     }
@@ -242,6 +238,26 @@ public class SingleChatFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mSocket.disconnect();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void setImagePhoto() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getImageUser(toUser.getId());
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING IMAGE")) {
+                    System.out.println("laimagenobtenida: " + s);
+                    Picasso.with(getContext()).load(s).into(imageView);
+                }
+            }
+        }.execute();
     }
 
 }
