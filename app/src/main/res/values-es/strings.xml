@@ -40,6 +40,7 @@
     <string name="type_advert">Tipo de anuncio</string>
     <string name="state">Estado</string>
     <string name="image_desc">Imagen del anuncio</string>
+    <string name="no_location">Sin ubicación</string>
 
     <!-- Strings of SignUp activity-->
     <string name="signUp_title">Regístrate</string>
@@ -88,6 +89,7 @@
     <string name="newAdvert_expectedTime">Hora prevista</string>
     <string name="newAdvert_buttonDate">Fecha</string>
     <string name="newAdvert_buttonTime">Hora</string>
+    <string name="newAdvert_location">Ubicación</string>
 
     <!-- Strings of Menu-->
     <string name="menu_profile">Perfil</string>
@@ -119,6 +121,7 @@
     <string name="tittle_advert">Título del anuncio</string>
     <string name="description_advert">Descripción del anuncio</string>
     <string name="places_advert">Plazas</string>
+    <string name="location_advert">Ubicación:</string>
     <string name="available_places">Plazas disponibles:</string>
     <string name="expectedDate_advert">Fecha prevista</string>
     <string name="wantItButton_advert">¡LO QUIERO!</string>
@@ -156,6 +159,8 @@
     <string name="acceptInscription">Aceptar inscripción</string>
     <string name="refuseInscription">Rechazar inscripción</string>
     <string name="menu_inscriptions">Inscripciones</string>
+    <string name="dialog_refuse">Rechazar</string>
+    <string name="dialog_manage_inscription">¿Quieres aceptar o rechazar la inscripción?</string>
 
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comentar</string>

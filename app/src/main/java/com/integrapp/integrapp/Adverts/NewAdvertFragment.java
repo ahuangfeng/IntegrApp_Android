@@ -24,6 +24,11 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.integrapp.integrapp.MainActivity;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
@@ -42,6 +47,8 @@ public class NewAdvertFragment extends Fragment {
     private EditText dateText;
     private String itemSelectedSpinner;
     private Server server;
+    private double latitude;
+    private double longitude;
 
     @Nullable
     @Override
@@ -55,6 +62,7 @@ public class NewAdvertFragment extends Fragment {
         Button setTime = view.findViewById(R.id.setTimeButton);
         dateText = view.findViewById(R.id.dateText);
         timeText = view.findViewById(R.id.timeText);
+        latitude = longitude = 0;
 
         Spinner spinner = view.findViewById(R.id.newAdvertSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.advert_types, R.layout.my_spinner_advert);
@@ -139,6 +147,26 @@ public class NewAdvertFragment extends Fragment {
                     }
                 }, cHour, cMinute, true);
                 TimePicker.show();
+            }
+        });
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_NONE)
+                .build();
+        autocompleteFragment.setFilter(typeFilter);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                latitude = place.getLatLng().latitude;
+                longitude = place.getLatLng().longitude;
+            }
+
+            @Override
+            public void onError(Status status) {
+                System.out.println("An error occurred: " + status);
             }
         });
 
@@ -237,11 +265,16 @@ public class NewAdvertFragment extends Fragment {
     private String generateRequestNewAdvert(String title, String description, String places) throws JSONException {
         JSONObject oJSON = new JSONObject();
 
+        JSONObject locationJSON = new JSONObject();
+        locationJSON.put("lat", latitude);
+        locationJSON.put("lng", longitude);
+
         String expectedDate = dateText.getText().toString() + " " + timeText.getText().toString() + ":00";
 
         oJSON.put("date", expectedDate);
         oJSON.put("title", title);
         oJSON.put("description", description);
+        oJSON.put("location", locationJSON);
         oJSON.put("places", places);
         oJSON.put("typeAdvert", itemSelectedSpinner);
 

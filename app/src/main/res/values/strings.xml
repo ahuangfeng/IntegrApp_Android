@@ -38,6 +38,7 @@
     <string name="type_advert">Type Advert</string>
     <string name="state">State</string>
     <string name="image_desc">Image of advert</string>
+    <string name="no_location">No location</string>
 
     <!-- Strings of SignUp activity-->
     <string name="signUp_title">Sign up</string>
@@ -88,6 +89,7 @@
     <string name="newAdvert_expectedTime">Expected Time</string>
     <string name="newAdvert_buttonDate">Date</string>
     <string name="newAdvert_buttonTime">Time</string>
+    <string name="newAdvert_location">Location</string>
 
     <!-- Strings of Menu-->
     <string name="menu_profile">Profile</string>
@@ -120,6 +122,7 @@
     <string name="tittle_advert">Ad tittle</string>
     <string name="description_advert">Description of the advert</string>
     <string name="places_advert">Places</string>
+    <string name="location_advert">Location:</string>
     <string name="available_places">Available places:</string>
     <string name="expectedDate_advert">Expected date</string>
     <string name="wantItButton_advert">I WANT IT!</string>
@@ -157,7 +160,8 @@
     <string name="acceptInscription">Accept inscription</string>
     <string name="refuseInscription">Refuse inscription</string>
     <string name="menu_inscriptions">Inscriptions</string>
-    <string name="toast_ManageInscriptions">Manage inscriptions</string>
+    <string name="dialog_refuse">Refuse</string>
+    <string name="dialog_manage_inscription">Do you want to accept or refuse the inscription?</string>
 
     <!-- Strings of SingleForum fragment-->
     <string name="commentButton_forum">Comment</string>
@@ -172,6 +176,7 @@
     <string name="toast_LookForAds">Look for ads</string>
     <string name="toast_OfferAds">Offer ads</string>
     <string name="toast_AllAds">All ads</string>
+    <string name="toast_ManageInscriptions">Manage inscriptions</string>
     <string name="toast_AdvertDeletedSuccessfully">Advert deleted successfully</string>
     <string name="error_DeletingAdvert">Error deleting advert</string>
     <string name="error_EmptyValuesAdded">Error empty values added</string>

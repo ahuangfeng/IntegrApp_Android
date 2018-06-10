@@ -44,4 +44,5 @@ dependencies {
     implementation "org.apache.httpcomponents:httpcore:4.2.4"
     implementation "org.apache.httpcomponents:httpmime:4.3"
     implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.14.0'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
 }

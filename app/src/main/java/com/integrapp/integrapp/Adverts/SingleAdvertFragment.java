@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,6 +55,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -62,14 +66,12 @@ public class SingleAdvertFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private String title;
-    private String type;
     private String state;
     private String places;
     private String date;
     private String description;
     private String userId;
     private int image;
-    private String type_advert;
     private String idAdvert;
     private String registered;
     private String path;
@@ -83,12 +85,16 @@ public class SingleAdvertFragment extends Fragment {
     private EditText textViewDescription;
     private EditText textViewPlaces;
     private EditText textViewDate;
+    private EditText textViewLocation;
     private View viewTitle;
     private View viewDescription;
     private View viewDate;
     private TextView textViewState;
     private String advertStatus;
     private ImageView imageView;
+    private String location;
+    private double lat;
+    private double lng;
 
     private Advert advert;
 
@@ -104,7 +110,6 @@ public class SingleAdvertFragment extends Fragment {
         this.advert = advert;
         path = advert.getPath();
         title = advert.getTitle();
-        type = advert.getType();
         state = advert.getState();
         places = advert.getPlaces();
         date = advert.getDate();
@@ -113,6 +118,7 @@ public class SingleAdvertFragment extends Fragment {
         image = advert.getImage();
         registered = advert.getRegistered();
         idAdvert = advert.getId();
+        location = advert.getLocation();
         this.userData = advert.getUserDataAdvertiser();
     }
 
@@ -136,13 +142,10 @@ public class SingleAdvertFragment extends Fragment {
 
         updatePlaces();
         if (userData.getUsername().equals(usernamePreferences)) {
-            //TODO: WTF type_advert y advertStatus son "owner"?
-            type_advert = "owner";
             inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
             advertStatus = "owner";
         }
         else {
-            type_advert = "other";
             updateStatus();
         }
 
@@ -203,7 +206,7 @@ public class SingleAdvertFragment extends Fragment {
             }
         });
 
-        if (type_advert.equals("owner")) {
+        if (advertStatus.equals("owner")) {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -236,6 +239,7 @@ public class SingleAdvertFragment extends Fragment {
         textViewDescription = view.findViewById(R.id.textView_description);
         textViewPlaces = view.findViewById(R.id.textView_places);
         textViewDate = view.findViewById(R.id.textView_datText);
+        textViewLocation = view.findViewById(R.id.textView_location);
 
         textViewUsername.setText(userData.getUsername());
         setEditableTexts();
@@ -243,6 +247,7 @@ public class SingleAdvertFragment extends Fragment {
         viewTitle = view.findViewById(R.id.viewTitle);
         viewDescription = view.findViewById(R.id.viewDescription);
         viewDate = view.findViewById(R.id.viewDate);
+
         textViewState = view.findViewById(R.id.textViewState);
         if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
         else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
@@ -323,7 +328,6 @@ public class SingleAdvertFragment extends Fragment {
         args.putString("email", userData.getEmail());
         args.putString("phone", userData.getPhone());
         args.putString("imagePath", userData.getPath());
-        System.out.println("yeeeeee"+ userData.getPath());
 
         try {
             JSONObject myJsonObject = new JSONObject(s);
@@ -350,7 +354,7 @@ public class SingleAdvertFragment extends Fragment {
         getActivity().getMenuInflater().inflate(R.menu.advert, menu);
         /*Solo se muestran las opciones de delte y edit cuando se consulta un advert del usuario
         logueado pero no si se está consultando el de algun otro */
-        if (type_advert.equals("other")) {
+        if (advertStatus.equals("other")) {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
             menu.findItem(R.id.action_modifyAdvertState).setVisible(false);
@@ -477,11 +481,44 @@ public class SingleAdvertFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setEditableTexts() {   
+    private void setEditableTexts() {
         textViewTitle.setText(title);
         textViewDescription.setText(description);
         textViewPlaces.setText(places);
         textViewDate.setText(date);
+        try {
+            JSONObject myJSONObject = new JSONObject(location);
+            lat = myJSONObject.getDouble("lat");
+            lng = myJSONObject.getDouble("lng");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String location = "";
+        if (lat == 0 && lng == 0) {
+            location = getString(R.string.no_location);
+        } else {
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            try {
+                addresses = geocoder.getFromLocation(lat, lng, 1);
+                String city = addresses.get(0).getLocality();
+                String country = addresses.get(0).getCountryName();
+
+                if (city != null && !city.isEmpty()) {
+                    location += city;
+                }
+                if (country != null && !country.isEmpty()) {
+                    location += ", " + country;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        textViewLocation.setText(location);
     }
 
     private void setAttributes() {
@@ -738,10 +775,8 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     private void updateStatus() {
-        System.out.printf("QUE PASA2: " + registered);
         try {
             JSONArray myJSONArray = new JSONArray(registered);
-            System.out.println("QUE PASA3: " + myJSONArray);
             String id;
             advertStatus = "canEnroll";
             for (int i = 0; i < myJSONArray.length(); ++i) {
@@ -795,7 +830,6 @@ public class SingleAdvertFragment extends Fragment {
             myJSONObject.put("id", myJSONObject.get("_id"));
             myJSONArray.put(myJSONObject);
             registered = myJSONArray.toString();
-            System.out.println("QUE HAY REGISTERED: " + registered);
         } catch (JSONException e) {
             e.printStackTrace();
         }

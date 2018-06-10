@@ -144,6 +144,21 @@
                     android:textColor="@color/colorPrimaryDark"/>
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="@string/newAdvert_location"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:paddingStart="4dp"/>
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
+
             <Button
                 android:id="@+id/newAdvertPostButton"
                 style="@style/Base.TextAppearance.AppCompat.Body1"

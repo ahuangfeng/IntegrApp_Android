@@ -88,7 +88,7 @@ public class InscriptionsAdapter extends BaseAdapter {
             }
         });
 
-        TextView stateTextView = vista.findViewById(R.id.textViewState);
+        final TextView stateTextView = vista.findViewById(R.id.textViewState);
         final String status = objectList.get(i).getState();
         stateTextView.setText(status);
         stateTextView.setClickable(true);
@@ -117,12 +117,26 @@ public class InscriptionsAdapter extends BaseAdapter {
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     } else {
-                        Fragment fragment = new SingleInscriptionFragment(idAdvert, idUser);
-                        android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.screen_area, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+                        builder.setMessage(R.string.dialog_manage_inscription).setTitle(R.string.toast_ManageInscriptions);
+                        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String json = generateRequestModifyStateAdvert(idUser, "accepted");
+                                changeInscriptionStatus(stateTextView ,json, idAdvert,"accepted");
+                            }
+                        });
+
+                        builder.setNegativeButton(R.string.dialog_refuse, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String json = generateRequestModifyStateAdvert(idUser, "refused");
+                                changeInscriptionStatus(stateTextView ,json, idAdvert,"refused");
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 }
             }
@@ -320,6 +334,46 @@ public class InscriptionsAdapter extends BaseAdapter {
         ft.replace(R.id.screen_area, fragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    private String generateRequestModifyStateAdvert(String idUser, String state) {
+        try {
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("userId", idUser);
+            oJSON.put("status", state);
+            return oJSON.toString(1);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void changeInscriptionStatus(final TextView stateTextView, final String json, final String idAdvert, final String state) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = context.getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.setInscriptionStatus(idAdvert, json);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN SET STATUS INSCRIPTION")) {
+                    if (state.equals("accepted")) {
+                        stateTextView.setText(R.string.acceptedButton_advert);
+                    } else if (state.equals("refused")) {
+                        stateTextView.setText(R.string.refusedButton_advert);
+                    }
+                }
+                else {
+
+                    Toast.makeText(context, R.string.error_SettingInscriptionStatus, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 }
 
