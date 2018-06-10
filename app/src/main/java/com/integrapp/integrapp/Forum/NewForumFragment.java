@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 
@@ -146,6 +148,8 @@ public class NewForumFragment extends Fragment {
         if (!s.equals("ERROR CREATING FORUM")) {
             Toast.makeText(getActivity(), getString(R.string.toast_ForumCreatedSuccessfully), Toast.LENGTH_SHORT).show();
             getFragmentManager().popBackStack();
+            InputMethodManager imm = (InputMethodManager)NewForumFragment.this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
         }
         else {
             Toast.makeText(getActivity(), getString(R.string.error_CreatingForum), Toast.LENGTH_SHORT).show();
