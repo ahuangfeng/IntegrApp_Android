@@ -40,10 +40,13 @@ import com.integrapp.integrapp.Server;
 import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Objects;
 import static android.app.Activity.RESULT_OK;
 
@@ -160,6 +163,13 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         voteDislike();
+                    }
+                });
+            } else {
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dispatchTakePictureIntent();
                     }
                 });
             }
@@ -823,11 +833,12 @@ public class ProfileFragment extends Fragment {
     private void addPhoto2(final Bitmap bitmap) {
         requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         File fPath = Environment.getExternalStorageDirectory();
-        File f2 = new File(fPath, "drawPic1.png");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File f2 = new File(fPath, timeStamp);
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(f2);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
             stream.close();
             addPhoto3(bitmap, f2);
         } catch (IOException e) {
@@ -837,7 +848,6 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void addPhoto3(final Bitmap bitmap, final File f) {
-        imageView.setImageDrawable(Drawable.createFromPath(f.getPath()));
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {

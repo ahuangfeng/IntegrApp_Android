@@ -1,6 +1,8 @@
 package com.integrapp.integrapp;
 
 import com.android.internal.http.multipart.MultipartEntity;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
@@ -28,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server {
     private static final Server serverInstance = new Server();
@@ -574,75 +578,89 @@ public class Server {
     }
 
     public String addPhotoUser(File f) {
+        System.out.println("fileeee: " + f.getAbsoluteFile());
+        Map config = new HashMap();
+        config.put("cloud_name", "hlcivcine");
+        config.put("api_key", "158434689396546");
+        config.put("api_secret", "LfgGuWmq3OGj-2HmYTo0p7Xa5CE");
+
+        Map args = new HashMap();
+        args.put("folder", "/users");
+
+        Cloudinary cloudinary = new Cloudinary(config);
         try {
+            Map map = cloudinary.uploader().upload(f.getAbsolutePath(), args);
+            Object o = map.get("public_id");
+            String public_id = o.toString();
+            o = map.get("url");
+            String url = o.toString();
+            System.out.println("public_iddddd: " + public_id + " urlllllll: " + url);
 
-            System.out.println("fileeee: " + f.getAbsoluteFile());
+            HttpPost post = new HttpPost(API_URI+"/imageUpload");
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("public_id", public_id);
+            oJSON.put("url", url);
+            String json = oJSON.toString(1);
+            System.out.println("json: " + json);
 
-            HttpPost post = new HttpPost(API_URI+"/imageUpload/");
-
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-
-            /* example for setting a HttpMultipartMode */
-            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-            FileBody fileBody = new FileBody(f.getCanonicalFile()); //image should be a String
-            StringBody stringBody = new StringBody("image/png");
-            builder.addPart("file", fileBody);
-            builder.addPart("type", stringBody);
-            HttpEntity entity = builder.build();
-
-            post.setHeader("accept", "application/json");
-            post.setHeader("x-access-token", token);
-            post.setHeader("Content-Type", "multipart/form-data");
+            StringEntity entity = new StringEntity(json);
             post.setEntity(entity);
-
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
             BasicResponseHandler handler = new BasicResponseHandler();
 
             return client.execute(post, handler);
 
-        } catch (IOException e) {
+        }
+        catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
 
         return "ERROR UPDATING PHOTO";
     }
 
-    public String addPhotoAdvert(File f, String idAdvert) {
+    public String addPhotoAdvert(File f, String advertid) {
+        System.out.println("fileeee: " + f.getAbsoluteFile());
+        Map config = new HashMap();
+        config.put("cloud_name", "hlcivcine");
+        config.put("api_key", "158434689396546");
+        config.put("api_secret", "LfgGuWmq3OGj-2HmYTo0p7Xa5CE");
+
+        Map args = new HashMap();
+        args.put("folder", "/adverts");
+
+        Cloudinary cloudinary = new Cloudinary(config);
         try {
+            Map map = cloudinary.uploader().upload(f.getAbsolutePath(), args);
+            Object o = map.get("public_id");
+            String public_id = o.toString();
+            o = map.get("url");
+            String url = o.toString();
+            System.out.println("public_iddddd: " + public_id + " urlllllll: " + url);
 
-            System.out.println("fileeee: " + f.getAbsoluteFile());
+            HttpPost post = new HttpPost(API_URI+"/advert/imageUpload/"+advertid);
+            JSONObject oJSON = new JSONObject();
+            oJSON.put("public_id", public_id);
+            oJSON.put("url", url);
+            String json = oJSON.toString(1);
+            System.out.println("json: " + json);
 
-            HttpPost post = new HttpPost(API_URI+"/advert/imageUpload/"+idAdvert);
-
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-
-            /* example for setting a HttpMultipartMode */
-            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-            FileBody fileBody = new FileBody(f.getCanonicalFile()); //image should be a String
-            StringBody stringBody = new StringBody("image/png");
-            builder.addPart("file", fileBody);
-            builder.addPart("type", stringBody);
-
-            HttpEntity entity = builder.build();
-
-            post.setHeader("accept", "application/json");
-            post.setHeader("x-access-token", token);
-            post.setHeader("Content-Type", "multipart/form-data");
+            StringEntity entity = new StringEntity(json);
             post.setEntity(entity);
-
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-type", "application/json");
             BasicResponseHandler handler = new BasicResponseHandler();
 
             return client.execute(post, handler);
 
-        } catch (IOException e) {
+        }
+        catch (IOException | JSONException e) {
             e.printStackTrace();
         }
 
-
         return "ERROR UPDATING PHOTO";
     }
+
 
     public String getImageAdvert(String advertId) {
         HttpGet get = new HttpGet(API_URI+"/advert/image/"+advertId);
