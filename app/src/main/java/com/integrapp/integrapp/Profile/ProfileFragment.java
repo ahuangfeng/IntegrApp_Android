@@ -35,9 +35,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.integrapp.integrapp.Adverts.AdvertsFragment;
 import com.integrapp.integrapp.Login.LogIn;
+import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,6 +74,7 @@ public class ProfileFragment extends Fragment {
     private TextView adsTextView;
     private String idUser;
     private Server server;
+
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -121,8 +125,6 @@ public class ProfileFragment extends Fragment {
         TextView profileAds = view.findViewById(R.id.profile_adds);
         profileAds.setText(getString(R.string.adds_profile));
 
-        setImagePhoto();
-
         if (Objects.equals(typeProfile, "advertiserUser")) {
             idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
             String username = getArguments() != null ? getArguments().getString("username") : "username";
@@ -133,6 +135,10 @@ public class ProfileFragment extends Fragment {
             int likes = getArguments() != null ? getArguments().getInt("likes") : 0;
             int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
+            String path = getArguments() != null ? getArguments().getString("imagePath") : "imagePath";
+
+            if (!path.equals("")) Picasso.with(getContext()).load(path).into(imageView);
+            else imageView.setImageResource(R.drawable.project_preview_large_2);
 
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes,dislikes,ads);
@@ -177,16 +183,8 @@ public class ProfileFragment extends Fragment {
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    Fragment fragment = new ProfileFragment("advertiserUser");
-                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-                    Bundle args = getArguments();
-                    fragment.setArguments(args);
-
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.screen_area, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    //hacer llamada likes, dislikes
+                    getLikesDislikes();
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
@@ -202,6 +200,9 @@ public class ProfileFragment extends Fragment {
             int likes = preferences.getInt("likes",0);
             int dislikes = preferences.getInt("dislikes",0);
             int ads = preferences.getInt("ads", 0);
+
+            imageView.setImageResource(R.drawable.project_preview_large_2);
+            setImagePhoto();
 
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes, dislikes, ads);
@@ -223,18 +224,13 @@ public class ProfileFragment extends Fragment {
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    Fragment fragment = new ProfileFragment();
-                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.screen_area, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    getLikesDislikes();
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
 
-
         }
+
       return view;
     }
 
@@ -393,6 +389,27 @@ public class ProfileFragment extends Fragment {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private void deleteImageUserById() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.deleteImageUserById(idUser);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN DELETING IMAGE USER")) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_UserImageDeletedSuccessfully), Toast.LENGTH_SHORT).show();
+                    imageView.setImageResource(R.drawable.project_preview_large_2);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_DeletingUser), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
     private void setAttributes(String name, String username, String type, String email, String phone) {
         nameTextView.setText(name);
         usernameTextView.setText(username);
@@ -535,6 +552,25 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     reportUser(editText.getText().toString());
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else if (id == R.id.action_deleteImageUser) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_delete_image_user).setTitle(R.string.tittle_dialogDeleteImageUser);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    deleteImageUserById();
                 }
             });
 
@@ -865,6 +901,62 @@ public class ProfileFragment extends Fragment {
                 }
             }
         }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void getLikesDislikes() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                String username = usernameTextView.getText().toString();
+                return server.getUserInfoByUsername(username);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GET INFO USER")) {
+                    saveLikesDislikes(s);
+                }
+                else {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private void saveLikesDislikes(String s) {
+        try {
+            JSONObject myJsonObject = new JSONObject(s);
+            String rate = myJsonObject.getString("rate");
+            JSONObject myJsonRate = new JSONObject(rate);
+            int likes = myJsonRate.getInt("likes");
+            int dislikes = myJsonRate.getInt("dislikes");
+            String username = myJsonObject.getString("username");
+            JSONArray jsonArray = myJsonObject.getJSONArray("adverts");
+            int ads = jsonArray.length();
+            String path = "";
+            if (myJsonObject.has("imagePath")) {
+                path = myJsonObject.getString("imagePath");
+            }
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            if (preferences.getString("username", "username").equals(username)) {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("likes", likes);
+                editor.putInt("dislikes", dislikes);
+                editor.apply();
+            }
+
+            if (!path.equals("")) Picasso.with(getContext()).load(path).into(imageView);
+            else
+            setRateAndAds(likes, dislikes, ads);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

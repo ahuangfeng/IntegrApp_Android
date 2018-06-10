@@ -413,6 +413,10 @@ public class SingleForumFragment extends Fragment {
             if (myJsonObject.has("phone")) {
                 phone = myJsonObject.getString("phone");
             }
+            String path = "";
+            if (myJsonObject.has("imagePath")) {
+                path = myJsonObject.getString("imagePath");
+            }
 
             String rate = myJsonObject.getString("rate");
             JSONObject myJsonRate = new JSONObject(rate);
@@ -430,6 +434,7 @@ public class SingleForumFragment extends Fragment {
             args.putInt("likes", likes);
             args.putInt("dislikes", dislikes);
             args.putInt("ads", ads);
+            args.putString("path", path);
 
             fragment.setArguments(args);
 
@@ -503,6 +508,8 @@ public class SingleForumFragment extends Fragment {
         args.putString("type", user.getType());
         args.putString("email", user.getEmail());
         args.putString("phone", user.getPhone());
+        args.putString("path", user.getPath());
+
 
         try {
             JSONObject myJsonObject = new JSONObject(s);

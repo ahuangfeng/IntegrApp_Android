@@ -45,6 +45,8 @@ public class UserDataAdvertiser {
             }
             if(userInfo.has("imagePath")) {
                 this.path = userInfo.getString("imagePath");
+            } else {
+                this.path = "";
             }
 
         } catch (JSONException e) {

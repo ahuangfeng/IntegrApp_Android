@@ -329,6 +329,7 @@ public class SingleAdvertFragment extends Fragment {
         args.putString("type", userData.getType());
         args.putString("email", userData.getEmail());
         args.putString("phone", userData.getPhone());
+        args.putString("imagePath", userData.getPath());
 
         try {
             JSONObject myJsonObject = new JSONObject(s);

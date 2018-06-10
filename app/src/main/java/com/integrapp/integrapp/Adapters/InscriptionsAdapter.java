@@ -178,6 +178,11 @@ public class InscriptionsAdapter extends BaseAdapter {
             args.putInt("dislikes", dislikes);
             int ads = myJsonObject.getJSONArray("adverts").length();
             args.putInt("ads", ads);
+            if (myJsonObject.has("imagePath")) {
+                args.putString("path", myJsonObject.getString("imagePath"));
+            } else {
+                args.putString("path", "");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
