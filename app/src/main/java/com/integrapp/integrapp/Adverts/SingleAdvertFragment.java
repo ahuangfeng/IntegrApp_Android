@@ -248,7 +248,7 @@ public class SingleAdvertFragment extends Fragment {
         else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
 
         imageView = view.findViewById(R.id.image_view_anunci);
-        if (!path.equals("")) {
+        if (!path.equals("null")) {
             Picasso.with(getContext()).load(path).into(imageView);
         } else {
             imageView.setImageResource(image);
