@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import com.integrapp.integrapp.Adverts.AdvertsFragment;
 import com.integrapp.integrapp.Chat.MainChatsFragment;
+import com.integrapp.integrapp.Faq.FaqFragment;
 import com.integrapp.integrapp.Forum.ForumFragment;
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Login.LogIn;
@@ -166,12 +169,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }*/
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
         } else {
             super.onBackPressed();
+        }
+        Toolbar toolbar= findViewById(R.id.toolbar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setTitle("ItegrApp");
         }
     }
 
@@ -217,10 +224,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_forum) {
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
-            initializeCountDrawer("0");
+            initializeCountDrawer("");
             fragment = new MainChatsFragment();
         } else if (id == R.id.nav_FAQ) {
-            Toast.makeText(getApplicationContext(), "Function FAQ not implemented", Toast.LENGTH_SHORT).show();
+            fragment = new FaqFragment();
         } else if (id == R.id.nav_aboutUs) {
             fragment = new About();
         } else if (id == R.id.nav_logOut) {
@@ -232,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(i);
             finish();
         }
+        //onSectionAttached(item.getItemId());
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -245,6 +253,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+//    //TODO acabar de posar els titols a la action bar. crear resorce array-string amb els titols
+//    private void onSectionAttached(int number) {
+//        if (number == R.id.nav_FAQ) {
+//            ActionBar actionBar = getSupportActionBar();
+//            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//            actionBar.setDisplayShowTitleEnabled(true);
+//            actionBar.setTitle("F.A.Q.");
+//        }
+////        String[] stringArray = getResources().getStringArray(R.array.section);
+////        if (number >= 0) {
+////            mTitle = stringArray[number];
+////        }
+//    }
+//    //TODO acabar
+//    public void restoreActionBar() {
+////        ActionBar actionBar = getSupportActionBar();
+////        // actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+////        actionBar.setDisplayShowTitleEnabled(true);
+////        actionBar.setTitle(mTitle);
+//    }
 
     @SuppressLint("StaticFieldLeak")
     private void getLikesDislikes() {

@@ -239,6 +239,20 @@
     <string name="offer_itemAdd">OFERTA</string>
     <string name="error_ModifyingForum">Error en modificar el fòrum</string>
     <string name="comment_noun">Comentari</string>
+    <string name="MainChatsFragment_title">Xat</string>
+
+    <!-- Array of strings for the FAQ fragment -->
+    <string-array name="faq_title_number">
+        <item name="title_0"> Hi ha alguna limitació en relació a la compra d'immobles? </item>
+        <item name="title_1"> Quins passos cal seguir per obrir una empresa a Espanya? </item>
+        <item name="title_2">Hi ha requisits lingüístics per sol·licitar la ciutadania? </item>
+    </string-array>
+
+    <string-array name="faq_content_number">
+        <item name="content_0"> L'única limitació és que cada sol·licitant ha d'invertir almenys 500.000 euros i la propietat ha d'estar lliure de gravàmens i càrregues. Tots els tipus de propietat són elegibles i es poden utilitzar o arrendar lliurement. </item>
+        <item name="content_1"> This is the content of faq number 1 </item>
+        <item name="content_2"> This is the content of faq number 1 </item>
+    </string-array>
 
     <!-- About strings-->
     <string name="who_we_are">Qui som</string>

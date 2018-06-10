@@ -240,6 +240,20 @@
     <string name="offer_itemAdd">OFERTA</string>
     <string name="error_ModifyingForum">Error al modificar el foro</string>
     <string name="comment_noun">Comentario</string>
+    <string name="MainChatsFragment_title">Chat</string>
+
+    <!-- Array of strings for the FAQ fragment -->
+    <string-array name="faq_title_number">
+        <item name="title_0"> ¿Hay alguna limitación en cuanto a la compra de bienes inmuebles? </item>
+        <item name="title_1">¿Qué pasos son necesarios para abrir una empresa en España? </item>
+        <item name="title_2">¿Hay requisitos de idioma para solicitar la ciudadanía?</item>
+    </string-array>
+
+    <string-array name="faq_content_number">
+        <item name="content_0"> La única limitación es que cada solicitante debe invertir al menos € 500,000 y la propiedad debe estar libre de gravámenes. Todos los tipos de propiedad son elegibles y pueden ser usados ​​o arrendados libremente. </item>
+        <item name="content_1"> This is the content of faq number 1 </item>
+        <item name="content_2"> This is the content of faq number 2 </item>
+    </string-array>
 
     <!-- About strings-->
     <string name="who_we_are">Quienes somos</string>
