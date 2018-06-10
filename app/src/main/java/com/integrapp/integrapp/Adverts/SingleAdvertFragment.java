@@ -932,11 +932,19 @@ public class SingleAdvertFragment extends Fragment {
                         title = advert.getTitle();
                         description = advert.getDescription();
                         date = advert.getDate();
+                        registered = advert.getRegistered();
                         setEditableTexts();
                         if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
                         else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
-                        if (!advert.getPath().equals("null")) Picasso.with(getContext()).load(path).into(imageView);
-                        else imageView.setImageResource(R.drawable.project_preview_large_2);
+                        if (!advert.getPath().equals("null")) {
+                            image = -1;
+                            Picasso.with(getContext()).load(path).into(imageView);
+                        }
+                        else {
+                            image = R.drawable.project_preview_large_2;
+                            imageView.setImageResource(R.drawable.project_preview_large_2);
+                        }
+                        path = advert.getPath();
                         updatePlaces();
                         updateStatus();
 
