@@ -21,7 +21,6 @@ import com.integrapp.integrapp.Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLOutput;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -167,7 +166,7 @@ public class SignUp extends AppCompatActivity {
             finish();
         }
         else {
-            Toast.makeText(getApplicationContext(), getString(R.string.user_exists), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.error_signup), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -5,13 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +36,17 @@ import com.integrapp.integrapp.Adverts.AdvertsFragment;
 import com.integrapp.integrapp.Login.LogIn;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Objects;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
@@ -58,6 +70,15 @@ public class ProfileFragment extends Fragment {
     private String idUser;
     private Server server;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    String mCurrentPhotoPath;
+    private ImageView imageView;
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
     public ProfileFragment() {
     }
 
@@ -75,6 +96,8 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_profile, container, false);
         this.server = Server.getInstance();
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+
         nameTextView = view.findViewById(R.id.nameTextView);
         usernameTextView = view.findViewById(R.id.usernameTextView);
         typeUserTextView = view.findViewById(R.id.typeUserTextView);
@@ -90,8 +113,13 @@ public class ProfileFragment extends Fragment {
         likesTextView = view.findViewById(R.id.likesTextView);
         dislikesTextView = view.findViewById(R.id.dislikesTextView);
         adsTextView = view.findViewById(R.id.adsTextView);
+
+        imageView = view.findViewById(R.id.profile_image);
+
         TextView profileAds = view.findViewById(R.id.profile_adds);
         profileAds.setText(getString(R.string.adds_profile));
+
+        setImagePhoto();
 
         if (Objects.equals(typeProfile, "advertiserUser")) {
             idUser = getArguments() != null ? getArguments().getString("idUser") : "idUser";
@@ -137,6 +165,22 @@ public class ProfileFragment extends Fragment {
                 });
             }
 
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    Fragment fragment = new ProfileFragment("advertiserUser");
+                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    Bundle args = getArguments();
+                    fragment.setArguments(args);
+
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
         }
         else {
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
@@ -160,8 +204,36 @@ public class ProfileFragment extends Fragment {
                     showUserAdverts();
                 }
             });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dispatchTakePictureIntent();
+                }
+            });
+
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    Fragment fragment = new ProfileFragment();
+                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    ft.replace(R.id.screen_area, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+
         }
       return view;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     private void showUserAdverts() {
@@ -261,6 +333,26 @@ public class ProfileFragment extends Fragment {
         likesTextView.setText(likesString);
         dislikesTextView.setText(dislikesString);
         adsTextView.setText(adsString);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void setImagePhoto() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getImageUser(idUser);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING IMAGE")) {
+                    System.out.println("laimagenobtenida: " + s);
+                    Picasso.with(getContext()).load(s).into(imageView);
+                }
+            }
+        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -713,6 +805,54 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            addPhoto2(imageBitmap);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void addPhoto2(final Bitmap bitmap) {
+        requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        File fPath = Environment.getExternalStorageDirectory();
+        File f2 = new File(fPath, "drawPic1.png");
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(f2);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            stream.close();
+            addPhoto3(bitmap, f2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void addPhoto3(final Bitmap bitmap, final File f) {
+        imageView.setImageDrawable(Drawable.createFromPath(f.getPath()));
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.addPhotoUser(f);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR UPDATING PHOTO")) {
+                    imageView.setImageBitmap(bitmap);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 
 }

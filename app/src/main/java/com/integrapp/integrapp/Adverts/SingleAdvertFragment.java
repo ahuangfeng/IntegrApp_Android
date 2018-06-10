@@ -5,13 +5,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,14 +38,27 @@ import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
+import static android.app.Activity.RESULT_OK;
+
 public class SingleAdvertFragment extends Fragment {
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private String title;
     private String type;
@@ -56,6 +75,8 @@ public class SingleAdvertFragment extends Fragment {
     private Button inscriptionButton;
     private String personalUserId;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     private EditText textViewTitle;
     private EditText textViewDescription;
     private EditText textViewPlaces;
@@ -66,6 +87,9 @@ public class SingleAdvertFragment extends Fragment {
     private View viewDate;
     private TextView textViewState;
     private String advertStatus;
+    private ImageView imageView;
+
+    private Advert advert;
 
     UserDataAdvertiser userData;
     private Server server;
@@ -75,6 +99,7 @@ public class SingleAdvertFragment extends Fragment {
 
     @SuppressLint("ValidFragment")
     public SingleAdvertFragment(Advert advert) {
+        this.advert = advert;
         title = advert.getTitle();
         type = advert.getType();
         state = advert.getState();
@@ -98,11 +123,14 @@ public class SingleAdvertFragment extends Fragment {
 
         loadAdvertData(view);
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String usernamePreferences = preferences.getString("username", "username");
         personalUserId = preferences.getString("idUser", "null");
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
+        imageView = view.findViewById(R.id.image_view_anunci);
 
         updatePlaces();
         if (userData.getUsername().equals(usernamePreferences)) {
@@ -173,7 +201,38 @@ public class SingleAdvertFragment extends Fragment {
             }
         });
 
+        setImagePhoto();
+
+        if (type_advert.equals("owner")) {
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dispatchTakePictureIntent();
+                }
+            });
+        }
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Fragment fragment = new SingleAdvertFragment(advert);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.screen_area, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return view;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     private void loadAdvertData(View view) {
@@ -769,6 +828,74 @@ public class SingleAdvertFragment extends Fragment {
         oJSON.put("typeId", idAdvert);
 
         return oJSON.toString(1);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void setImagePhoto() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.getImageAdvert(idAdvert);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING IMAGE")) {
+                    System.out.println("laimagenobtenida: " + s);
+                    Picasso.with(getContext()).load(s).into(imageView);
+                }
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            addPhoto2(imageBitmap);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void addPhoto2(final Bitmap bitmap) {
+        requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        File fPath = Environment.getExternalStorageDirectory();
+        File f2 = new File(fPath, "drawPic1.png");
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(f2);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            stream.close();
+            addPhoto3(bitmap, f2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void addPhoto3(final Bitmap bitmap, final File f) {
+        imageView.setImageDrawable(Drawable.createFromPath(f.getPath()));
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                server.token = preferences.getString("user_token", "user_token");
+                return server.addPhotoAdvert(f, idAdvert);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR UPDATING PHOTO")) {
+                    imageView.setImageBitmap(bitmap);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
     }
 
     @Override

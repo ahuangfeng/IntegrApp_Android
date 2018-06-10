@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -22,6 +25,7 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.integrapp.integrapp.Adverts.SingleAdvertFragment;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Model.ChatAppMsgDTO;
 import com.integrapp.integrapp.Model.User;
@@ -35,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SingleChatFragment extends Fragment {
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private User toUser;
     private String personalUserId;
@@ -107,6 +112,7 @@ public class SingleChatFragment extends Fragment {
         TextView user_name = view.findViewById(R.id.chat_with);
         Button send = view.findViewById(R.id.send_button);
         user_name.setText(toUser.getName());
+
         // Get RecyclerView object.
         msgRecyclerView = view.findViewById(R.id.messages);
         //Set recyclerView layout manager
@@ -118,6 +124,8 @@ public class SingleChatFragment extends Fragment {
         chatAppMsgAdapter  = new ChatAppMsgAdapter(msgDtoList);
         //Set data adapter to the RecycleView
         msgRecyclerView.setAdapter(chatAppMsgAdapter);
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +165,20 @@ public class SingleChatFragment extends Fragment {
                 }
             }
         });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Fragment chatFrag = new SingleChatFragment(toUser);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.screen_area, chatFrag);
+                ft.addToBackStack(null);
+                ft.commit();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return view;
     }
 

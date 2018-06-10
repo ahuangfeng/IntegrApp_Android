@@ -1,14 +1,30 @@
 package com.integrapp.integrapp;
 
+import com.android.internal.http.multipart.MultipartEntity;
+import com.squareup.picasso.Picasso;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipart;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -530,6 +546,7 @@ public class Server {
         return "ERROR VOTING FORUM";
     }
 
+
     public String getNewMessages(String userId) {
         HttpGet get = new HttpGet(API_URI+"/newChats/"+userId);
         try {
@@ -541,5 +558,102 @@ public class Server {
             e.printStackTrace();
         }
         return "ERROR IN GETTING NUMBER OF NEW MESSAGES";
+    } 
+
+    public String getImageUser(String userId) {
+        HttpGet get = new HttpGet(API_URI+"/image/"+userId);
+        try {
+            get.setHeader("x-access-token", token);
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING IMAGE";
+    }
+
+    public String addPhotoUser(File f) {
+        try {
+
+            System.out.println("fileeee: " + f.getAbsoluteFile());
+
+            HttpPost post = new HttpPost(API_URI+"/imageUpload/");
+
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+            /* example for setting a HttpMultipartMode */
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+            FileBody fileBody = new FileBody(f.getCanonicalFile()); //image should be a String
+            StringBody stringBody = new StringBody("image/png");
+            builder.addPart("file", fileBody);
+            builder.addPart("type", stringBody);
+            HttpEntity entity = builder.build();
+
+            post.setHeader("accept", "application/json");
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-Type", "multipart/form-data");
+            post.setEntity(entity);
+
+            BasicResponseHandler handler = new BasicResponseHandler();
+
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return "ERROR UPDATING PHOTO";
+    }
+
+    public String addPhotoAdvert(File f, String idAdvert) {
+        try {
+
+            System.out.println("fileeee: " + f.getAbsoluteFile());
+
+            HttpPost post = new HttpPost(API_URI+"/advert/imageUpload/"+idAdvert);
+
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+            /* example for setting a HttpMultipartMode */
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+            FileBody fileBody = new FileBody(f.getCanonicalFile()); //image should be a String
+            StringBody stringBody = new StringBody("image/png");
+            builder.addPart("file", fileBody);
+            builder.addPart("type", stringBody);
+
+            HttpEntity entity = builder.build();
+
+            post.setHeader("accept", "application/json");
+            post.setHeader("x-access-token", token);
+            post.setHeader("Content-Type", "multipart/form-data");
+            post.setEntity(entity);
+
+            BasicResponseHandler handler = new BasicResponseHandler();
+
+            return client.execute(post, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return "ERROR UPDATING PHOTO";
+    }
+
+    public String getImageAdvert(String advertId) {
+        HttpGet get = new HttpGet(API_URI+"/advert/image/"+advertId);
+        try {
+            get.setHeader("x-access-token", token);
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(get, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR IN GETTING IMAGE";
     }
 }
