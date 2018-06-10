@@ -35,6 +35,8 @@ import com.integrapp.integrapp.Forum.ForumFragment;
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Login.LogIn;
 import com.integrapp.integrapp.Profile.ProfileFragment;
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Objects;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View header = navigationView.getHeaderView(0);
         TextView headerName = header.findViewById(R.id.headerName);
         TextView headerEmail = header.findViewById(R.id.headerEmail);
+        ImageView headerImageView = header.findViewById(R.id.imageView);
 
         LinearLayout linearLayout = header.findViewById(R.id.headerLayout);
         linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             headerEmail.setText(getString(R.string.No_email));
         }
         else headerEmail.setText(email);
+
+        String path = preferences.getString("path", "path");
+        if (Objects.equals(path, "No path")) {
+            headerImageView.setImageResource(R.drawable.project_preview_large_2);
+        } else {
+            Picasso.with(this).load(path).into(headerImageView);
+        }
 
         numberChatsShow =(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_chats));
         loadNewMessages();

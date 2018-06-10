@@ -460,6 +460,7 @@ public class ProfileFragment extends Fragment {
             menu.findItem(R.id.action_deleteImageUser).setVisible(false);
         } else {
             menu.findItem(R.id.action_reportUser).setVisible(false);
+            menu.findItem(R.id.action_delete).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
