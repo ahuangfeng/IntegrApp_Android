@@ -37,11 +37,17 @@ public class Advert {
             if(dataAdvert.has("user")){
                 this.userDataAdvertiser = new UserDataAdvertiser(dataAdvert.getJSONObject("user"));
             }
-            if (dataAdvert.has("imagePath")) {
-                this.path = dataAdvert.getString("imagePath");
-                this.image = -1;
+            if(dataAdvert.has("imagePath")) {
+                String path2 = dataAdvert.getString("imagePath");
+                if (path2.equals("null")) {
+                    this.path = "null";
+                    this.image = R.drawable.project_preview_large_2;
+                } else {
+                    this.path = path2;
+                    this.image = -1;
+                }
             } else {
-                this.path = "";
+                this.path = "null";
                 this.image = R.drawable.project_preview_large_2;
             }
 

@@ -216,12 +216,6 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getAdvert(idAdvert);
-                Fragment fragment = new SingleAdvertFragment(advert);
-                FragmentManager fragmentManager = SingleAdvertFragment.this.getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.screen_area, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -935,12 +929,9 @@ public class SingleAdvertFragment extends Fragment {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
                         advert = new Advert(jsonObject);
-                        Fragment fragment = new SingleAdvertFragment(advert);
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.screen_area, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
+                        if (!advert.getPath().equals("null")) Picasso.with(getContext()).load(path).into(imageView);
+                        else imageView.setImageResource(R.drawable.project_preview_large_2);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -965,6 +956,7 @@ public class SingleAdvertFragment extends Fragment {
                 if (!s.equals("ERROR IN DELETING IMAGE ADVERT")) {
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_AdvertDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                     imageView.setImageResource(R.drawable.project_preview_large_2);
+                    path = "";
                 }
                 else {
                     Toast.makeText(getActivity(), getString(R.string.error_DeletingAdvert), Toast.LENGTH_SHORT).show();
