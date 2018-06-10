@@ -40,9 +40,6 @@ public class InscriptionsAdapter extends BaseAdapter {
     private Server server;
     private FragmentActivity activity;
     private String type;
-    private String idUser;
-    private String idAdvert;
-    private TextView stateTextView;
 
     public InscriptionsAdapter(Context context, List<DataInscription> objectList, FragmentActivity activity, String type) {
         this.context = context;
@@ -70,8 +67,10 @@ public class InscriptionsAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         server = Server.getInstance();
-        idUser = objectList.get(i).getIdUser();
-        idAdvert = objectList.get(i).getIdAdvert();
+        final String idUser = objectList.get(i).getIdUser();
+        final String idAdvert = objectList.get(i).getIdAdvert();
+        System.out.println("QUE TENEMOS USER: " + idUser);
+        System.out.println("QUE TENEMOS ADVERT: " + idAdvert);
         View vista;
         LayoutInflater inflate = LayoutInflater.from(context);
         vista = inflate.inflate(R.layout.activity_item_inscription, null);
@@ -91,7 +90,7 @@ public class InscriptionsAdapter extends BaseAdapter {
             }
         });
 
-        stateTextView = vista.findViewById(R.id.textViewState);
+        final TextView stateTextView = vista.findViewById(R.id.textViewState);
         final String status = objectList.get(i).getState();
         stateTextView.setText(status);
         stateTextView.setClickable(true);
@@ -120,22 +119,23 @@ public class InscriptionsAdapter extends BaseAdapter {
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     } else {
+                        System.out.println("QUE USER TENEMOS: "+ idUser);
                         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
                         builder.setMessage(R.string.dialog_manage_inscription).setTitle(R.string.toast_ManageInscriptions);
                         builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String json = generateRequestModifyStateAdvert("accepted");
-                                changeInscriptionStatus(json, "accepted");
+                                String json = generateRequestModifyStateAdvert(idUser, "accepted");
+                                changeInscriptionStatus(stateTextView ,json, idAdvert,"accepted");
                             }
                         });
 
                         builder.setNegativeButton(R.string.dialog_refuse, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String json = generateRequestModifyStateAdvert("refused");
-                                changeInscriptionStatus(json, "refused");
+                                String json = generateRequestModifyStateAdvert(idUser, "refused");
+                                changeInscriptionStatus(stateTextView ,json, idAdvert,"refused");
                             }
                         });
                         AlertDialog dialog = builder.create();
@@ -334,7 +334,7 @@ public class InscriptionsAdapter extends BaseAdapter {
         ft.commit();
     }
 
-    private String generateRequestModifyStateAdvert(String state) {
+    private String generateRequestModifyStateAdvert(String idUser, String state) {
         try {
             JSONObject oJSON = new JSONObject();
             oJSON.put("userId", idUser);
@@ -348,7 +348,7 @@ public class InscriptionsAdapter extends BaseAdapter {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void changeInscriptionStatus(final String json, final String state) {
+    private void changeInscriptionStatus(final TextView stateTextView, final String json, final String idAdvert, final String state) {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {

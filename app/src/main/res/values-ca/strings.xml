@@ -85,6 +85,7 @@
     <string name="newAdvert_expectedTime">Hora prevista</string>
     <string name="newAdvert_buttonDate">Data</string>
     <string name="newAdvert_buttonTime">Hora</string>
+    <string name="newAdvert_location">Localització</string>
 
     <!-- Strings of Menu-->
     <string name="menu_profile">Perfil</string>

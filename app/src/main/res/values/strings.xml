@@ -84,6 +84,7 @@
     <string name="newAdvert_expectedTime">Expected Time</string>
     <string name="newAdvert_buttonDate">Date</string>
     <string name="newAdvert_buttonTime">Time</string>
+    <string name="newAdvert_location">Location</string>
 
     <!-- Strings of Menu-->
     <string name="menu_profile">Profile</string>
