@@ -416,6 +416,12 @@ public class ProfileFragment extends Fragment {
                 if (!s.equals("ERROR IN DELETING IMAGE USER")) {
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_UserImageDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                     imageView.setImageResource(R.drawable.project_preview_large_2);
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("path", "");
+                    editor.apply();
+                    setImageHeader("");
+
                 }
                 else {
                     Toast.makeText(getActivity(), getString(R.string.error_DeletingUser), Toast.LENGTH_SHORT).show();
@@ -923,6 +929,19 @@ public class ProfileFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR UPDATING PHOTO")) {
                     imageView.setImageBitmap(bitmap);
+                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String path = jsonObject.getString("imagePath");
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("path", path);
+                        editor.apply();
+                        setImageHeader(path);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
                     Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
