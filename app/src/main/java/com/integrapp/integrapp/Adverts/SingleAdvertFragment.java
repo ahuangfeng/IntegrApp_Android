@@ -929,8 +929,13 @@ public class SingleAdvertFragment extends Fragment {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
                         advert = new Advert(jsonObject);
+                        setEditableTexts();
+                        if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
+                        else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
                         if (!advert.getPath().equals("null")) Picasso.with(getContext()).load(path).into(imageView);
                         else imageView.setImageResource(R.drawable.project_preview_large_2);
+                        updatePlaces();
+                        updateStatus();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
