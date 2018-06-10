@@ -128,7 +128,7 @@
 
         </LinearLayout>
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewAd"
             android:layout_width="280dp"
             android:layout_height="140dp"

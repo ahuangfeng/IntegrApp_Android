@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Model.Advert;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +54,12 @@ public class AdvertsAdapter extends BaseAdapter {
         TextView type = vista.findViewById(R.id.textViewType);
         TextView state = vista.findViewById(R.id.textViewState);
 
+        String path = objectList.get(i).getPath();
+        if (!path.equals("")) {
+            Picasso.with(context).load(path).into(imageView);
+        } else {
+            imageView.setImageResource(objectList.get(i).getImage());
+        }
         title.setText(objectList.get(i).getTitle());
         date.setText(objectList.get(i).getDate());
         description.setText(objectList.get(i).getDescription());
@@ -62,7 +69,6 @@ public class AdvertsAdapter extends BaseAdapter {
 
         if (Objects.equals(objectList.get(i).getState(), "opened")) state.setText(R.string.state_opened);
         else if (Objects.equals(objectList.get(i).getState(), "closed")) state.setText(R.string.state_closed);
-        imageView.setImageResource(objectList.get(i).getImage());
 
         return vista;
     }

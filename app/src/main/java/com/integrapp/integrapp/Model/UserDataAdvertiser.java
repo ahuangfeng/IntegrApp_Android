@@ -11,6 +11,7 @@ public class UserDataAdvertiser {
     private String type;
     private String email = "No e-mail";
     private String phone = "No phone";
+    private String path;
 
     UserDataAdvertiser(JSONObject userInfo) {
         decryptJson(userInfo);
@@ -42,6 +43,9 @@ public class UserDataAdvertiser {
             if(userInfo.has("phone")) {
                 this.phone = userInfo.getString("phone");
             }
+            if(userInfo.has("imagePath")) {
+                this.path = userInfo.getString("imagePath");
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -62,6 +66,9 @@ public class UserDataAdvertiser {
             }
             if(myJsonObject.has("phone")) {
                 this.phone = myJsonObject.getString("phone");
+            }
+            if(myJsonObject.has("imagePath")) {
+                this.path = myJsonObject.getString("imagePath");
             }
 
         } catch (JSONException e) {
@@ -115,5 +122,13 @@ public class UserDataAdvertiser {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
