@@ -101,11 +101,11 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
 
                         if (attributes==null || attributes.isEmpty()) {
                             if (idAdvert.equals("inscriptions")) {
-                                Toast.makeText(getActivity(), getString(R.string.noUserInscriptions), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InscriptionsFragment.this.getActivity(), getString(R.string.noUserInscriptions), Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(getActivity(), getString(R.string.noAdvertInscriptions), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InscriptionsFragment.this.getActivity(), getString(R.string.noAdvertInscriptions), Toast.LENGTH_SHORT).show();
                             }
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentManager fragmentManager = InscriptionsFragment.this.getActivity().getSupportFragmentManager();
                             fragmentManager.popBackStackImmediate();
                         } else {
                             //Preparación del diseño
@@ -113,7 +113,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
                             LinearLayout contentInscription = view.findViewById(R.id.includeContentInscription);
                             list = contentInscription.findViewById(R.id.sampleListView);
 
-                            InscriptionsAdapter myAdapter = new InscriptionsAdapter(view.getContext(), attributes, getActivity(), idAdvert);
+                            InscriptionsAdapter myAdapter = new InscriptionsAdapter(view.getContext(), attributes, InscriptionsFragment.this.getActivity(), idAdvert);
                             list.setAdapter(myAdapter);
                             myAdapter.notifyDataSetChanged();
 
@@ -133,7 +133,7 @@ public class InscriptionsFragment extends android.support.v4.app.Fragment {
 
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_GettingInscriptions), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InscriptionsFragment.this.getActivity(), getString(R.string.error_GettingInscriptions), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

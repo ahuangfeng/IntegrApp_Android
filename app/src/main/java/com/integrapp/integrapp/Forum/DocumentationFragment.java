@@ -90,7 +90,7 @@ public class DocumentationFragment extends Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_SettingInfo), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DocumentationFragment.this.getActivity(), getString(R.string.error_SettingInfo), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -102,7 +102,7 @@ public class DocumentationFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = DocumentationFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getCommentsForum(id);
             }
@@ -112,14 +112,14 @@ public class DocumentationFragment extends Fragment {
                 if (!s.equals("ERROR IN GETTING COMMENTS FORUM")) {
                     getInfoComments(s);
                     Fragment fragment = new SingleForumFragment(forumItem, comments);
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentManager fragmentManager = DocumentationFragment.this.getActivity().getSupportFragmentManager();
                     FragmentTransaction ft = fragmentManager.beginTransaction();
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_GettingFullForum), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DocumentationFragment.this.getActivity(), getString(R.string.error_GettingFullForum), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

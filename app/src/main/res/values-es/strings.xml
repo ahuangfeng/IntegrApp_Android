@@ -140,7 +140,7 @@
     <string name="title_dialogReportAdvert">Denunciando anuncio</string>
     <string name="advertReport_ok">Anuncio denunciado correctamente</string>
     <string name="error_reportAdvert">Error al denunciar el anuncio</string>
-    <string name="toast_ForumCouldNotBeVoted">El foro no se ha podido votar</string>
+    <string name="toast_ForumCouldNotBeVoted">No puede votar su propio foro</string>
     <string name="toast_thanksForYourVote">Gracias por votar!</string>
 
     <!-- Strings of ChangePassword Dialog -->

@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.integrapp.integrapp.Model.Chat;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Adapters.ChatsAdapter;
 import com.integrapp.integrapp.Model.User;
@@ -65,7 +66,7 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN GETTING CHATS")) {
                     try {
-                        Toast.makeText(getActivity(), getString(R.string.toast_ChatCorrectly), Toast.LENGTH_LONG).show();
+                        Toast.makeText(ChatsFragment.this.getActivity(), getString(R.string.toast_ChatCorrectly), Toast.LENGTH_LONG).show();
                         getInfoFromString(s);
                         chatsAdapter = new ChatsAdapter(getContext(), chats);
                         listViewChats.setAdapter(chatsAdapter);
@@ -78,7 +79,7 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
                                 Chat chat = chats.get(position);
                                 User user = chat.getUser();
                                 Fragment chatFrag = new SingleChatFragment(user);
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentManager fragmentManager = ChatsFragment.this.getActivity().getSupportFragmentManager();
                                 FragmentTransaction ft = fragmentManager.beginTransaction();
                                 ft.replace(R.id.screen_area, chatFrag);
                                 ft.addToBackStack(null);
@@ -90,7 +91,7 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(getActivity(), getString(R.string.error_SettingInfoChats), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatsFragment.this.getActivity(), getString(R.string.error_SettingInfoChats), Toast.LENGTH_SHORT).show();
                 }
             }
 

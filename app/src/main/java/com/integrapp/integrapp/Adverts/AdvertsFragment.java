@@ -112,7 +112,7 @@ public class AdvertsFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = AdvertsFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return advertsServer.getAllAdverts(getType);
             }

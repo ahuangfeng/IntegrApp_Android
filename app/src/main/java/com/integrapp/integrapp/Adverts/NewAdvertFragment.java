@@ -101,7 +101,7 @@ public class NewAdvertFragment extends Fragment {
                 int cDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog DatePicker;
-                DatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                DatePicker = new DatePickerDialog(NewAdvertFragment.this.getActivity(), new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedYear, int selectedMonth, int selectedDay) {
                         selectedMonth = selectedMonth + 1;
                         String month = String.valueOf(selectedMonth);
@@ -125,7 +125,7 @@ public class NewAdvertFragment extends Fragment {
                 int cHour = currentTime.get(Calendar.HOUR_OF_DAY);
                 int cMinute = currentTime.get(Calendar.MINUTE);
                 TimePickerDialog TimePicker;
-                TimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                TimePicker = new TimePickerDialog(NewAdvertFragment.this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         String hour = String.valueOf(selectedHour);
@@ -152,7 +152,7 @@ public class NewAdvertFragment extends Fragment {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences preferences = NewAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
                     return server.setNewAdvert(json);
                 }

@@ -72,7 +72,7 @@ public class NewForumFragment extends Fragment {
                 String content_forum = content.getText().toString();
 
                 if(fieldsOk(title_forum, content_forum)) {
-                    Toast.makeText(getActivity(), getString(R.string.toast_PostingForum), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewForumFragment.this.getActivity(), getString(R.string.toast_PostingForum), Toast.LENGTH_SHORT).show();
                     sendDataToServer(title_forum, type_forum, content_forum);
                 }
             }

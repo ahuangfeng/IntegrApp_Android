@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.Chat;
+package com.integrapp.integrapp.Model;
 
 
 import com.integrapp.integrapp.Model.User;

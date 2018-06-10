@@ -140,7 +140,7 @@
     <string name="title_dialogReportAdvert">Denunciant anunci</string>
     <string name="advertReport_ok">Anunci denunciat correctament</string>
     <string name="error_reportAdvert">Error al denunciar l\'anunci</string>
-    <string name="toast_ForumCouldNotBeVoted">El forum no s\'ha pogut votar</string>
+    <string name="toast_ForumCouldNotBeVoted">No podeu votar el vostre propi fòrum</string>
     <string name="toast_thanksForYourVote">Gràcies per votar!</string>
 
     <!-- Strings of ChangePassword Dialog -->

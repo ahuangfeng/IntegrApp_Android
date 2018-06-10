@@ -76,7 +76,7 @@ public class UsersFragment extends android.support.v4.app.Fragment {
                                 //crear xat en clicar a un user o obrir-lo si ja existeix
                                 User user = users.get(position);
                                 Fragment chat = new SingleChatFragment(user);
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentManager fragmentManager = UsersFragment.this.getActivity().getSupportFragmentManager();
                                 FragmentTransaction ft = fragmentManager.beginTransaction();
                                 ft.replace(R.id.screen_area, chat);
                                 ft.addToBackStack(null);
@@ -89,7 +89,7 @@ public class UsersFragment extends android.support.v4.app.Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_SettingInfoOfUsers), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UsersFragment.this.getActivity(), getString(R.string.error_SettingInfoOfUsers), Toast.LENGTH_SHORT).show();
                 }
             }
 
