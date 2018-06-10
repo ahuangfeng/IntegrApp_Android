@@ -776,9 +776,6 @@ public class ProfileFragment extends Fragment {
         View header = navigationView.getHeaderView(0);
         TextView headerName = header.findViewById(R.id.headerName);
         TextView headerEmail = header.findViewById(R.id.headerEmail);
-        ImageView imageView2 = header.findViewById(R.id.imageView);
-
-
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String name = preferences.getString("name", "name");
@@ -795,7 +792,7 @@ public class ProfileFragment extends Fragment {
         if (s.equals("")) {
             imageView2.setImageResource(R.drawable.project_preview_large_2);
         } else {
-            Picasso.with(getContext()).load(s).into(imageView2);
+            Picasso.with(getActivity()).load(s).into(imageView2);
         }
     }
 

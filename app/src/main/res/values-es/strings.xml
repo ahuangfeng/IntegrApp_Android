@@ -15,6 +15,8 @@
     <string name="action_reportAdvert">Denunciar anuncio</string>
     <string name="action_reportUser">Denunciar usuario</string>
     <string name="action_reportForum">Denunciar foro</string>
+    <string name="action_deleteImageUser">Eliminar imagen de usuario</string>
+    <string name="action_deleteImageAdvert">Eliminar imagen de anuncio</string>
 
 
     <!-- Strings of SplashIntegrApp activity-->
@@ -259,6 +261,8 @@
     <string name="manel_alex">Manel-Àlex</string>
     <string name="sergi_aguilar">Sergi Aguilar</string>
     <string name="daniel_perez">Daniel Pérez</string>
+    <string name="toast_UserImageDeletedSuccessfully">Imagen de usuario eliminada con éxito</string>
+    <string name="toast_AdvertImageDeletedSuccessfully">Imagen del anuncio eliminada con éxito</string>
 
 
     <!-- Array for the spinner of user types-->

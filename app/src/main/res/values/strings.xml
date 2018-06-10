@@ -15,6 +15,7 @@
     <string name="action_reportUser">Report user</string>
     <string name="action_deleteImageUser">Delete user image</string>
     <string name="action_reportForum">Report forum</string>
+    <string name="action_deleteImageAdvert">Delete image advert</string>
 
     <!-- Strings of SplashIntegrApp activity-->
     <string name="splash_title">IntegrApp</string>
@@ -268,9 +269,8 @@
     <string name="manel_alex">Manel-Àlex</string>
     <string name="sergi_aguilar">Sergi Aguilar</string>
     <string name="daniel_perez">Daniel Pérez</string>
-    <string name="toast_UserImageDeletedSuccessfully">User Image Deleted SUccessfully</string>
-    <string name="toast_AdvertImageDeletedSuccessfully">User Image Deleted SUccessfully</string>
-    <string name="action_deleteImageAdvert">Delete Image Advert</string>
+    <string name="toast_UserImageDeletedSuccessfully">User image deleted Successfully</string>
+    <string name="toast_AdvertImageDeletedSuccessfully">Advert image deleted successfully</string>
 
 
     <!-- Array for the spinner of user types-->
