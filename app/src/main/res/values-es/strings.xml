@@ -242,18 +242,6 @@
     <string name="comment_noun">Comentario</string>
     <string name="MainChatsFragment_title">Chat</string>
 
-    <!-- Array of strings for the FAQ fragment -->
-    <string-array name="faq_title_number">
-        <item name="title_0"> ¿Hay alguna limitación en cuanto a la compra de bienes inmuebles? </item>
-        <item name="title_1">¿Qué pasos son necesarios para abrir una empresa en España? </item>
-        <item name="title_2">¿Hay requisitos de idioma para solicitar la ciudadanía?</item>
-    </string-array>
-
-    <string-array name="faq_content_number">
-        <item name="content_0"> La única limitación es que cada solicitante debe invertir al menos € 500,000 y la propiedad debe estar libre de gravámenes. Todos los tipos de propiedad son elegibles y pueden ser usados ​​o arrendados libremente. </item>
-        <item name="content_1"> This is the content of faq number 1 </item>
-        <item name="content_2"> This is the content of faq number 2 </item>
-    </string-array>
 
     <!-- About strings-->
     <string name="who_we_are">Quiénes somos</string>
@@ -293,6 +281,31 @@
         <item>Idioma</item>
         <item>Entretenimiento</item>
         <item>Varios</item>
+    </string-array>
+
+    <!-- Array of strings for the FAQ fragment -->
+    <string-array name="faq_title_number">
+        <item name="title_0"> ¿Hay alguna limitación en cuanto a la compra de bienes inmuebles? </item>
+        <item name="title_1">¿Qué pasos son necesarios para abrir una empresa en España? </item>
+        <item name="title_2">¿Hay requisitos de idioma para solicitar la ciudadanía?</item>
+    </string-array>
+
+    <string-array name="faq_content_number">
+        <item name="content_0"> La única limitación es que cada solicitante debe invertir al menos 500,000 euros y la propiedad debe estar libre de gravámenes. Todos los tipos de propiedad son elegibles y pueden ser usados ​​o arrendados libremente. </item>
+        <item name="content_1">Los requisitos básicos para la constitución de una empresa en España son su incorporación ante un Notario Público y su registro ante el "Registro Mercantil". No obstante, para cumplir con estos requisitos, se deben llevar a cabo los siguientes pasos: \n
+a) En caso de hacerlo por medio de un representante, el fundador otorgará poderes representativos a la persona que será responsable de constituir la empresa.\n
+b) Solicitud de Número de Identificación Fiscal ("NIF") en el caso de una persona jurídica, o NIE (Número de Identidad de Extranjero) en el caso de una persona física, de los socios y directores extranjeros de la empresa que se va a constituir.\n
+c) Solicitud de un certificado para demostrar que ninguna otra compañía opera bajo el mismo nombre.\n
+d) Apertura de una cuenta bancaria para transacciones y para obtener un certificado bancario.\n
+e) Constitución de la empresa ante un Notario Público mediante escritura de constitución.\n
+f) Solicitud de número de identificación fiscal provisional para la empresa.\n
+g) Liquidación del "Impuesto sobre Transmisiones Patrimoniales" - "Impuesto de Transferencia de Capital".\n
+h) Presentación con el "Registro Mercantil".\n
+i) Obtención el número final de identificación fiscal de la empresa.\n
+j) Legalización de Trade Books oficiales.\n
+k) Procedimientos fiscales.\n
+l) Procedimientos de empleo.</item>
+        <item name="content_2">Todavía no, pero hay un proyecto de ley en camino que hará que un conocimiento mínimo del español sea obligatorio. </item>
     </string-array>
 
 </resources>

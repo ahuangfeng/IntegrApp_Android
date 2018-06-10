@@ -1,15 +1,19 @@
-package com.integrapp.integrapp.Faq;
+package com.integrapp.integrapp.Model;
 
-public class SingleFaqItem {
+import android.graphics.drawable.Drawable;
+
+public class Faq {
 
     private String title;
     private String content;
+    private Drawable image;
 
-    public SingleFaqItem(){}
+    public Faq(){}
 
-    public SingleFaqItem(String title, String content) {
+    public Faq(String title, String content, Drawable image) {
         this.title = title;
         this.content = content;
+        this.image = image;
     }
 
     public void setTitle(String title) {
@@ -26,5 +30,13 @@ public class SingleFaqItem {
 
     public String getContent() {
         return content;
+    }
+
+    public Drawable getImage() {
+        return image;
+    }
+
+    public void setImage(Drawable image) {
+        this.image = image;
     }
 }

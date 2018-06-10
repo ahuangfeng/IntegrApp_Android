@@ -241,18 +241,6 @@
     <string name="comment_noun">Comentari</string>
     <string name="MainChatsFragment_title">Xat</string>
 
-    <!-- Array of strings for the FAQ fragment -->
-    <string-array name="faq_title_number">
-        <item name="title_0"> Hi ha alguna limitació en relació a la compra d'immobles? </item>
-        <item name="title_1"> Quins passos cal seguir per obrir una empresa a Espanya? </item>
-        <item name="title_2">Hi ha requisits lingüístics per sol·licitar la ciutadania? </item>
-    </string-array>
-
-    <string-array name="faq_content_number">
-        <item name="content_0"> L'única limitació és que cada sol·licitant ha d'invertir almenys 500.000 euros i la propietat ha d'estar lliure de gravàmens i càrregues. Tots els tipus de propietat són elegibles i es poden utilitzar o arrendar lliurement. </item>
-        <item name="content_1"> This is the content of faq number 1 </item>
-        <item name="content_2"> This is the content of faq number 1 </item>
-    </string-array>
 
     <!-- About strings-->
     <string name="who_we_are">Qui som</string>
@@ -291,6 +279,31 @@
         <item>Idioma</item>
         <item>Entreteniment</item>
         <item>Altres</item>
+    </string-array>
+
+    <!-- Array of strings for the FAQ fragment -->
+    <string-array name="faq_title_number">
+        <item name="title_0"> Hi ha alguna limitació en relació a la compra d'immobles? </item>
+        <item name="title_1"> Quins passos cal seguir per obrir una empresa a Espanya? </item>
+        <item name="title_2">Hi ha requisits lingüístics per sol·licitar la ciutadania? </item>
+    </string-array>
+
+    <string-array name="faq_content_number">
+        <item name="content_0"> L'única limitació és que cada sol·licitant ha d'invertir almenys 500.000 euros i la propietat ha d'estar lliure de gravàmens i càrregues. Tots els tipus de propietat són elegibles i es poden utilitzar o arrendar lliurement. </item>
+        <item name="content_1">Els requisits bàsics per a la constitució d'una empresa a Espanya són la seva incorporació davant un Notari Públic i el seu registre davant el "Registre Mercantil".No obstant això, per complir amb aquests requisits, s'han de dur a terme els següents passos:\n
+a) En cas de fer-ho per mitjà d'un representant, el fundador atorgarà poders representatius a la persona que serà responsable de constituir l'empresa.\n
+b) Sol·licitud de número d'identificació fiscal ( "NIF") en el cas d'una persona jurídica, o NIE (número d'identitat d'estranger) en el cas d'una persona física, dels socis i directors estrangers de l'empresa que es va a constituir.\n
+c) Sol·licitud d'un certificat per demostrar que cap altra companyia opera sota el mateix nom.\n
+d) Obertura d'un compte bancari per a transaccions i per obtenir un certificat bancari.\n
+e) Constitució de l'empresa davant un Notari Públic mitjançant escriptura de constitució.\n
+f) Sol·licitud de número d'identificació fiscal provisional per a l'empresa.\n
+g) Liquidació del "Impost sobre Transmissions Patrimonials" - "Impost de Transferència de Capital".\n
+h) Presentació amb el "Registre Mercantil".\n
+i) Obtenció el nombre final d'identificació fiscal de l'empresa.\n
+j) Legalització de Trade Books oficials.\n
+k) Procediments fiscals.\n
+l) Procediments d'ocupació.</item>
+        <item name="content_2">Encara no, però hi ha un projecte de llei en camí que farà que un coneixement mínim de l'espanyol sigui obligatori.</item>
     </string-array>
 
 </resources>

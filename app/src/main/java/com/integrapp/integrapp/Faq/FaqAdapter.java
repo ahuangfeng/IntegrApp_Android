@@ -11,15 +11,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.integrapp.integrapp.Model.Faq;
 import com.integrapp.integrapp.R;
 import java.util.ArrayList;
 
 public class FaqAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<SingleFaqItem> faqs = new ArrayList<>();
+    private ArrayList<Faq> faqs = new ArrayList<>();
 
-    public FaqAdapter (Context context, ArrayList<SingleFaqItem> faqs) {
+    public FaqAdapter (Context context, ArrayList<Faq> faqs) {
         this.context = context;
         this.faqs = faqs;
     }
@@ -28,11 +29,11 @@ public class FaqAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public void setFaqs(ArrayList<SingleFaqItem> faqs) {
+    public void setFaqs(ArrayList<Faq> faqs) {
         this.faqs = faqs;
     }
 
-    public void addfaq(SingleFaqItem faq) {
+    public void addfaq(Faq faq) {
         this.faqs.add(faq);
     }
 
@@ -42,7 +43,7 @@ public class FaqAdapter extends BaseAdapter {
     }
 
     @Override
-    public SingleFaqItem getItem(int position) {
+    public Faq getItem(int position) {
         return faqs.get(position);
     }
 
