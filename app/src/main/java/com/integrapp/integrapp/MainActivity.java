@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.integrapp.integrapp.Adverts.AdvertsFragment;
 import com.integrapp.integrapp.Chat.MainChatsFragment;
 import com.integrapp.integrapp.Faq.FaqFragment;
@@ -36,10 +34,8 @@ import com.integrapp.integrapp.Forum.ForumFragment;
 import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Login.LogIn;
 import com.integrapp.integrapp.Profile.ProfileFragment;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Objects;
 
 
@@ -47,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SharedPreferences preferences;
     private TextView numberChatsShow;
-    private String newMessages = null;
+    private String newMessages = "0";
     private Server server;
 
     @Override
@@ -98,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         numberChatsShow =(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_chats));
         loadNewMessages();
+        initializeCountDrawer(newMessages);
 
     }
 
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         numberChatsShow.setGravity(Gravity.CENTER_VERTICAL);
         numberChatsShow.setTypeface(null, Typeface.BOLD);
         numberChatsShow.setTextColor(getResources().getColor(R.color.colorAccent));
-        numberChatsShow.setText(number);
+        if (!number.equals("0"))numberChatsShow.setText(number);
 
     }
 
@@ -153,8 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         System.out.println("number new: "+number);
         newMessages = number;
         initializeCountDrawer(number);
-        //setNumberChats(number);
-
     }
 
 
@@ -253,27 +248,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-//    //TODO acabar de posar els titols a la action bar. crear resorce array-string amb els titols
-//    private void onSectionAttached(int number) {
-//        if (number == R.id.nav_FAQ) {
-//            ActionBar actionBar = getSupportActionBar();
-//            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-//            actionBar.setDisplayShowTitleEnabled(true);
-//            actionBar.setTitle("F.A.Q.");
-//        }
-////        String[] stringArray = getResources().getStringArray(R.array.section);
-////        if (number >= 0) {
-////            mTitle = stringArray[number];
-////        }
-//    }
-//    //TODO acabar
-//    public void restoreActionBar() {
-////        ActionBar actionBar = getSupportActionBar();
-////        // actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-////        actionBar.setDisplayShowTitleEnabled(true);
-////        actionBar.setTitle(mTitle);
-//    }
 
     @SuppressLint("StaticFieldLeak")
     private void getLikesDislikes() {
