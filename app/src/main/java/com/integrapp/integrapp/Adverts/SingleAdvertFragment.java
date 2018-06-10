@@ -85,7 +85,6 @@ public class SingleAdvertFragment extends Fragment {
     private EditText textViewDate;
     private View viewTitle;
     private View viewDescription;
-    private View viewPlaces;
     private View viewDate;
     private TextView textViewState;
     private String advertStatus;
@@ -249,7 +248,6 @@ public class SingleAdvertFragment extends Fragment {
 
         viewTitle = view.findViewById(R.id.viewTitle);
         viewDescription = view.findViewById(R.id.viewDescription);
-        viewPlaces = view.findViewById(R.id.viewPlaces);
         viewDate = view.findViewById(R.id.viewDate);
         textViewState = view.findViewById(R.id.textViewState);
         if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
@@ -362,6 +360,7 @@ public class SingleAdvertFragment extends Fragment {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_edit).setVisible(false);
             menu.findItem(R.id.action_modifyAdvertState).setVisible(false);
+            menu.findItem(R.id.action_deleteImageAdvert).setVisible(false);
         } else {
             menu.findItem(R.id.action_reportAdvert).setVisible(false);
         }
@@ -373,7 +372,7 @@ public class SingleAdvertFragment extends Fragment {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_delete) {
@@ -395,7 +394,6 @@ public class SingleAdvertFragment extends Fragment {
             });
             AlertDialog dialog = builder.create();
             dialog.show();
-
         } else if (id == R.id.action_edit) {
             setVisibility(true, View.VISIBLE);
             inscriptionButton.setOnClickListener(new View.OnClickListener() {
@@ -462,6 +460,25 @@ public class SingleAdvertFragment extends Fragment {
             });
             AlertDialog dialog = builder.create();
             dialog.show();
+        } else if (id == R.id.action_deleteImageAdvert) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.dialog_delete_image_advert).setTitle(R.string.tittle_dialogDeleteImageAdvert);
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    deleteImageAdvertById();
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -512,12 +529,10 @@ public class SingleAdvertFragment extends Fragment {
     private void setVisibility(boolean b, int visibility) {
         textViewTitle.setEnabled(b);
         textViewDescription.setEnabled(b);
-        textViewPlaces.setEnabled(b);
         textViewDate.setEnabled(b);
 
         viewTitle.setVisibility(visibility);
         viewDescription.setVisibility(visibility);
-        viewPlaces.setVisibility(visibility);
         viewDate.setVisibility(visibility);
 
         inscriptionButton.setText(R.string.wantItButton_editadvert);
@@ -561,7 +576,6 @@ public class SingleAdvertFragment extends Fragment {
 
         String title2 = textViewTitle.getText().toString();
         String description2 = textViewDescription.getText().toString();
-        String places2 = textViewPlaces.getText().toString();
         String date2 = textViewDate.getText().toString();
 
         try {
@@ -573,12 +587,6 @@ public class SingleAdvertFragment extends Fragment {
             if (!title2.isEmpty() && !description2.isEmpty()) {
                 oJSON.put("title", title2);
                 oJSON.put("description", description2);
-            } else return "empty";
-
-            if (!places2.isEmpty()) {
-                Integer i_places = Integer.parseInt(places2);
-                if (i_places <= 0) return "places greater 0";
-                oJSON.put("places", places2);
             } else return "empty";
 
             return oJSON.toString(1);
@@ -939,6 +947,27 @@ public class SingleAdvertFragment extends Fragment {
 
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.error_GettingAdvertInfo), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void deleteImageAdvertById() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return server.deleteImageAdvertById(idAdvert);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN DELETING IMAGE ADVERT")) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_AdvertDeletedSuccessfully), Toast.LENGTH_SHORT).show();
+                    imageView.setImageResource(R.drawable.project_preview_large_2);
+                }
+                else {
+                    Toast.makeText(getActivity(), getString(R.string.error_DeletingAdvert), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

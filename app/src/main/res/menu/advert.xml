@@ -21,4 +21,9 @@
         android:orderInCategory="100"
         android:title="@string/action_reportAdvert"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_deleteImageAdvert"
+        android:orderInCategory="100"
+        android:title="@string/action_deleteImageAdvert"
+        app:showAsAction="never" />
 </menu>

@@ -204,6 +204,20 @@ public class Server {
         return "ERROR IN DELETING IMAGE USER";
     }
 
+    public String deleteImageAdvertById(String id) {
+        HttpDelete delete = new HttpDelete(API_URI+"/advert/image/"+id);
+        try {
+            delete.setHeader("x-access-token", token);
+            BasicResponseHandler handler = new BasicResponseHandler();
+            return client.execute(delete, handler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "ERROR IN DELETING IMAGE ADVERT";
+    }
+
     public String deleteAdvertById(String id) {
         HttpDelete delete = new HttpDelete(API_URI+"/advert/"+id);
         try {
