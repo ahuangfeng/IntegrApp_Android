@@ -8,9 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,10 +26,9 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-import com.integrapp.integrapp.Adverts.SingleAdvertFragment;
-import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Model.ChatAppMsgDTO;
 import com.integrapp.integrapp.Model.User;
+import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 import com.squareup.picasso.Picasso;
 
@@ -155,19 +151,17 @@ public class SingleChatFragment extends Fragment {
                         JSONObject myJsonObject = new JSONObject(args[0].toString());
                         final JSONArray chats = myJsonObject.getJSONArray("chats");
                         System.out.println("chats: "+chats.toString());
-                        if (getActivity()!= null) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    addHistory(chats);
-                                }
-                            });
-                        }
+                        SingleChatFragment.this.getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                            addHistory(chats);
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    getActivity().runOnUiThread(new Runnable() {
+                    SingleChatFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             showError();
