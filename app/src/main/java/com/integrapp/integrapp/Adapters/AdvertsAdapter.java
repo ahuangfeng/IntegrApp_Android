@@ -55,7 +55,7 @@ public class AdvertsAdapter extends BaseAdapter {
         TextView state = vista.findViewById(R.id.textViewState);
 
         String path = objectList.get(i).getPath();
-        if (!path.equals("")) {
+        if (!path.equals("null")) {
             Picasso.with(context).load(path).into(imageView);
         } else {
             imageView.setImageResource(objectList.get(i).getImage());
