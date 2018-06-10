@@ -1,6 +1,7 @@
 package com.integrapp.integrapp.Profile;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -76,6 +77,8 @@ public class ProfileFragment extends Fragment {
     private String idUser;
     private Server server;
 
+    private Activity activity;
+
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -100,6 +103,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        activity = getActivity();
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.activity_profile, container, false);
         this.server = Server.getInstance();
@@ -138,17 +142,21 @@ public class ProfileFragment extends Fragment {
             int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
             String path = getArguments() != null ? getArguments().getString("imagePath") : "imagePath";
+            String path2 = getArguments() != null ? getArguments().getString("path") : "path";
 
-            setImageHeader(path);
+            if (path == null) {
+                path = path2;
+            }
 
             System.out.println("xusikooo: "+path);
             if (!path.equals("")) Picasso.with(getContext()).load(path).into(imageView);
             else imageView.setImageResource(R.drawable.project_preview_large_2);
+            setImageHeader(path);
 
             setAttributes(name, username, type, email, phone);
             setRateAndAds(likes,dislikes,ads);
 
-            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences("login_data", Context.MODE_PRIVATE);
             String usernamePreferences = preferences.getString("username", "username");
 
             LinearLayout adsLayout = view.findViewById(R.id.adsLayout);
@@ -452,6 +460,7 @@ public class ProfileFragment extends Fragment {
             menu.findItem(R.id.action_deleteImageUser).setVisible(false);
         } else {
             menu.findItem(R.id.action_reportUser).setVisible(false);
+            menu.findItem(R.id.action_delete).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
