@@ -96,6 +96,8 @@ public class SingleAdvertFragment extends Fragment {
     private double lat;
     private double lng;
 
+    private String usernamePreferences;
+
     private Advert advert;
 
     UserDataAdvertiser userData;
@@ -135,7 +137,7 @@ public class SingleAdvertFragment extends Fragment {
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
-        String usernamePreferences = preferences.getString("username", "username");
+        usernamePreferences = preferences.getString("username", "username");
         personalUserId = preferences.getString("idUser", "null");
 
         inscriptionButton = view.findViewById(R.id.inscriptionButton);
@@ -165,7 +167,7 @@ public class SingleAdvertFragment extends Fragment {
                                 ft.commit();
                                 Toast.makeText(SingleAdvertFragment.this.getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
                             }else{
-                                Toast.makeText(SingleAdvertFragment.this.getActivity().getApplicationContext(), getString(R.string.noUserInscriptions), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SingleAdvertFragment.this.getActivity().getApplicationContext(), getString(R.string.noAdvertInscriptions), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -218,7 +220,7 @@ public class SingleAdvertFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getAdvert(idAdvert);
+                getAdvert(idAdvert, userId);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -404,6 +406,13 @@ public class SingleAdvertFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             saveChanges(idAdvert);
+                            if (userData.getUsername().equals(usernamePreferences)) {
+                                inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
+                                advertStatus = "owner";
+                            }
+                            else {
+                                updateStatus();
+                            }
                         }
                     });
 
@@ -524,7 +533,6 @@ public class SingleAdvertFragment extends Fragment {
     private void setAttributes() {
         title = textViewTitle.getText().toString();
         description = textViewDescription.getText().toString();
-        places = textViewPlaces.getText().toString();
         date = textViewDate.getText().toString();
     }
 
@@ -767,6 +775,7 @@ public class SingleAdvertFragment extends Fragment {
                     ++count;
                 }
             }
+            System.out.println("placesssssssss: " +places);
             String emptyPlaces = Integer.parseInt(places) - count + " / " + places + "";
             textViewPlaces.setText(emptyPlaces);
         } catch (JSONException e) {
@@ -948,7 +957,7 @@ public class SingleAdvertFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void getAdvert(final String idAdvert) {
+    private void getAdvert(final String idAdvert, final String userId) {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -981,7 +990,13 @@ public class SingleAdvertFragment extends Fragment {
                         }
                         path = advert.getPath();
                         updatePlaces();
-                        updateStatus();
+                        if (userData.getUsername().equals(usernamePreferences)) {
+                            inscriptionButton.setText(getString(R.string.wantItButton_advertOwner));
+                            advertStatus = "owner";
+                        }
+                        else {
+                            updateStatus();
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
