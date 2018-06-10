@@ -95,7 +95,7 @@ public class MainChatsFragment extends Fragment{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Toolbar toolbar= getActivity().findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            toolbar.setTitle(R.string.MainChatsFragment_title);
+            toolbar.setTitle(R.string.menu_chats);
         }
     }
 
