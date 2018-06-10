@@ -44,7 +44,12 @@ public class UserDataAdvertiser {
                 this.phone = userInfo.getString("phone");
             }
             if(userInfo.has("imagePath")) {
-                this.path = userInfo.getString("imagePath");
+                String path2 = userInfo.getString("imagePath");
+                if (path2.equals("null")) {
+                    this.path = "";
+                } else {
+                    this.path = path2;
+                }
             } else {
                 this.path = "";
             }
@@ -70,7 +75,14 @@ public class UserDataAdvertiser {
                 this.phone = myJsonObject.getString("phone");
             }
             if(myJsonObject.has("imagePath")) {
-                this.path = myJsonObject.getString("imagePath");
+                String path2 = myJsonObject.getString("imagePath");
+                if (path2.equals("null")) {
+                    this.path = "";
+                } else {
+                    this.path = path2;
+                }
+            } else {
+                this.path = "";
             }
 
         } catch (JSONException e) {

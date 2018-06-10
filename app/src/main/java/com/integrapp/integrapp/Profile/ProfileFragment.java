@@ -39,6 +39,7 @@ import com.integrapp.integrapp.Model.UserDataAdvertiser;
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Server;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,6 +138,7 @@ public class ProfileFragment extends Fragment {
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
             String path = getArguments() != null ? getArguments().getString("imagePath") : "imagePath";
 
+            System.out.println("xusikooo: "+path);
             if (!path.equals("")) Picasso.with(getContext()).load(path).into(imageView);
             else imageView.setImageResource(R.drawable.project_preview_large_2);
 
@@ -937,9 +939,14 @@ public class ProfileFragment extends Fragment {
             String username = myJsonObject.getString("username");
             JSONArray jsonArray = myJsonObject.getJSONArray("adverts");
             int ads = jsonArray.length();
-            String path = "";
+            String path;
             if (myJsonObject.has("imagePath")) {
                 path = myJsonObject.getString("imagePath");
+                if (path.equals("null")) {
+                    path = "";
+                }
+            } else {
+                path = "";
             }
 
             SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
@@ -949,9 +956,8 @@ public class ProfileFragment extends Fragment {
                 editor.putInt("dislikes", dislikes);
                 editor.apply();
             }
-
             if (!path.equals("")) Picasso.with(getContext()).load(path).into(imageView);
-            else
+            else imageView.setImageResource(R.drawable.project_preview_large_2);
             setRateAndAds(likes, dislikes, ads);
 
 

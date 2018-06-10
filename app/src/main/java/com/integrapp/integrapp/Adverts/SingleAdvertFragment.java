@@ -97,6 +97,7 @@ public class SingleAdvertFragment extends Fragment {
     private Server server;
 
     public SingleAdvertFragment() {
+
     }
 
     @SuppressLint("ValidFragment")
@@ -330,6 +331,7 @@ public class SingleAdvertFragment extends Fragment {
         args.putString("email", userData.getEmail());
         args.putString("phone", userData.getPhone());
         args.putString("imagePath", userData.getPath());
+        System.out.println("yeeeeee"+ userData.getPath());
 
         try {
             JSONObject myJsonObject = new JSONObject(s);
