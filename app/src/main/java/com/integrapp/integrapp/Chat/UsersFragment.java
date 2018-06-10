@@ -105,8 +105,18 @@ public class UsersFragment extends android.support.v4.app.Fragment {
             String username = userJson.getString("username");
             String name = userJson.getString("name");
             String type = userJson.getString("type");
-
-            User user = new User(id, username, name, type);
+            String path;
+            if (userJson.has("imagePath")) {
+                String path2 = userJson.getString("imagePath");
+                if (path2.equals("null")) {
+                    path = "";
+                } else {
+                    path = path2;
+                }
+            } else {
+                path = "";
+            }
+            User user = new User(id, username, name, type, path);
             if (!user.getId().equals(personalUserId)) {
                 users.add(user);
             }

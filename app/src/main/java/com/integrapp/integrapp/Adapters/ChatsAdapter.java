@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.Model.Chat;
 import com.integrapp.integrapp.R;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ChatsAdapter extends BaseAdapter{
@@ -57,9 +60,13 @@ public class ChatsAdapter extends BaseAdapter{
 
         TextView name = vista.findViewById(R.id.talking_to_name);
         TextView username = vista.findViewById(R.id.talking_to_username);
+        ImageView imageView = vista.findViewById(R.id.user_image);
         //TextView type = vista.findViewById(R.id.talking_to_type);
         //ImageView image = vista.findViewById(R.id.user_image);
-
+        String path = chats.get(position).getUser().getPath();
+        if (!path.equals("")) {
+            Picasso.with(context).load(path).into(imageView);
+        }
         name.setText(chats.get(position).getToName());
         System.out.println(name.getText().toString());
         username.setText(chats.get(position).getToUsername());

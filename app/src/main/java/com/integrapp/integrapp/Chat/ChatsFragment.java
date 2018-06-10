@@ -108,8 +108,18 @@ public class ChatsFragment extends android.support.v4.app.Fragment {
             String username = chatJson.getString("username");
             String name = chatJson.getString("name");
             String type = chatJson.getString("type");
-
-            User user = new User(id, username, name, type);
+            String path;
+            if (chatJson.has("imagePath")) {
+                String path2 = chatJson.getString("imagePath");
+                if (path2.equals("null")) {
+                    path = "";
+                } else {
+                    path = path2;
+                }
+            } else {
+                path = "";
+            }
+            User user = new User(id, username, name, type, path);
 
             Chat chat = new Chat(user);
             chats.add(chat);

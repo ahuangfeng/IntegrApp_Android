@@ -81,6 +81,7 @@ public class ProfileFragment extends Fragment {
 
     String mCurrentPhotoPath;
     private ImageView imageView;
+    private ImageView imageViewHeader;
 
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -137,6 +138,8 @@ public class ProfileFragment extends Fragment {
             int dislikes = getArguments() != null ? getArguments().getInt("dislikes") : 0;
             int ads = getArguments() != null ? getArguments().getInt("ads") : 0;
             String path = getArguments() != null ? getArguments().getString("imagePath") : "imagePath";
+
+            setImageHeader(path);
 
             System.out.println("xusikooo: "+path);
             if (!path.equals("")) Picasso.with(getContext()).load(path).into(imageView);
@@ -357,6 +360,7 @@ public class ProfileFragment extends Fragment {
                 if (!s.equals("ERROR IN GETTING IMAGE")) {
                     System.out.println("laimagenobtenida: " + s);
                     Picasso.with(getContext()).load(s).into(imageView);
+                    setImageHeader(s);
                 }
             }
         }.execute();
@@ -772,12 +776,27 @@ public class ProfileFragment extends Fragment {
         View header = navigationView.getHeaderView(0);
         TextView headerName = header.findViewById(R.id.headerName);
         TextView headerEmail = header.findViewById(R.id.headerEmail);
+        ImageView imageView2 = header.findViewById(R.id.imageView);
+
+
 
         SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
         String name = preferences.getString("name", "name");
         headerName.setText(name);
         String email = preferences.getString("email", "email");
         headerEmail.setText(email);
+    }
+
+    private void setImageHeader(String s) {
+        NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+
+        View header = navigationView.getHeaderView(0);
+        ImageView imageView2 = header.findViewById(R.id.imageView);
+        if (s.equals("")) {
+            imageView2.setImageResource(R.drawable.project_preview_large_2);
+        } else {
+            Picasso.with(getContext()).load(s).into(imageView2);
+        }
     }
 
     private String generateRequestModifyProfile() {

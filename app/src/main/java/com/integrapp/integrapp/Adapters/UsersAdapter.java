@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Model.ForumItem;
 import com.integrapp.integrapp.Model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -62,6 +64,14 @@ public class UsersAdapter extends BaseAdapter {
         TextView username = vista.findViewById(R.id.user_username);
         TextView type = vista.findViewById(R.id.user_type);
         //ImageView image = vista.findViewById(R.id.user_image);
+
+        ImageView imageView = vista.findViewById(R.id.user_image);
+        //TextView type = vista.findViewById(R.id.talking_to_type);
+        //ImageView image = vista.findViewById(R.id.user_image);
+        String path = users.get(position).getPath();
+        if (!path.equals("")) {
+            Picasso.with(context).load(path).into(imageView);
+        }
 
         name.setText(users.get(position).getName());
         username.setText(users.get(position).getUsername());

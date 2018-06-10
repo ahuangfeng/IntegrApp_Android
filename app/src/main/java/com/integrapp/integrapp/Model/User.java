@@ -5,12 +5,14 @@ public class User {
     private String username;
     private String name;
     private String type;
+    private String path;
 
-    public User (String id, String username, String name, String type) {
+    public User (String id, String username, String name, String type, String path) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.type = type;
+        this.path = path;
     }
 
     public void setId (String id) {
@@ -45,4 +47,11 @@ public class User {
         this.type = type;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
