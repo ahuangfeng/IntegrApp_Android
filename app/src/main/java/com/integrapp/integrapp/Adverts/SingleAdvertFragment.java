@@ -929,6 +929,9 @@ public class SingleAdvertFragment extends Fragment {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
                         advert = new Advert(jsonObject);
+                        title = advert.getTitle();
+                        description = advert.getDescription();
+                        date = advert.getDate();
                         setEditableTexts();
                         if (Objects.equals(state, "opened")) textViewState.setText(getString(R.string.state_opened));
                         else if (Objects.equals(state, "closed")) textViewState.setText(getString(R.string.state_closed));
