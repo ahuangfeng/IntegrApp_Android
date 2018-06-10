@@ -1,11 +1,14 @@
 package com.integrapp.integrapp.Chat;
 
 import android.os.Build;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,22 @@ import java.util.ArrayList;
 public class MainChatsFragment extends Fragment{
     private static Fragment users;
     private static Fragment chats;
+
+    private ViewPager viewPager;
+    private TabLayout tabs;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private int position;
+
+    public MainChatsFragment() {
+        position = -1;
+    }
+
+    @SuppressLint("ValidFragment")
+    public MainChatsFragment(int position) {
+        this.position = position;
+    }
 
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +52,31 @@ public class MainChatsFragment extends Fragment{
         users = new UsersFragment();
         chats = new ChatsFragment();
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+
         // Setting ViewPager for each Tabs
-        ViewPager viewPager = view.findViewById(R.id.viewpager);
+        viewPager = view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         // Set Tabs inside Toolbar
-        TabLayout tabs = view.findViewById(R.id.tabs_chat);
+        tabs = view.findViewById(R.id.tabs_chat);
         tabs.setupWithViewPager(viewPager);
+
+        if (position != -1) {
+            selectPage(position);
+        }
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Fragment fragment = new MainChatsFragment(tabs.getSelectedTabPosition());
+                android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.screen_area, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
@@ -51,6 +89,7 @@ public class MainChatsFragment extends Fragment{
         viewPager.setAdapter(adapter);
     }
 
+
     @Override
     //Clear the list to avoid duplicated content
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -58,5 +97,10 @@ public class MainChatsFragment extends Fragment{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setTitle(R.string.MainChatsFragment_title);
         }
+    }
+
+    public void selectPage(int pageIndex){
+        tabs.setScrollPosition(pageIndex,0f,true);
+        viewPager.setCurrentItem(pageIndex);
     }
 }

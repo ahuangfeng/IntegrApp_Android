@@ -1,6 +1,7 @@
 package com.integrapp.integrapp.Forum;
 
 import android.os.Build;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -9,13 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.integrapp.integrapp.R;
 import com.integrapp.integrapp.Adapters.FragmentAdapter;
-
 import java.util.ArrayList;
 
 public class ForumFragment extends Fragment {
@@ -25,6 +25,22 @@ public class ForumFragment extends Fragment {
     private static Fragment enter;
     private static Fragment other;
     private FloatingActionButton fab;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private ViewPager viewPager;
+    private TabLayout tabs;
+
+    private int position;
+
+    @SuppressLint("ValidFragment")
+    public ForumFragment(int position) {
+        this.position = position;
+    }
+
+    public ForumFragment() {
+        position = -1;
+    }
 
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +58,9 @@ public class ForumFragment extends Fragment {
         lang = new LanguageFragment();
         enter = new EntertainmentFragment();
         other = new OtherFragment();
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+
         fab = view.findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,11 +75,28 @@ public class ForumFragment extends Fragment {
         });
 
         // Setting ViewPager for each Tabs
-        ViewPager viewPager = view.findViewById(R.id.viewpager);
+        viewPager = view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         // Set Tabs inside Toolbar
-        TabLayout tabs = view.findViewById(R.id.tabs);
+        tabs = view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+
+        if (position != -1) {
+            selectPage(position);
+        }
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Fragment fragment = new ForumFragment(tabs.getSelectedTabPosition());
+                android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.screen_area, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
@@ -82,5 +118,10 @@ public class ForumFragment extends Fragment {
         adapter.addFragment(enter, getString(R.string.titleTab_Entertainment));
         adapter.addFragment(other, getString(R.string.titleTab_Various));
         viewPager.setAdapter(adapter);
+    }
+
+    void selectPage(int pageIndex){
+        tabs.setScrollPosition(pageIndex,0f,true);
+        viewPager.setCurrentItem(pageIndex);
     }
 }
