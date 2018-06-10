@@ -292,7 +292,6 @@ public class AdvertsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.filter_advert, menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
