@@ -191,7 +191,7 @@ public class SingleForumFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleForumFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.createCommentForum(json);
             }
@@ -201,7 +201,7 @@ public class SingleForumFragment extends Fragment {
                 if (!s.equals("ERROR IN COMMENTING FORUM")) {
                     showNewComment(s);
                     /*Cerrar teclado*/
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager)SingleForumFragment.this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(commentTextView.getWindowToken(), 0);
                     Toast.makeText(getContext(), getString(R.string.toast_CommentCreatedCorrectly), Toast.LENGTH_SHORT).show();
                 }
@@ -344,7 +344,7 @@ public class SingleForumFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SingleForumFragment.this.getActivity());
 
                         builder.setMessage(R.string.dialog_delete_comment).setTitle(R.string.tittle_dialogDeleteComment);
                         builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
@@ -376,7 +376,7 @@ public class SingleForumFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleForumFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getUserInfoByUsername(username);
             }
@@ -387,7 +387,7 @@ public class SingleForumFragment extends Fragment {
                     sendInfoUserCommentToProfile(s);
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleForumFragment.this.getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -449,7 +449,7 @@ public class SingleForumFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleForumFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.deleteCommentById(id);
             }
@@ -462,7 +462,7 @@ public class SingleForumFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.toast_CommentDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_DeletingComment), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleForumFragment.this.getActivity(), getString(R.string.error_DeletingComment), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -473,7 +473,7 @@ public class SingleForumFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleForumFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getUserInfoByUsername(username);
             }
@@ -484,7 +484,7 @@ public class SingleForumFragment extends Fragment {
                     sendInfoUserToProfile(s);
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleForumFragment.this.getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -583,7 +583,7 @@ public class SingleForumFragment extends Fragment {
                     String newDescription = descriptionTextView.getText().toString();
 
                     if (fieldsSaveForumOk(newTitle, newDescription)) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SingleForumFragment.this.getActivity());
 
                         builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
                         builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
@@ -633,7 +633,7 @@ public class SingleForumFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.toast_ChangesSaveCorrectly), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), R.string.error_ModifyingForum, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleForumFragment.this.getActivity(), R.string.error_ModifyingForum, Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -689,7 +689,7 @@ public class SingleForumFragment extends Fragment {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences preferences = SingleForumFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
                     return server.report(json);
                 }
@@ -698,9 +698,9 @@ public class SingleForumFragment extends Fragment {
                 protected void onPostExecute(String s) {
                     if (!s.equals("ERROR CREATING REPORT")) {
                         System.out.println("SERVER RESPONSE: " + s);
-                        Toast.makeText(getActivity(), getString(R.string.forumReport_ok), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleForumFragment.this.getActivity(), getString(R.string.forumReport_ok), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), getString(R.string.error_reportForum), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleForumFragment.this.getActivity(), getString(R.string.error_reportForum), Toast.LENGTH_SHORT).show();
                     }
                 }
             }.execute();

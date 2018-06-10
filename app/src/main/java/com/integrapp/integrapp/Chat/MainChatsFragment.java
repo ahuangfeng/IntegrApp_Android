@@ -69,7 +69,7 @@ public class MainChatsFragment extends Fragment{
             @Override
             public void onRefresh() {
                 Fragment fragment = new MainChatsFragment(tabs.getSelectedTabPosition());
-                android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                android.support.v4.app.FragmentManager fragmentManager = MainChatsFragment.this.getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.screen_area, fragment);
                 ft.addToBackStack(null);

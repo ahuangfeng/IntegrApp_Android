@@ -98,14 +98,14 @@ public class SingleInscriptionFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN SET STATUS INSCRIPTION")) {
                     Fragment fragment = new InscriptionsFragment(idAdvert, idUser, getContext());
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentManager fragmentManager = SingleInscriptionFragment.this.getActivity().getSupportFragmentManager();
                     FragmentTransaction ft = fragmentManager.beginTransaction();
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_SettingInscriptionStatus), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleInscriptionFragment.this.getActivity(), getString(R.string.error_SettingInscriptionStatus), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

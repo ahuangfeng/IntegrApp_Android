@@ -153,14 +153,14 @@ public class SingleAdvertFragment extends Fragment {
                             JSONArray inscriptions = new JSONArray(registered);
                             if(inscriptions.length() > 0){
                                 Fragment fragment = new InscriptionsFragment(idAdvert, userId, getContext());
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentManager fragmentManager = SingleAdvertFragment.this.getActivity().getSupportFragmentManager();
                                 FragmentTransaction ft = fragmentManager.beginTransaction();
                                 ft.replace(R.id.screen_area, fragment);
                                 ft.addToBackStack(null);
                                 ft.commit();
-                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SingleAdvertFragment.this.getActivity().getApplicationContext(), getString(R.string.toast_ManageInscriptions), Toast.LENGTH_SHORT).show();
                             }else{
-                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.noUserInscriptions), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SingleAdvertFragment.this.getActivity().getApplicationContext(), getString(R.string.noUserInscriptions), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -170,7 +170,7 @@ public class SingleAdvertFragment extends Fragment {
                         doServerCallForCreateInscription();
                         break;
                     case "pending":
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SingleAdvertFragment.this.getActivity());
 
                         builder.setMessage(R.string.dialog_delete_inscription).setTitle(R.string.tittle_dialogDeleteInscription);
                         builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
@@ -216,7 +216,7 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Fragment fragment = new SingleAdvertFragment(advert);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = SingleAdvertFragment.this.getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.screen_area, fragment);
                 ft.addToBackStack(null);
@@ -294,7 +294,7 @@ public class SingleAdvertFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getUserInfoByUsername(username);
             }
@@ -305,7 +305,7 @@ public class SingleAdvertFragment extends Fragment {
                     sendInfoUserToProfile(s);
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.error_GettingUserInfo), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -393,7 +393,7 @@ public class SingleAdvertFragment extends Fragment {
             inscriptionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SingleAdvertFragment.this.getActivity());
 
                     builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
                     builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
@@ -483,7 +483,7 @@ public class SingleAdvertFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING ADVERT")) {
-                    Toast.makeText(getActivity(), getString(R.string.toast_AdvertDeletedSuccessfully), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.toast_AdvertDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                     SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     int ads = preferences.getInt("ads", 0);
@@ -492,10 +492,10 @@ public class SingleAdvertFragment extends Fragment {
 
                     Intent i = new Intent(SingleAdvertFragment.this.getActivity(), MainActivity.class);
                     startActivity(i);
-                    getActivity().finish();
+                    SingleAdvertFragment.this.getActivity().finish();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_DeletingAdvert), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.error_DeletingAdvert), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -595,10 +595,10 @@ public class SingleAdvertFragment extends Fragment {
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR CHANGE ADVERT STATE")) {
                     changeState();
-                    Toast.makeText(getActivity(), getString(R.string.toast_AdvertStateChangedSuccessfully), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.toast_AdvertStateChangedSuccessfully), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_ChangingAdvertState), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.error_ChangingAdvertState), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -636,7 +636,7 @@ public class SingleAdvertFragment extends Fragment {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences preferences = SingleAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
                     return server.createInscriptionAdvert(json);
                 }
@@ -648,7 +648,7 @@ public class SingleAdvertFragment extends Fragment {
                         updateInscriptions(s);
                         checkInscriptionStatus();
                     } else {
-                        Toast.makeText(getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.inscription_error), Toast.LENGTH_SHORT).show();
                     }
                 }
             }.execute();
@@ -663,7 +663,7 @@ public class SingleAdvertFragment extends Fragment {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences preferences = SingleAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
                     String idInscription = getIdInscriptionToDelete(registered);
                     return server.deleteInscriptionAdvert(idInscription);
@@ -675,7 +675,7 @@ public class SingleAdvertFragment extends Fragment {
                         advertStatus = "canEnroll";
                         checkInscriptionStatus();
                     } else {
-                        Toast.makeText(getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.error_DeletingInscription), Toast.LENGTH_SHORT).show();
                     }
                 }
             }.execute();
@@ -753,7 +753,7 @@ public class SingleAdvertFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getInscriptionsByUserId(personalUserId);
             }
@@ -764,7 +764,7 @@ public class SingleAdvertFragment extends Fragment {
                     saveInscriptions(s);
                 }
                 else {
-                    Toast.makeText(getActivity(), R.string.error_GettingInscriptions, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleAdvertFragment.this.getActivity(), R.string.error_GettingInscriptions, Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -798,7 +798,7 @@ public class SingleAdvertFragment extends Fragment {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences preferences = SingleAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
                     return server.report(json);
                 }
@@ -807,9 +807,9 @@ public class SingleAdvertFragment extends Fragment {
                 protected void onPostExecute(String s) {
                     if (!s.equals("ERROR CREATING REPORT")) {
                         System.out.println("SERVER RESPONSE: " + s);
-                        Toast.makeText(getActivity(), getString(R.string.advertReport_ok), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.advertReport_ok), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), getString(R.string.error_reportAdvert), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.error_reportAdvert), Toast.LENGTH_SHORT).show();
                     }
                 }
             }.execute();
@@ -834,7 +834,7 @@ public class SingleAdvertFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getImageAdvert(idAdvert);
             }
@@ -880,7 +880,7 @@ public class SingleAdvertFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleAdvertFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.addPhotoAdvert(f, idAdvert);
             }
@@ -891,7 +891,7 @@ public class SingleAdvertFragment extends Fragment {
                     imageView.setImageBitmap(bitmap);
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingleAdvertFragment.this.getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

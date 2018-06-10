@@ -178,7 +178,7 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onRefresh() {
                     Fragment fragment = new ProfileFragment("advertiserUser");
-                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    android.support.v4.app.FragmentManager fragmentManager = ProfileFragment.this.getActivity().getSupportFragmentManager();
 
                     Bundle args = getArguments();
                     fragment.setArguments(args);
@@ -192,7 +192,7 @@ public class ProfileFragment extends Fragment {
             });
         }
         else {
-            SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+            SharedPreferences preferences = ProfileFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
             final String username = preferences.getString("username", "username");
             idUser = preferences.getString("idUser", "idUser");
             String name = preferences.getString("name", "name");
@@ -224,7 +224,7 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onRefresh() {
                     Fragment fragment = new ProfileFragment();
-                    android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    android.support.v4.app.FragmentManager fragmentManager = ProfileFragment.this.getActivity().getSupportFragmentManager();
                     FragmentTransaction ft = fragmentManager.beginTransaction();
                     ft.replace(R.id.screen_area, fragment);
                     ft.addToBackStack(null);
@@ -260,7 +260,7 @@ public class ProfileFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = ProfileFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.voteDislikeUser(idUser);
             }
@@ -271,7 +271,7 @@ public class ProfileFragment extends Fragment {
                     saveVote(s, "dislike");
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_VotingDislike), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_VotingDislike), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -282,7 +282,7 @@ public class ProfileFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = ProfileFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.voteLikeUser(idUser);
             }
@@ -293,7 +293,7 @@ public class ProfileFragment extends Fragment {
                     saveVote(s, "like");
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_VotingLike), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_VotingLike), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -349,7 +349,7 @@ public class ProfileFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = ProfileFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getImageUser(idUser);
             }
@@ -375,19 +375,19 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR IN DELETING USER")) {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toast_UserDeletedSuccessfully), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity().getApplicationContext(), getString(R.string.toast_UserDeletedSuccessfully), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(ProfileFragment.this.getActivity(), LogIn.class);
                     startActivity(i);
-                    getActivity().finish();
+                    ProfileFragment.this.getActivity().finish();
 
                     //Ponemos islogged a false para que no entre a la pantalla de anuncios, si no que se quede en el login
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences preferences = ProfileFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("isLogged", false);
                     editor.apply();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_DeletingUser), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_DeletingUser), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -474,7 +474,7 @@ public class ProfileFragment extends Fragment {
                     String username = usernameTextView.getText().toString();
                     if (fieldsSaveProfileOk(name, username)) {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileFragment.this.getActivity());
 
                         builder.setMessage(R.string.dialog_save).setTitle(R.string.tittle_dialogSave);
                         builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
@@ -583,14 +583,14 @@ public class ProfileFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 if (!s.equals("ERROR MODIFY PROFILE")) {
-                    Toast.makeText(getActivity(), getString(R.string.toast_PasswordChagedSuccessfully), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.toast_PasswordChagedSuccessfully), Toast.LENGTH_SHORT).show();
                     /*Cerrar teclado y dialogo*/
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager)ProfileFragment.this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(confirmNewPassEditText.getWindowToken(), 0);
                     dialog.cancel();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_ChangingPassword), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_ChangingPassword), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -685,7 +685,7 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.toast_ChangesSaveCorrectly), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_ModifyingProfile), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_ModifyingProfile), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -779,7 +779,7 @@ public class ProfileFragment extends Fragment {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                    SharedPreferences preferences = ProfileFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                     server.token = preferences.getString("user_token", "user_token");
                     return server.report(json);
                 }
@@ -788,9 +788,9 @@ public class ProfileFragment extends Fragment {
                 protected void onPostExecute(String s) {
                     if (!s.equals("ERROR CREATING REPORT")) {
                         System.out.println("SERVER RESPONSE: " + s);
-                        Toast.makeText(getActivity(), getString(R.string.userReport_ok), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.userReport_ok), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), getString(R.string.error_reportUser), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_reportUser), Toast.LENGTH_SHORT).show();
                     }
                 }
             }.execute();
@@ -850,7 +850,7 @@ public class ProfileFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = ProfileFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.addPhotoUser(f);
             }
@@ -861,7 +861,7 @@ public class ProfileFragment extends Fragment {
                     imageView.setImageBitmap(bitmap);
                 }
                 else {
-                    Toast.makeText(getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileFragment.this.getActivity(), getString(R.string.error_UpdatingPhoto), Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();

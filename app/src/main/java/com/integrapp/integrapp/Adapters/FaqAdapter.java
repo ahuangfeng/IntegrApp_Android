@@ -1,4 +1,4 @@
-package com.integrapp.integrapp.Faq;
+package com.integrapp.integrapp.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

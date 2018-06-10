@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.integrapp.integrapp.Chat.Chat;
+import com.integrapp.integrapp.Model.Chat;
 import com.integrapp.integrapp.R;
 import java.util.ArrayList;
 

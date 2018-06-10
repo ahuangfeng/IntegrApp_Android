@@ -55,7 +55,7 @@ public class SingleChatFragment extends Fragment {
         @Override
         public void call(final Object... args) {
             if (isAdded()) {
-                getActivity().runOnUiThread(new Runnable() {
+                SingleChatFragment.this.getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         JSONObject data = (JSONObject) args[0];
@@ -241,7 +241,7 @@ public class SingleChatFragment extends Fragment {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                SharedPreferences preferences = SingleChatFragment.this.getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
                 server.token = preferences.getString("user_token", "user_token");
                 return server.getImageUser(toUser.getId());
             }

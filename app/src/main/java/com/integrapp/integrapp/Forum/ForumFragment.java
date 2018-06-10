@@ -66,7 +66,7 @@ public class ForumFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = ForumFragment.this.getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.screen_area, new NewForumFragment());
                 ft.addToBackStack(null);
@@ -89,7 +89,7 @@ public class ForumFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Fragment fragment = new ForumFragment(tabs.getSelectedTabPosition());
-                android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                android.support.v4.app.FragmentManager fragmentManager = ForumFragment.this.getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.screen_area, fragment);
                 ft.addToBackStack(null);

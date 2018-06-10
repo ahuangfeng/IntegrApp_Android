@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
 
-import com.integrapp.integrapp.Forum.SingleForumFragment;
+import com.integrapp.integrapp.Adapters.FaqAdapter;
 import com.integrapp.integrapp.Model.Faq;
 import com.integrapp.integrapp.R;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class FaqFragment extends android.support.v4.app.Fragment {
                 Faq clickedFaq = adapter.getItem(position);
                 SingleFaqFragment fragment = new SingleFaqFragment();
                 fragment.setFaq(clickedFaq);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = FaqFragment.this.getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.screen_area, fragment);
                 ft.addToBackStack(null);
