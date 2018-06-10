@@ -155,12 +155,14 @@ public class SingleChatFragment extends Fragment {
                         JSONObject myJsonObject = new JSONObject(args[0].toString());
                         final JSONArray chats = myJsonObject.getJSONArray("chats");
                         System.out.println("chats: "+chats.toString());
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                addHistory(chats);
-                            }
-                        });
+                        if (getActivity()!= null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addHistory(chats);
+                                }
+                            });
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
