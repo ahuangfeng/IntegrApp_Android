@@ -170,6 +170,18 @@ public class LogIn extends AppCompatActivity {
             if(myJsonObject.has("phone")) {
                 phone = myJsonObject.getString("phone");
             }
+            String path;
+            if(myJsonObject.has("imagePath")) {
+                String path2 = myJsonObject.getString("imagePath");
+                if (path2.equals("null")) {
+                    path = "";
+                } else {
+                    path = path2;
+                }
+            } else {
+                path = "";
+            }
+            System.out.println("putogordomarcoval "+path);
 
             String rate = myJsonObject.getString("rate");
             JSONObject myJsonRate = new JSONObject(rate);
@@ -189,6 +201,7 @@ public class LogIn extends AppCompatActivity {
             editor.putInt("likes", likes);
             editor.putInt("dislikes", dislikes);
             editor.putInt("ads", myJsonArrayAds.length());
+            editor.putString("path", path);
             editor.apply();
 
             doServerCallForSaveInscriptions(userId);

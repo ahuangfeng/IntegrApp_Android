@@ -97,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else headerEmail.setText(email);
 
         String path = preferences.getString("path", "path");
-        if (Objects.equals(path, "No path")) {
+        System.out.println("xuisijooooo "+path);
+        if (Objects.equals(path, "") || Objects.equals(path, "null")) {
             headerImageView.setImageResource(R.drawable.project_preview_large_2);
         } else {
             Picasso.with(this).load(path).into(headerImageView);
