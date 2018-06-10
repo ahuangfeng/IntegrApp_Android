@@ -238,6 +238,9 @@
     <string name="comment_noun">Comment</string>
     <string name="toast_thanksForYourVote">Thanks for voting!</string>
     <string name="toast_ForumCouldNotBeVoted">The forum couldn\'t be voted</string>
+    <string name="menu_FAQ">menu_FAQ</string>
+    <string name="FAQ">FAQ</string>
+
     <string name="toast_ErrorTakingPhotos">Error taking photo</string>
     <string name="error_UpdatingPhoto">Error updating photo</string>
 
@@ -258,6 +261,7 @@
     <string name="manel_alex">Manel-Àlex</string>
     <string name="sergi_aguilar">Sergi Aguilar</string>
     <string name="daniel_perez">Daniel Pérez</string>
+
 
     <!-- Array for the spinner of user types-->
     <string-array name="user_types">

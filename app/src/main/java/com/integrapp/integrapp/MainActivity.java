@@ -1,9 +1,11 @@
 package com.integrapp.integrapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,10 +14,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +34,6 @@ import com.integrapp.integrapp.Inscription.InscriptionsFragment;
 import com.integrapp.integrapp.Login.LogIn;
 import com.integrapp.integrapp.Profile.ProfileFragment;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,17 +42,21 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private SharedPreferences preferences;
+    private TextView numberChatsShow;
+    private String newMessages = null;
     private Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         server = Server.getInstance();
         setContentView(R.layout.activity_main);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.screen_area, new AdvertsFragment());
         ft.commit();
+
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,7 +92,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             headerEmail.setText(getString(R.string.No_email));
         }
         else headerEmail.setText(email);
+
+        numberChatsShow =(TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_chats));
+        loadNewMessages();
+
     }
+
+    public void initializeCountDrawer(String number){
+        //Gravity property aligns the text
+        numberChatsShow.setGravity(Gravity.CENTER_VERTICAL);
+        numberChatsShow.setTypeface(null, Typeface.BOLD);
+        numberChatsShow.setTextColor(getResources().getColor(R.color.colorAccent));
+        numberChatsShow.setText(number);
+
+    }
+
+    public void setNumberChats(String numberChats) {
+        numberChatsShow.setText(numberChats);
+    }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadNewMessages() {
+        final Activity activity = this;
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                preferences = getSharedPreferences("login_data", Context.MODE_PRIVATE);
+                String userId = preferences.getString("idUser", "null");
+                server.token = preferences.getString("user_token", "user_token");
+                System.out.println("user: "+userId);
+                return server.getNewMessages(userId);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (!s.equals("ERROR IN GETTING NUMBER OF NEW MESSAGES")) {
+                    System.out.println("server response new messages: " + s.toString());
+                    try {
+                        getChatsFromString(s);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Toast.makeText(activity, "Error checking new messages", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private void getChatsFromString(String s) throws JSONException {
+        //final Activity activity = this;
+        JSONObject chats = new JSONObject(s);
+        String number = chats.getString("new");
+        System.out.println("number new: "+number);
+        newMessages = number;
+        initializeCountDrawer(number);
+        //setNumberChats(number);
+
+    }
+
 
     /*@Override
     public void onBackPressed() {
@@ -123,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Function FAQ not implemented", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -149,9 +217,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_forum) {
             fragment = new ForumFragment();
         } else if (id == R.id.nav_chats) {
+            initializeCountDrawer("0");
             fragment = new MainChatsFragment();
-        } else if (id == R.id.nav_settings) {
-            Toast.makeText(getApplicationContext(), "Function Settings not implemented", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_FAQ) {
+            Toast.makeText(getApplicationContext(), "Function FAQ not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_aboutUs) {
             fragment = new About();
         } else if (id == R.id.nav_logOut) {
@@ -225,4 +294,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadNewMessages();
+        initializeCountDrawer(newMessages);
+    }
+
 }
