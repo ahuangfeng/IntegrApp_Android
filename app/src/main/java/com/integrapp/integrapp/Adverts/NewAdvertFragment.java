@@ -94,7 +94,7 @@ public class NewAdvertFragment extends Fragment {
                 String date = dateText.getText().toString();
                 String time = timeText.getText().toString();
                 if(fieldsOk(title, description, places, date, time)) {
-                    Toast.makeText(getActivity(), getString(R.string.newAdvert_creating), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewAdvertFragment.this.getActivity(), getString(R.string.newAdvert_creating), Toast.LENGTH_SHORT).show();
                     sendDataToServer(title, description, places);
                 }
             }
