@@ -801,13 +801,18 @@ public class ProfileFragment extends Fragment {
 
     private void setImageHeader(String s) {
         NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+        SharedPreferences preferences = getActivity().getSharedPreferences("login_data", Context.MODE_PRIVATE);
+        String id = preferences.getString("idUser", "idUser");
 
-        View header = navigationView.getHeaderView(0);
-        ImageView imageView2 = header.findViewById(R.id.imageView);
-        if (s.equals("")) {
-            imageView2.setImageResource(R.drawable.project_preview_large_2);
-        } else {
-            Picasso.with(getActivity()).load(s).into(imageView2);
+        if (id.equals(idUser)) {
+
+            View header = navigationView.getHeaderView(0);
+            ImageView imageView2 = header.findViewById(R.id.imageView);
+            if (s.equals("")) {
+                imageView2.setImageResource(R.drawable.project_preview_large_2);
+            } else {
+                Picasso.with(getActivity()).load(s).into(imageView2);
+            }
         }
     }
 
